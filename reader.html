@@ -11,7 +11,7 @@
     <link rel="preconnect" href="https://gstatic.com" crossorigin>
     <link href="https://googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
     
-        <style>
+    <style>
         body {
             background-color: #0f1014;
             margin: 0; padding: 0;
@@ -26,27 +26,26 @@
             justify-content: space-between; align-items: center;
             box-sizing: border-box;
         }
-        /* ⭐ MOBILRA OPTIMALIZÁLT: Magasabb felső sáv (60px), kényelmesebb ujjnak */
+        /* ⭐ FINOMÍTOTT MOBIL MÉRET: Kicsit visszafogottabb felső sáv (46px) */
         #topBar {
             position: fixed; top: 0; left: 0;
-            width: 100%; height: 60px !important; display: flex; justify-content: flex-end; align-items: center;
-            padding: 0 25px; box-sizing: border-box; background-color: #121318;
+            width: 100%; height: 46px !important; display: flex; justify-content: flex-end; align-items: center;
+            padding: 0 20px; box-sizing: border-box; background-color: #121318;
             z-index: 100;
         }
-        /* ⭐ MOBILRA OPTIMALIZÁLT: Sokkal nagyobb menügomb a sarokban */
         #btnMenu {
             background: none; border: none; color: #9aa0a6;
-            font-size: 32px; cursor: pointer; padding: 10px; line-height: 1;
+            font-size: 26px; cursor: pointer; padding: 5px; line-height: 1;
         }
-        /* ⭐ MOBILRA OPTIMALIZÁLT: Margók hozzáadva a fix sávok miatt (60px fent, 70px lent) */
+        /* ⭐ JAVÍTOTT: A belső terület hajszálpontosan a sávok közé szorul (46px fent, 54px lent) */
         #canvasViewport {
             position: relative; 
             overflow: hidden !important;
             display: flex; align-items: flex-start; justify-content: flex-start;
             box-sizing: border-box; width: 100%; flex-grow: 1;
             background-color: #000;
-            margin-top: 60px;
-            margin-bottom: 70px;
+            margin-top: 46px;
+            margin-bottom: 54px;
         }
         #comicImage {
             position: fixed; display: block;
@@ -65,25 +64,25 @@
             display: none;
             border-radius: 2px;
         }
-        /* ⭐ MOBILRA OPTIMALIZÁLT: Magasabb alsó sáv (70px) a kényelmes tartáshoz */
+        /* ⭐ FINOMÍTOTT MOBIL MÉRET: Kicsit visszafogottabb alsó sáv (54px) */
         #bottomBar {
             position: fixed; bottom: 0; left: 0;
-            width: 100%; height: 70px !important; display: flex; justify-content: space-between; align-items: center;
-            padding: 0 25px; box-shadow: 0 -4px 10px rgba(0,0,0,0.3);
+            width: 100%; height: 54px !important; display: flex; justify-content: space-between; align-items: center;
+            padding: 0 20px; box-shadow: 0 -4px 10px rgba(0,0,0,0.3);
             box-sizing: border-box; background-color: #121318;
             z-index: 100;
         }
-        /* ⭐ MOBILRA OPTIMALIZÁLT: Gigantikus, 44px-es érintési zónájú gombok extra belső margóval (padding) */
+        /* ⭐ FINOMÍTOTT MOBIL MÉRET: Kényelmes, de nem túl nagy gombok */
         .retro-btn {
             background: none; border: none; color: #f4f1ea;
-            font-size: 28px; font-weight: bold; cursor: pointer; 
-            padding: 12px 18px; display: flex; align-items: center; justify-content: center;
+            font-size: 24px; font-weight: bold; cursor: pointer; 
+            padding: 10px 15px; display: flex; align-items: center; justify-content: center;
             transition: all 0.15s ease;
-            min-width: 55px; min-height: 55px;
+            min-width: 44px; min-height: 44px;
         }
         .retro-btn.active { color: #8B5A2B; transform: scale(0.95); }
 
-        /* ⭐ FIX: A szövegdoboz most már a felső sáv ALATT kezdődik, és SOHA nem ér le az alsó gombokig, így nem takarja el őket */
+        /* ⭐ FIX: A szövegfiók fentről nyílik le, és SOHA nem takarja el az alsó menüt */
         #contentTextBox {
             position: absolute;
             top: 15px; left: 5%; width: 90%;
@@ -99,13 +98,11 @@
             box-shadow: 0 4px 15px rgba(0,0,0,0.6);
             z-index: 150;
             display: none;
-            /* Korlátozzuk a magasságot, hogy a gombok szabadon maradjanak alul */
             max-height: calc(100% - 30px);
             overflow-y: auto;
             white-space: pre-wrap; 
         }
     </style>
-
 </head>
 <body>
 
@@ -117,8 +114,6 @@
         <div id="canvasViewport">
             <img id="comicImage" src="" alt="Magazin Oldal">
             <div id="focusHighlight"></div>
-            <!-- Olvasottsági maszk réteg -->
-            <div id="readMask"></div>
             <div id="contentTextBox"></div>
         </div>
 
@@ -132,11 +127,9 @@
 
     <audio id="bgAudioPlayer"></audio>
 
-
-
     // === 1. RÉSZ VÉGE (122 SOR) ===
 
-       <script>
+        <script>
         let activeMagazineData = null;
         let currentFolder = "";
         let pageIdx = 0;   
@@ -161,15 +154,16 @@
         function resizeLayout() {
             const screenW = window.innerWidth;
             const screenH = window.innerHeight;
-            const barHeight = Math.floor(screenH * 0.05);
-            const viewHeight = screenH - (barHeight * 2);
-
+            
+            // ⭐ FIX: Lekérjük a sávok pontos, valós fizikai magasságát
             const topBar = document.getElementById("topBar");
             const bottomBar = document.getElementById("bottomBar");
             const viewport = document.getElementById("canvasViewport");
 
-            if (topBar) topBar.style.height = barHeight + "px";
-            if (bottomBar) bottomBar.style.height = barHeight + "px";
+            const barHeightTop = topBar ? topBar.offsetHeight : 46;
+            const barHeightBottom = bottomBar ? bottomBar.offsetHeight : 54;
+            const viewHeight = screenH - barHeightTop - barHeightBottom;
+
             if (viewport) viewport.style.height = viewHeight + "px";
 
             applyGuidedViewLogic(screenW, viewHeight);
@@ -192,6 +186,7 @@
             const scaleY = maxH / nh;
             const baseScale = Math.min(scaleX, scaleY);
 
+            // ⭐ FIX: A kép eltolásakor hajszálpontosan figyelembe vesszük a felső sáv alját
             const barOffset = viewport.offsetTop;
             const initialX = viewport.offsetLeft + (maxW - (nw * baseScale)) / 2;
             const initialY = barOffset + (maxH - (nh * baseScale)) / 2;
@@ -230,23 +225,18 @@
                 const totalScale = baseScale * zoom;
                 const moveX = viewport.offsetLeft + (maxW / 2) - ((bx1 + bw / 2) * totalScale);
 
-                // ⭐ PRECIZITÁSI JAVÍTÁS: Abszolút, hasábon belüli ablakozás
+                // ⭐ FIX: A 95%-os ugrások kiindulópontjának korrekciója a megváltozott maxH-hoz igazítva
                 let moveY = barOffset - (by1 * totalScale);
 
                 if (block.type === "Hasáb") {
                     const totalElementHeight = bh * totalScale;
                     
                     if (totalElementHeight > maxH) {
-                        // Kiszámoljuk a tiszta 5%-os biztonsági sávot (átfedést)
                         const overlapH = Math.floor(maxH * 0.05);
-                        // A valós ugrási lépésköz (a képernyő 95%-a)
                         const stepSize = maxH - overlapH; 
 
-                        // Az eltolás az aktuális ablakindex és a fix lépésköz szorzata
                         let currentScrollY = subWindowIdx * stepSize;
 
-                        // ⭐ KRITIKUS BIZTONSÁGI HATÁR: Ha az utolsó ablak túlcsúszna a hasáb alján, 
-                        // hajszálpontosan a hasáb aljához (totalElementHeight - maxH) láncoljuk a képet!
                         if (currentScrollY + maxH > totalElementHeight) {
                             currentScrollY = totalElementHeight - maxH;
                         }
@@ -264,11 +254,9 @@
             }
         }
 
+        // === 2. RÉSZ VÉGE (110 SOR) ===
 
-
-        // === 2. RÉSZ VÉGE (101 SOR) ===
-
-                   function updateTextAndAudio(currentElement) {
+                function updateTextAndAudio(currentElement) {
             const textBox = document.getElementById("contentTextBox");
             
             if (txtActive && currentElement && currentElement.content && currentElement.content.trim() !== "") {
@@ -328,9 +316,10 @@
                 loadCurrentPage();
             } catch (e) { console.error("Hiba a data.json olvasásakor", e); }
 
-            document.getElementById("btnMenu").onclick = () => { window.location.href = "mplayer.html"; };
+            // Visszatérés az újságosstandhoz (mplayer.html / index.html)
+            document.getElementById("btnMenu").onclick = () => { window.location.href = "index.html"; };
 
-            // ⭐ FIX: Következő gomb dinamikus ugrás-ellenőrzéssel (zéró becslés, tiszta tények)
+            // ⭐ FIX: Következő gomb abszolút hasábalapú 95%-os ugrásokkal, pontos törtszámos illesztéssel
             document.getElementById("btnNext").onclick = () => {
                 if (!activeMagazineData) return;
                 const img = document.getElementById("comicImage");
@@ -356,29 +345,21 @@
                     const overlapH = Math.floor(screenH * 0.05);
                     const stepSize = screenH - overlapH;
 
-                    // Kiszámoljuk, hol tartanánk a legközelebbi ugrás után
                     const nextScrollY = (subWindowIdx + 1) * stepSize;
-                    // Kiszámoljuk, hol van a hasáb elméleti legalsó görgetési pontja
                     const maxPossibleScrollY = totalElementHeight - screenH;
-                    // Hol vagyunk most az aktuális ablakban
                     const currentScrollY = subWindowIdx * stepSize;
 
-                    // 1. Ha a jelenlegi pozíciónk még nincs a hasáb abszolút aljára láncolva
                     if (currentScrollY < maxPossibleScrollY) {
                         if (nextScrollY < maxPossibleScrollY) {
-                            // A következő ugrás még biztonságos -> Lépünk egy teljes ablakot
                             subWindowIdx++;
                         } else {
-                            // A következő ugrás már túlmenne az alján -> Nem engedjük túl, hanem
-                            // a subWindowIdx-et pontosan arra az értékre állítjuk, ami az aljára húzza a képet
                             subWindowIdx = maxPossibleScrollY / stepSize;
                         }
                         resizeLayout();
-                        return; // Megállítjuk a kódot, belső lépés történt!
+                        return; 
                     }
                 }
 
-                // Ha nem Hasábról van szó, vagy a hasáb végére (abszolút aljára) értünk, jöhet a következő elem!
                 subWindowIdx = 0; 
                 if (blockIdx < elements.length - 1) { 
                     blockIdx++; 
@@ -390,12 +371,10 @@
                 }
             };
 
-            // ⭐ FIX: Előző gomb dinamikus visszaléptetéssel
             document.getElementById("btnPrev").onclick = () => {
                 if (!activeMagazineData) return;
                 
                 if (subWindowIdx > 0) {
-                    // Ha belsőleg lejjebb voltunk, szimplán csökkentjük az ablakindexet egész számra kerekítve
                     subWindowIdx = Math.floor(subWindowIdx - 1);
                     if (subWindowIdx < 0) subWindowIdx = 0;
                     resizeLayout();
