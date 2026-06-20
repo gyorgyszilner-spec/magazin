@@ -1,0 +1,425 @@
+<!-- FÁJLNEV: reader.html -->
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Magazin Player V1 - Olvasó</title>
+    
+    <!-- RETRÓ BETŰTÍPUS BEÁGYAZÁSA -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #0f1014;
+            margin: 0; padding: 0;
+            width: 100vw; height: 100vh;
+            overflow: hidden;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
+            -webkit-tap-highlight-color: transparent;
+        }
+        #appBg {
+            width: 100vw; height: 100vh;
+            display: flex; flex-direction: column;
+            justify-content: space-between; align-items: center;
+            box-sizing: border-box;
+        }
+        #topBar {
+            width: 100%; display: flex; justify-content: flex-end; align-items: center;
+            padding: 0 25px; box-sizing: border-box; background-color: #121318;
+            z-index: 100;
+        }
+        #btnMenu {
+            background: none; border: none; color: #9aa0a6;
+            font-size: 24px; cursor: pointer; padding: 0; line-height: 1;
+        }
+        #canvasViewport {
+            position: relative; 
+            overflow: hidden !important;
+            display: flex; align-items: flex-start; justify-content: flex-start;
+            box-sizing: border-box; width: 100%; flex-grow: 1;
+            background-color: #000;
+        }
+        #comicImage {
+            position: fixed; display: block;
+            top: 0; left: 0;
+            transform-origin: 0 0;
+            opacity: 0.25;
+            transition: transform 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+        }
+        #focusHighlight {
+            position: fixed;
+            box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.65); 
+            border: 1px solid rgba(139, 90, 43, 0.5); 
+            pointer-events: none;
+            z-index: 10;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            display: none;
+            border-radius: 2px;
+        }
+        /* ⭐ FIX: Pontosan ugyanolyan áttetsző fekete réteg, mint a kép többi része */
+        #readMask {
+            position: fixed;
+            background-color: rgba(0, 0, 0, 0.65);
+            pointer-events: none;
+            z-index: 12;
+            transition: all 0.4s cubic-bezier(0.25, 1, 0.5, 1);
+            display: none;
+        }
+        #bottomBar {
+            width: 100%; display: flex; justify-content: space-between; align-items: center;
+            padding: 0 30px; box-sizing: border-box; background-color: #121318;
+            z-index: 100;
+        }
+        .retro-btn {
+            background: none; border: none; color: #f4f1ea;
+            font-size: 22px; font-weight: bold; cursor: pointer; padding: 5px;
+            display: flex; align-items: center; justify-content: center;
+            transition: all 0.15s ease;
+        }
+        .retro-btn.active { color: #8B5A2B; transform: scale(0.9); }
+
+        #contentTextBox {
+            position: absolute;
+            bottom: 20px; left: 5%; width: 90%;
+            background: rgba(15, 16, 20, 0.92);
+            color: #f4f1ea;
+            padding: 15px;
+            border-radius: 8px;
+            box-sizing: border-box;
+            font-family: 'Playfair Display', 'Georgia', serif;
+            font-size: 14px;
+            line-height: 1.6;
+            border: 1px solid #8B5A2B;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.6);
+            z-index: 150;
+            display: none;
+            max-height: 120px;
+            overflow-y: auto;
+            white-space: pre-wrap; 
+        }
+    </style>
+</head>
+<body>
+
+    <div id="appBg">
+        <div id="topBar">
+            <button id="btnMenu" title="Vissza a könyvtárba">☰</button>
+        </div>
+
+        <div id="canvasViewport">
+            <img id="comicImage" src="" alt="Magazin Oldal">
+            <div id="focusHighlight"></div>
+            <!-- Olvasottsági maszk réteg -->
+            <div id="readMask"></div>
+            <div id="contentTextBox"></div>
+        </div>
+
+        <div id="bottomBar">
+            <button id="btnTxt" class="retro-btn">📄</button>
+            <button id="btnSound" class="retro-btn">🔊</button>
+            <button id="btnPrev" class="retro-btn">◀</button>
+            <button id="btnNext" class="retro-btn">▶</button>
+        </div>
+    </div>
+
+    <audio id="bgAudioPlayer"></audio>
+
+
+
+    // === 1. RÉSZ VÉGE (122 SOR) ===
+
+       <script>
+        let activeMagazineData = null;
+        let currentFolder = "";
+        let pageIdx = 0;   
+        let blockIdx = -1; 
+        let subWindowIdx = 0; 
+
+        let txtActive = false;
+        let soundActive = false;
+        const audioPlayer = document.getElementById("bgAudioPlayer");
+
+        function resetImageStyles() {
+            const highlight = document.getElementById("focusHighlight");
+            if (highlight) highlight.style.display = "none";
+            const img = document.getElementById("comicImage");
+            if (img) {
+                img.style.transform = "none";
+                img.style.opacity = "1";
+            }
+            subWindowIdx = 0;
+        }
+
+        function resizeLayout() {
+            const screenW = window.innerWidth;
+            const screenH = window.innerHeight;
+            const barHeight = Math.floor(screenH * 0.05);
+            const viewHeight = screenH - (barHeight * 2);
+
+            const topBar = document.getElementById("topBar");
+            const bottomBar = document.getElementById("bottomBar");
+            const viewport = document.getElementById("canvasViewport");
+
+            if (topBar) topBar.style.height = barHeight + "px";
+            if (bottomBar) bottomBar.style.height = barHeight + "px";
+            if (viewport) viewport.style.height = viewHeight + "px";
+
+            applyGuidedViewLogic(screenW, viewHeight);
+        }
+
+        function applyGuidedViewLogic(maxW, maxH) {
+            const img = document.getElementById("comicImage");
+            const highlight = document.getElementById("focusHighlight");
+            const viewport = document.getElementById("canvasViewport");
+            if (!img || !img.naturalWidth || !activeMagazineData) return;
+
+            const nw = img.naturalWidth;
+            const nh = img.naturalHeight;
+            const currentPage = activeMagazineData.pages[pageIdx];
+            const elements = currentPage.elements || [];
+
+            updateTextAndAudio(elements[blockIdx]);
+
+            const scaleX = maxW / nw;
+            const scaleY = maxH / nh;
+            const baseScale = Math.min(scaleX, scaleY);
+
+            const barOffset = viewport.offsetTop;
+            const initialX = viewport.offsetLeft + (maxW - (nw * baseScale)) / 2;
+            const initialY = barOffset + (maxH - (nh * baseScale)) / 2;
+
+            if (blockIdx === -1 || !elements[blockIdx]) {
+                img.style.width = nw + "px";
+                img.style.height = nh + "px";
+                img.style.transformOrigin = "0 0";
+                img.style.transform = `translate(${initialX}px, ${initialY}px) scale(${baseScale})`;
+                highlight.style.display = "none";
+            } else {
+                highlight.style.display = "block";
+
+                const block = elements[blockIdx];
+                const bx1 = parseInt(block.x1) || 0; 
+                const by1 = parseInt(block.y1) || 0;
+                const bx2 = parseInt(block.x2) || nw; 
+                const by2 = parseInt(block.y2) || nh;
+                
+                const bw = bx2 - bx1; 
+                const bh = by2 - by1; 
+
+                img.style.width = nw + "px";
+                img.style.height = nh + "px";
+                img.style.transformOrigin = "0 0";
+
+                let zoom = 1;
+                if (block.type === "Hasáb") {
+                    zoom = maxW / (bw * baseScale);
+                } else {
+                    const zoomX = maxW / (bw * baseScale); 
+                    const zoomY = maxH / (bh * baseScale);
+                    zoom = Math.min(zoomX, zoomY) * 0.95;
+                }
+
+                const totalScale = baseScale * zoom;
+                const moveX = viewport.offsetLeft + (maxW / 2) - ((bx1 + bw / 2) * totalScale);
+
+                // ⭐ PRECIZITÁSI JAVÍTÁS: Abszolút, hasábon belüli ablakozás
+                let moveY = barOffset - (by1 * totalScale);
+
+                if (block.type === "Hasáb") {
+                    const totalElementHeight = bh * totalScale;
+                    
+                    if (totalElementHeight > maxH) {
+                        // Kiszámoljuk a tiszta 5%-os biztonsági sávot (átfedést)
+                        const overlapH = Math.floor(maxH * 0.05);
+                        // A valós ugrási lépésköz (a képernyő 95%-a)
+                        const stepSize = maxH - overlapH; 
+
+                        // Az eltolás az aktuális ablakindex és a fix lépésköz szorzata
+                        let currentScrollY = subWindowIdx * stepSize;
+
+                        // ⭐ KRITIKUS BIZTONSÁGI HATÁR: Ha az utolsó ablak túlcsúszna a hasáb alján, 
+                        // hajszálpontosan a hasáb aljához (totalElementHeight - maxH) láncoljuk a képet!
+                        if (currentScrollY + maxH > totalElementHeight) {
+                            currentScrollY = totalElementHeight - maxH;
+                        }
+
+                        moveY = barOffset - (by1 * totalScale) - currentScrollY;
+                    }
+                }
+
+                img.style.transform = `translate(${moveX}px, ${moveY}px) scale(${totalScale})`;
+
+                highlight.style.left = (bx1 * totalScale + moveX) + "px";
+                highlight.style.top = (by1 * totalScale + moveY) + "px";
+                highlight.style.width = (bw * totalScale) + "px";
+                highlight.style.height = (bh * totalScale) + "px";
+            }
+        }
+
+
+
+        // === 2. RÉSZ VÉGE (101 SOR) ===
+
+                   function updateTextAndAudio(currentElement) {
+            const textBox = document.getElementById("contentTextBox");
+            
+            if (txtActive && currentElement && currentElement.content && currentElement.content.trim() !== "") {
+                textBox.innerText = currentElement.content;
+                textBox.style.display = "block";
+            } else {
+                textBox.style.display = "none";
+            }
+
+            audioPlayer.pause();
+            window.speechSynthesis.cancel();
+
+            if (soundActive) {
+                const currentPage = activeMagazineData.pages[pageIdx];
+                const activeAudioPath = currentElement?.audioPath || currentPage?.audioPath;
+
+                if (activeAudioPath && activeAudioPath.trim() !== "") {
+                    const targetSrc = `magazines/${currentFolder}/${activeAudioPath}`;
+                    if (!audioPlayer.src.includes(activeAudioPath)) {
+                        audioPlayer.src = targetSrc;
+                        audioPlayer.play().catch(e => console.log("Audio letiltva"));
+                    }
+                } else if (currentElement && currentElement.content && currentElement.content.trim() !== "") {
+                    const utterance = new SpeechSynthesisUtterance(currentElement.content);
+                    utterance.lang = 'hu-HU';
+                    utterance.rate = 1.0;
+                    utterance.pitch = 1.0;
+                    window.speechSynthesis.speak(utterance);
+                }
+            }
+        }
+
+        function loadCurrentPage() {
+            if (!activeMagazineData || !activeMagazineData.pages.length) return;
+            const img = document.getElementById("comicImage");
+            
+            resetImageStyles();
+            
+            const pageData = activeMagazineData.pages[pageIdx];
+            img.src = `magazines/${currentFolder}/${pageData.imagePath}`;
+            
+            img.onload = () => { 
+                resizeLayout(); 
+            };
+        }
+
+        window.addEventListener("resize", resizeLayout);
+
+        window.addEventListener("DOMContentLoaded", async () => {
+            const params = new URLSearchParams(window.location.search);
+            currentFolder = params.get('magazine') || "orszag-vilag-1-export";
+
+            try {
+                const res = await fetch(`magazines/${currentFolder}/data.json`);
+                activeMagazineData = await res.json();
+                pageIdx = 0; blockIdx = -1;
+                loadCurrentPage();
+            } catch (e) { console.error("Hiba a data.json olvasásakor", e); }
+
+            document.getElementById("btnMenu").onclick = () => { window.location.href = "mplayer.html"; };
+
+            // ⭐ FIX: Következő gomb dinamikus ugrás-ellenőrzéssel (zéró becslés, tiszta tények)
+            document.getElementById("btnNext").onclick = () => {
+                if (!activeMagazineData) return;
+                const img = document.getElementById("comicImage");
+                const viewport = document.getElementById("canvasViewport");
+                const elements = activeMagazineData.pages[pageIdx].elements || [];
+                
+                if (blockIdx === -1) {
+                    blockIdx++;
+                    subWindowIdx = 0;
+                    resizeLayout();
+                    return;
+                }
+
+                const block = elements[blockIdx];
+                const bh = (parseInt(block.y2) - parseInt(block.y1)) || 0;
+                
+                const screenH = viewport.clientHeight;
+                const baseScale = Math.min(viewport.clientWidth / img.naturalWidth, screenH / img.naturalHeight);
+                const zoom = block.type === "Hasáb" ? (viewport.clientWidth / (parseInt(block.x2 - block.x1) * baseScale)) : 1;
+                const totalElementHeight = bh * baseScale * zoom;
+
+                if (block.type === "Hasáb" && totalElementHeight > screenH) {
+                    const overlapH = Math.floor(screenH * 0.05);
+                    const stepSize = screenH - overlapH;
+
+                    // Kiszámoljuk, hol tartanánk a legközelebbi ugrás után
+                    const nextScrollY = (subWindowIdx + 1) * stepSize;
+                    // Kiszámoljuk, hol van a hasáb elméleti legalsó görgetési pontja
+                    const maxPossibleScrollY = totalElementHeight - screenH;
+                    // Hol vagyunk most az aktuális ablakban
+                    const currentScrollY = subWindowIdx * stepSize;
+
+                    // 1. Ha a jelenlegi pozíciónk még nincs a hasáb abszolút aljára láncolva
+                    if (currentScrollY < maxPossibleScrollY) {
+                        if (nextScrollY < maxPossibleScrollY) {
+                            // A következő ugrás még biztonságos -> Lépünk egy teljes ablakot
+                            subWindowIdx++;
+                        } else {
+                            // A következő ugrás már túlmenne az alján -> Nem engedjük túl, hanem
+                            // a subWindowIdx-et pontosan arra az értékre állítjuk, ami az aljára húzza a képet
+                            subWindowIdx = maxPossibleScrollY / stepSize;
+                        }
+                        resizeLayout();
+                        return; // Megállítjuk a kódot, belső lépés történt!
+                    }
+                }
+
+                // Ha nem Hasábról van szó, vagy a hasáb végére (abszolút aljára) értünk, jöhet a következő elem!
+                subWindowIdx = 0; 
+                if (blockIdx < elements.length - 1) { 
+                    blockIdx++; 
+                    resizeLayout(); 
+                } else if (pageIdx < activeMagazineData.pages.length - 1) { 
+                    pageIdx++; 
+                    blockIdx = -1; 
+                    loadCurrentPage(); 
+                }
+            };
+
+            // ⭐ FIX: Előző gomb dinamikus visszaléptetéssel
+            document.getElementById("btnPrev").onclick = () => {
+                if (!activeMagazineData) return;
+                
+                if (subWindowIdx > 0) {
+                    // Ha belsőleg lejjebb voltunk, szimplán csökkentjük az ablakindexet egész számra kerekítve
+                    subWindowIdx = Math.floor(subWindowIdx - 1);
+                    if (subWindowIdx < 0) subWindowIdx = 0;
+                    resizeLayout();
+                } else {
+                    subWindowIdx = 0; 
+                    if (blockIdx > -1) { 
+                        blockIdx--; 
+                        resizeLayout(); 
+                    } else if (pageIdx > 0) { 
+                        pageIdx--; 
+                        const p = activeMagazineData.pages[pageIdx]; 
+                        blockIdx = p.elements?.length ? p.elements.length - 1 : -1; 
+                        loadCurrentPage(); 
+                    }
+                }
+            };
+
+            document.getElementById("btnTxt").onclick = function() { 
+                txtActive = !txtActive; 
+                this.classList.toggle("active", txtActive); 
+                resizeLayout(); 
+            };
+            
+            document.getElementById("btnSound").onclick = function() { 
+                soundActive = !soundActive; 
+                this.classList.toggle("active", soundActive); 
+                resizeLayout(); 
+            };
+        });
+    </script>
+</body>
+</html>
