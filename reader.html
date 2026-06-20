@@ -129,7 +129,7 @@
 
     // === 1. RÉSZ VÉGE (122 SOR) ===
 
-        <script>
+       <script>
         let activeMagazineData = null;
         let currentFolder = "";
         let pageIdx = 0;   
@@ -155,7 +155,6 @@
             const screenW = window.innerWidth;
             const screenH = window.innerHeight;
             
-            // ⭐ FIX: Lekérjük a sávok pontos, valós fizikai magasságát
             const topBar = document.getElementById("topBar");
             const bottomBar = document.getElementById("bottomBar");
             const viewport = document.getElementById("canvasViewport");
@@ -186,7 +185,6 @@
             const scaleY = maxH / nh;
             const baseScale = Math.min(scaleX, scaleY);
 
-            // ⭐ FIX: A kép eltolásakor hajszálpontosan figyelembe vesszük a felső sáv alját
             const barOffset = viewport.offsetTop;
             const initialX = viewport.offsetLeft + (maxW - (nw * baseScale)) / 2;
             const initialY = barOffset + (maxH - (nh * baseScale)) / 2;
@@ -207,6 +205,7 @@
                 const by2 = parseInt(block.y2) || nh;
                 
                 const bw = bx2 - bx1; 
+                // ⭐ FIX: Tiszta, felülírásmentes magasságszámítás a JSON koordinátákból
                 const bh = by2 - by1; 
 
                 img.style.width = nw + "px";
@@ -225,7 +224,6 @@
                 const totalScale = baseScale * zoom;
                 const moveX = viewport.offsetLeft + (maxW / 2) - ((bx1 + bw / 2) * totalScale);
 
-                // ⭐ FIX: A 95%-os ugrások kiindulópontjának korrekciója a megváltozott maxH-hoz igazítva
                 let moveY = barOffset - (by1 * totalScale);
 
                 if (block.type === "Hasáb") {
@@ -237,6 +235,7 @@
 
                         let currentScrollY = subWindowIdx * stepSize;
 
+                        // ⭐ FIX: Ha az utolsó ablakhoz érünk, centire pontosan a hasáb aljára húzza a képet
                         if (currentScrollY + maxH > totalElementHeight) {
                             currentScrollY = totalElementHeight - maxH;
                         }
@@ -253,6 +252,7 @@
                 highlight.style.height = (bh * totalScale) + "px";
             }
         }
+
 
         // === 2. RÉSZ VÉGE (110 SOR) ===
 
