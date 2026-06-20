@@ -256,7 +256,7 @@
 
         // === 2. RÉSZ VÉGE (110 SOR) ===
 
-                function updateTextAndAudio(currentElement) {
+                   function updateTextAndAudio(currentElement) {
             const textBox = document.getElementById("contentTextBox");
             
             if (txtActive && currentElement && currentElement.content && currentElement.content.trim() !== "") {
@@ -316,10 +316,8 @@
                 loadCurrentPage();
             } catch (e) { console.error("Hiba a data.json olvasásakor", e); }
 
-            // Visszatérés az újságosstandhoz (mplayer.html / index.html)
             document.getElementById("btnMenu").onclick = () => { window.location.href = "index.html"; };
 
-            // ⭐ FIX: Következő gomb abszolút hasábalapú 95%-os ugrásokkal, pontos törtszámos illesztéssel
             document.getElementById("btnNext").onclick = () => {
                 if (!activeMagazineData) return;
                 const img = document.getElementById("comicImage");
@@ -334,6 +332,7 @@
                 }
 
                 const block = elements[blockIdx];
+                // ⭐ FIX: Itt is hajszálpontosan számoljuk az elem valós magasságát
                 const bh = (parseInt(block.y2) - parseInt(block.y1)) || 0;
                 
                 const screenH = viewport.clientHeight;
@@ -349,7 +348,8 @@
                     const maxPossibleScrollY = totalElementHeight - screenH;
                     const currentScrollY = subWindowIdx * stepSize;
 
-                    if (currentScrollY < maxPossibleScrollY) {
+                    // ⭐ FIX: 5 pixel helyett 2 pixel biztonsági sávot hagyunk, hogy az utolsó sor is garantáltan beforduljon a kijelzőre
+                    if (currentScrollY < maxPossibleScrollY - 2) {
                         if (nextScrollY < maxPossibleScrollY) {
                             subWindowIdx++;
                         } else {
@@ -373,6 +373,8 @@
 
             document.getElementById("btnPrev").onclick = () => {
                 if (!activeMagazineData) return;
+                const viewport = document.getElementById("canvasViewport");
+                const screenH = viewport.clientHeight;
                 
                 if (subWindowIdx > 0) {
                     subWindowIdx = Math.floor(subWindowIdx - 1);
