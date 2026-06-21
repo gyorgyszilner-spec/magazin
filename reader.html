@@ -1,4 +1,5 @@
 <!-- FÁJLNEV: reader.html [1/3 RÉSZ] -->
+<!-- FÁJLNEV: reader.html [MODOSÍTOTT 1. RÉSZ] -->
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -12,81 +13,63 @@
     
     <style>
         body {
-            background-color: #0f1014;
-            margin: 0; padding: 0;
-            width: 100vw; height: 100vh;
-            overflow: hidden;
+            background-color: #0f1014; margin: 0; padding: 0;
+            width: 100vw; height: 100vh; overflow: hidden;
             font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Arial, sans-serif;
-            -webkit-tap-highlight-color: transparent;
-            user-select: none;
+            -webkit-tap-highlight-color: transparent; user-select: none;
         }
         #appBg {
-            width: 100vw; height: 100vh;
-            display: flex; flex-direction: column;
-            justify-content: space-between; align-items: center;
-            box-sizing: border-box;
-            position: relative;
+            width: 100vw; height: 100vh; display: flex; flex-direction: column;
+            justify-content: space-between; align-items: center; box-sizing: border-box; position: relative;
         }
         #topBar {
-            position: fixed; top: 0; left: 0;
-            width: 100%; height: 46px; display: flex; justify-content: space-between; align-items: center;
-            padding: 0 10px; box-sizing: border-box; background-color: #121318;
-            z-index: 100; border-bottom: 1px solid #1f222e;
+            position: fixed; top: 0; left: 0; width: 100%; height: 46px; display: flex;
+            justify-content: space-between; align-items: center; padding: 0 10px; box-sizing: border-box;
+            background-color: #121318; z-index: 100; border-bottom: 1px solid #1f222e;
         }
-        .top-left-group, .top-right-group {
-            display: flex; align-items: center; gap: 5px;
-        }
+        .top-left-group, .top-right-group { display: flex; align-items: center; gap: 5px; }
         .retro-btn {
-            background: none; border: none; color: #f4f1ea;
-            font-size: 20px; font-weight: bold; cursor: pointer; 
-            padding: 5px 10px; display: flex; align-items: center; justify-content: center;
-            transition: all 0.2s ease; min-width: 40px; min-height: 40px;
-            border-radius: 4px;
+            background: none; border: none; color: #f4f1ea; font-size: 20px; font-weight: bold;
+            cursor: pointer; padding: 5px 10px; display: flex; align-items: center; justify-content: center;
+            transition: all 0.2s ease; min-width: 40px; min-height: 40px; border-radius: 4px;
         }
         .retro-btn:active { transform: scale(0.9); }
         .retro-btn.active { 
-            color: #ff9d3b; 
-            background: rgba(139, 90, 43, 0.25);
-            box-shadow: inset 0 0 8px rgba(255, 157, 59, 0.3);
-            border: 1px solid rgba(255, 157, 59, 0.4);
+            color: #ff9d3b; background: rgba(139, 90, 43, 0.25);
+            box-shadow: inset 0 0 8px rgba(255, 157, 59, 0.3); border: 1px solid rgba(255, 157, 59, 0.4);
         }
         #btnLang { font-size: 14px; font-weight: bold; color: #ff9d3b; }
         
+        /* ⭐ ÚJ: A viewport maga lesz a görgető doboz, abszolút pozicionált elemekkel */
         #canvasViewport {
-            position: relative; overflow: hidden !important;
-            display: flex; align-items: flex-start; justify-content: flex-start;
-            box-sizing: border-box; width: 100%; flex-grow: 1;
-            background-color: #000; margin-top: 46px; margin-bottom: 0px;
+            position: relative; overflow-x: hidden !important; overflow-y: auto !important;
+            -webkit-overflow-scrolling: touch; display: block; box-sizing: border-box;
+            width: 100%; flex-grow: 1; background-color: #000; margin-top: 46px; margin-bottom: 0px;
             transition: margin-bottom 0.3s ease;
         }
+        /* ⭐ ÚJ: A kép és a kiemelés FIXED helyett ABSOLUTE, hogy kövessék a doboz belső görgetését */
         #comicImage {
-            position: fixed; display: block; top: 0; left: 0;
-            transform-origin: 0 0; opacity: 1;
-            transition: transform 0.3s cubic-bezier(0.25, 1, 0.5, 1);
+            position: absolute; display: block; top: 0; left: 0; transform-origin: 0 0;
+            opacity: 1; transition: transform 0.1s linear; will-change: transform;
         }
         #focusHighlight {
-            position: fixed; box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7); 
-            border: 2px solid #ff9d3b; pointer-events: none; z-index: 10;
-            transition: all 0.3s cubic-bezier(0.25, 1, 0.5, 1); display: none; border-radius: 4px;
+            position: absolute; box-shadow: 0 0 0 9999px rgba(0, 0, 0, 0.7); 
+            border: 2px solid #ff9d3b; pointer-events: none; z-index: 10; display: none; border-radius: 4px;
         }
         #contentTextBox {
-            position: absolute; top: 15px; left: 5%; width: 90%;
-            background: rgba(15, 16, 20, 0.96); color: #f4f1ea;
-            padding: 20px; border-radius: 8px; box-sizing: border-box;
-            font-family: 'Playfair Display', 'Georgia', serif;
-            line-height: 1.6; border: 1px solid #8B5A2B;
-            box-shadow: 0 4px 20px rgba(0,0,0,0.8); z-index: 150;
-            display: none; max-height: calc(100% - 30px); overflow-y: auto;
-            white-space: pre-wrap; transition: font-size 0.2s ease;
+            position: absolute; top: 15px; left: 5%; width: 90%; background: rgba(15, 16, 20, 0.96);
+            color: #f4f1ea; padding: 20px; border-radius: 8px; box-sizing: border-box;
+            font-family: 'Playfair Display', 'Georgia', serif; line-height: 1.6; border: 1px solid #8B5A2B;
+            box-shadow: 0 4px 20px rgba(0,0,0,0.8); z-index: 150; display: none;
+            max-height: calc(100% - 30px); overflow-y: auto; white-space: pre-wrap; transition: font-size 0.2s ease;
         }
         .txt-size-small { font-size: 14px; }
         .txt-size-medium { font-size: 18px; }
         .txt-size-large { font-size: 22px; }
 
         #bottomBar {
-            position: fixed; bottom: -60px; left: 0;
-            width: 100%; height: 54px; display: flex; justify-content: flex-end; align-items: center;
-            padding: 0 20px; box-shadow: 0 -4px 15px rgba(0,0,0,0.5);
+            position: fixed; bottom: -60px; left: 0; width: 100%; height: 54px; display: flex;
+            justify-content: flex-end; align-items: center; padding: 0 20px; box-shadow: 0 -4px 15px rgba(0,0,0,0.5);
             box-sizing: border-box; background-color: #121318; z-index: 100;
             transition: bottom 0.3s cubic-bezier(0.25, 1, 0.5, 1); gap: 15px;
         }
@@ -94,8 +77,7 @@
         
         .popup-overlay {
             position: fixed; top: 0; left: 0; width: 100%; height: 100%;
-            background: rgba(0,0,0,0.7); z-index: 200; display: none;
-            justify-content: center; align-items: center;
+            background: rgba(0,0,0,0.7); z-index: 200; display: none; justify-content: center; align-items: center;
         }
         .popup-window {
             background: #16181f; border: 1px solid #8B5A2B; border-radius: 10px;
@@ -114,6 +96,7 @@
         .lang-list { display: flex; flex-direction: column; gap: 8px; }
     </style>
 </head>
+
 <body>
 
     <div id="appBg">
@@ -391,16 +374,16 @@
 
         // JAVASCRIPT REZIDENS FORRAS 3 RESZ VEGE
 
-               // === JAVASCRIPT 4. RÉSZ: NATÍV GÖRDÍTÉSRE ÉPÍTŐ GUIDED VIEW LOGIKA ===
+               // === JAVASCRIPT 4. RÉSZ: UNIVERZÁLIS NATÍV MOTOR BIZTONSÁGI SÁVVAL ===
         function applyGuidedViewLogic(maxW, maxH) {
             const img = document.getElementById("comicImage");
             const highlight = document.getElementById("focusHighlight");
             const viewport = document.getElementById("canvasViewport");
             if (!img || !img.naturalWidth || !activeMagazineData) return;
 
-            // Aktiváljuk a natív görgetést a konténeren
-            viewport.style.overflowY = "auto";
-            viewport.style.webkitOverflowScrolling = "touch";
+            // Eltávolítjuk a régi extra helyet biztosító elemet, ha létezik
+            const oldSpacer = document.getElementById("viewportSpacer");
+            if (oldSpacer) oldSpacer.remove();
 
             const nw = img.naturalWidth;
             const nh = img.naturalHeight;
@@ -413,7 +396,6 @@
             const scaleY = maxH / nh;
             const baseScale = Math.min(scaleX, scaleY);
 
-            const barOffset = viewport.offsetTop;
             const initialX = (maxW - (nw * baseScale)) / 2;
             const initialY = (maxH - (nh * baseScale)) / 2;
 
@@ -423,6 +405,7 @@
                 img.style.transform = `translate(${initialX}px, ${initialY}px) scale(${baseScale})`;
                 highlight.style.display = "none";
                 viewport.scrollTop = 0; 
+                subWindowIdx = 0; 
             } else {
                 highlight.style.display = "block";
                 const block = elements[blockIdx];
@@ -447,47 +430,60 @@
 
                 const totalScale = baseScale * zoom;
                 const moveX = (maxW / 2) - ((bx1 + bw / 2) * totalScale);
-                
-                // A képet fixen rögzítjük a hasáb tetejéhez igazítva
                 let moveY = -(by1 * totalScale);
 
-                // Megadjuk a képnek a fix transzformációt
                 img.style.transform = `translate(${moveX}px, ${moveY}px) scale(${totalScale})`;
 
-                // A kiemelést is ehhez mérten fixáljuk a képen
                 highlight.style.left = (bx1 * totalScale + moveX) + "px";
                 highlight.style.top = (by1 * totalScale + moveY) + "px";
                 highlight.style.width = (bw * totalScale) + "px";
                 highlight.style.height = (bh * totalScale) + "px";
 
-                // Ha új hasábra léptünk, a dobozt visszatekerjük a tetejére
-                if (subWindowIdx === 0) {
-                    viewport.scrollTop = 0;
-                    subWindowIdx = 1; // Jelzi, hogy már inicializáltuk az új pozíciót
+                if (block.type === "Hasáb") {
+                    const totalElementHeight = bh * totalScale;
+                    // Létrehozunk egy láthatatlan elemet, ami garantálja a hasáb aljáig görgetést
+                    const spacer = document.createElement("div");
+                    spacer.id = "viewportSpacer";
+                    spacer.style.position = "absolute";
+                    spacer.style.left = "0px";
+                    spacer.style.top = "0px";
+                    spacer.style.width = "1px";
+                    // A hasáb teljes magassága + egy kis extra biztonsági kifutó sáv
+                    spacer.style.height = (totalElementHeight + 40) + "px";
+                    spacer.style.pointerEvents = "none";
+                    viewport.appendChild(spacer);
+                    
+                    subWindowIdx = totalElementHeight - maxH;
+                } else {
+                    subWindowIdx = 0;
                 }
             }
         }
 
         function loadCurrentPage() {
             if (!activeMagazineData || !activeMagazineData.pages.length) return;
-            const img = document.getElementById("comicImage");
-            subWindowIdx = 0; // Alaphelyzetbe állítás új oldalnál
+            const viewport = document.getElementById("canvasViewport");
+            if (viewport) viewport.scrollTop = 0;
             resetImageStyles();
             const pageData = activeMagazineData.pages[pageIdx];
-            img.src = `magazines/${currentFolder}/${pageData.imagePath}`;
-            img.onload = () => { resizeLayout(); };
+            document.getElementById("comicImage").src = `magazines/${currentFolder}/${pageData.imagePath}`;
+            document.getElementById("comicImage").onload = () => { resizeLayout(); };
         }
 
         // JAVASCRIPT GUIDED VIEW MOTOR 4 RESZ VEGE
 
 
 
-         // === JAVASCRIPT 5. RÉSZ: NATÍV GÖRDÍTÉS ÉS SUHINTÁS-ELLENŐRZÉS ===
+
+
+               // === JAVASCRIPT 5. RÉSZ: INTERAKTÍV GÖRDÍTÉSI LAKAT ÉS GESZTUSMOTOR ===
         let touchStartX = 0;
         let touchStartY = 0;
         let lastTapTime = 0;
         let longPressTimer = null;
         let isLongPress = false;
+        // ÚJ: Logikai változó, ami szétválasztja a folyamatos görgetést és a tiszta suhintást
+        let canPageFlip = false; 
 
         const viewportElement = document.getElementById("canvasViewport");
 
@@ -498,10 +494,24 @@
             touchStartY = touch.clientY;
             isLongPress = false;
 
+            // Csak akkor engedélyezzük elméletben a lapozást, ha MÁR a határon áll a doboz
+            const currentScroll = viewportElement.scrollTop;
+            const maxScroll = viewportElement.scrollHeight - viewportElement.clientHeight;
+            canPageFlip = (currentScroll <= 1 || currentScroll >= maxScroll - 1);
+
             longPressTimer = setTimeout(() => {
                 isLongPress = true;
+                canPageFlip = false;
                 handleLongPress();
             }, 600);
+        }, { passive: true });
+
+        viewportElement.addEventListener("touchmove", (e) => {
+            if (longPressTimer) clearTimeout(longPressTimer);
+            // Ha az ujj mozog és valós görgetés történik, a lakat azonnal letiltja az ugrást
+            if (!isLongPress && e.target.id !== "contentTextBox") {
+                canPageFlip = false; 
+            }
         }, { passive: true });
 
         viewportElement.addEventListener("touchend", (e) => {
@@ -530,9 +540,9 @@
             }
             lastTapTime = now;
 
-            // Ha a függőleges elmozdulás jelentős, átadjuk a döntést a határellenőrzőnek
-            if (Math.abs(diffY) > 50 && Math.abs(diffX) < 40) {
-                handleScrollBoundaryNavigation(diffY);
+            // CSAK akkor engedjük át a suhintást a navigációnak, ha a lakat nem tiltotta le (tiszta új swipe)
+            if (canPageFlip && Math.abs(diffY) > 50 && Math.abs(diffX) < 40) {
+                handleBoundarySwipe(diffY);
             }
         }, { passive: true });
 
@@ -561,61 +571,47 @@
         // JAVASCRIPT GESZTUSMOTOR 5 RESZ VEGE
 
 
+ // === JAVASCRIPT 6. RÉSZ: BIZTONSÁGOS HATÁR-ALAPÚ BLOKKVÁLTÁS ===
+        function handleBoundarySwipe(diffY) {
+            const viewport = document.getElementById("canvasViewport");
+            if (!viewport) return;
 
+            const currentScroll = viewport.scrollTop;
+            const maxScroll = viewport.scrollHeight - viewport.clientHeight;
 
-              // === JAVASCRIPT 6. RÉSZ: BIZTONSÁGOS HATÁRLAPOZÓ NAVIGÁCIÓ ===
-        function handleDragEndNavigation(diffY) {
             if (txtActive) {
                 const textBox = document.getElementById("contentTextBox");
                 if (diffY < 0) { 
                     const isAtEnd = textBox.scrollHeight - textBox.scrollTop <= textBox.clientHeight + 4;
-                    if (isAtEnd && diffY < -80) navigateNext();
+                    if (isAtEnd && diffY < -60) navigateNext();
                 } else { 
                     const isAtTop = textBox.scrollTop <= 4;
-                    if (isAtTop && diffY > 80) navigatePrev();
+                    if (isAtTop && diffY > 60) navigatePrev();
                 }
             } else {
                 if (!activeMagazineData) return;
                 const elements = activeMagazineData.pages[pageIdx].elements || [];
                 if (blockIdx === -1) {
-                    if (diffY < -80) navigateNext();
+                    if (diffY < -60) navigateNext();
                     return;
                 }
 
                 const block = elements[blockIdx];
                 if (block.type === "Hasáb") {
-                    const viewport = document.getElementById("canvasViewport");
-                    const img = document.getElementById("comicImage");
-                    const screenH = viewport.clientHeight;
-                    const baseScale = Math.min(viewport.clientWidth / img.naturalWidth, screenH / img.naturalHeight);
-                    const bw = (parseInt(block.x2) - parseInt(block.x1)) || 0;
-                    const bh = (parseInt(block.y2) - parseInt(block.y1)) || 0;
-                    const zoom = viewport.clientWidth / (bw * baseScale);
-                    const totalElementHeight = bh * baseScale * zoom;
-
-                    if (totalElementHeight > screenH) {
-                        const maxPossibleScrollY = totalElementHeight - screenH;
-
-                        // Lapozás előre: CSAK ha az alján állunk, ÉS az ujj elengedésekor nagyot suhintott felfelé
-                        if (diffY < -80 && subWindowIdx >= maxPossibleScrollY - 5) {
-                            navigateNext();
-                            return;
-                        }
-                        // Lapozás vissza: CSAK ha a tetején állunk, ÉS az ujj elengedésekor nagyot suhintott lefelé
-                        if (diffY > 80 && subWindowIdx <= 5) {
-                            navigatePrev();
-                            return;
-                        }
-                        
-                        // Ha a hasáb közepén engedtük el, nem lapozunk, csak rögzítjük a finom görgetést
-                        resizeLayout();
-                    } else {
-                        if (diffY < -80) navigateNext();
-                        if (diffY > 80) navigatePrev();
+                    // Ha a hasáb a legvégén áll, és ÚJABB suhintással húzzuk felfelé -> Lapozás előre
+                    if (diffY < -60 && currentScroll >= maxScroll - 3) {
+                        navigateNext();
+                        return;
+                    }
+                    // Ha a hasáb a legtetején áll, és ÚJABB suhintással húzzuk lefelé -> Lapozás vissza
+                    if (diffY > 60 && currentScroll <= 3) {
+                        navigatePrev();
+                        return;
                     }
                 } else {
-                    if (diffY < -80) navigateNext();
-                    if (diffY > 80) navigatePrev();
+                    // Nem hasáb típusú elemeknél az új suhintás azonnal lapoz
+                    if (diffY < -60) navigateNext();
+                    if (diffY > 60) navigatePrev();
                 }
             }
         }
@@ -624,7 +620,6 @@
             if (!activeMagazineData) return;
             const elements = activeMagazineData.pages[pageIdx].elements || [];
             
-            subWindowIdx = 0; 
             if (blockIdx < elements.length - 1) { 
                 blockIdx++; 
                 resizeLayout(); 
@@ -637,7 +632,6 @@
 
         function navigatePrev() {
             if (!activeMagazineData) return;
-            subWindowIdx = 0; 
             if (blockIdx > -1) { 
                 blockIdx--; 
                 resizeLayout(); 
