@@ -391,7 +391,7 @@
 
         // JAVASCRIPT REZIDENS FORRAS 3 RESZ VEGE
 
-                // === JAVASCRIPT 4. RÉSZ: GUIDED VIEW LOGIKA ÉS HASÁB POZICIONÁLÁS ===
+              // === JAVASCRIPT 4. RÉSZ: GUIDED VIEW LOGIKA ÉS FOLYAMATOS GÖRDÍTÉS ===
         function applyGuidedViewLogic(maxW, maxH) {
             const img = document.getElementById("comicImage");
             const highlight = document.getElementById("focusHighlight");
@@ -418,6 +418,7 @@
                 img.style.height = nh + "px";
                 img.style.transform = `translate(${initialX}px, ${initialY}px) scale(${baseScale})`;
                 highlight.style.display = "none";
+                subWindowIdx = 0; // Alaphelyzetbe állítja a görgetést
             } else {
                 highlight.style.display = "block";
                 const block = elements[blockIdx];
@@ -438,6 +439,7 @@
                     const zoomX = maxW / (bw * baseScale); 
                     const zoomY = maxH / (bh * baseScale);
                     zoom = Math.min(zoomX, zoomY) * 0.95;
+                    subWindowIdx = 0;
                 }
 
                 const totalScale = baseScale * zoom;
@@ -447,14 +449,14 @@
                 if (block.type === "Hasáb") {
                     const totalElementHeight = bh * totalScale;
                     if (totalElementHeight > maxH) {
-                        const overlapH = Math.floor(maxH * 0.05);
-                        const stepSize = maxH - overlapH; 
-                        let currentScrollY = subWindowIdx * stepSize;
-
-                        if (currentScrollY + maxH > totalElementHeight) {
-                            currentScrollY = totalElementHeight - maxH;
-                        }
-                        moveY = barOffset - (by1 * totalScale) - currentScrollY;
+                        const maxPossibleScrollY = totalElementHeight - maxH;
+                        // Szigorú határellenőrzés: nem engedi a tartományon kívülre
+                        if (subWindowIdx < 0) subWindowIdx = 0;
+                        if (subWindowIdx > maxPossibleScrollY) subWindowIdx = maxPossibleScrollY;
+                        
+                        moveY = barOffset - (by1 * totalScale) - subWindowIdx;
+                    } else {
+                        subWindowIdx = 0;
                     }
                 }
 
@@ -477,12 +479,15 @@
 
         // JAVASCRIPT GUIDED VIEW MOTOR 4 RESZ VEGE
 
-                // === JAVASCRIPT 5. RÉSZ: GESZTUSMOTOR ÉS ÉRINTÉSVEZÉRLÉS ===
+
+               // === JAVASCRIPT 5. RÉSZ: INTERAKTÍV ÉRINTÉSVEZÉRLÉS (DRAG-TO-SCROLL) ===
         let touchStartX = 0;
         let touchStartY = 0;
+        let lastTouchY = 0;
         let lastTapTime = 0;
         let longPressTimer = null;
         let isLongPress = false;
+        let isDragging = false;
 
         const viewportElement = document.getElementById("canvasViewport");
 
@@ -491,21 +496,42 @@
             const touch = e.touches[0];
             touchStartX = touch.clientX;
             touchStartY = touch.clientY;
+            lastTouchY = touch.clientY;
             isLongPress = false;
+            isDragging = true;
 
-            // Hosszú nyomás (Long Press) időzítő indítása
             longPressTimer = setTimeout(() => {
                 isLongPress = true;
+                isDragging = false;
                 handleLongPress();
             }, 600);
         }, { passive: true });
 
         viewportElement.addEventListener("touchmove", (e) => {
             if (longPressTimer) clearTimeout(longPressTimer);
+            if (isLongPress || !isDragging || e.target.id === "contentTextBox") return;
+            if (txtActive) return; // TXT módban a natív scroll fut
+
+            if (!activeMagazineData) return;
+            const currentPage = activeMagazineData.pages[pageIdx];
+            const elements = currentPage.elements || [];
+            const block = elements[blockIdx];
+
+            if (block && block.type === "Hasáb") {
+                const touch = e.touches[0];
+                // Kiszámítjuk a tizedmásodperc alapú elmozdulást az előző ponthoz képest
+                const deltaY = touch.clientY - lastTouchY;
+                lastTouchY = touch.clientY;
+
+                // Az ujj felfelé húzása csökkenti a képernyő-koordinátát, így növeli a görgetést
+                subWindowIdx -= deltaY; 
+                resizeLayout();
+            }
         }, { passive: true });
 
         viewportElement.addEventListener("touchend", (e) => {
             if (longPressTimer) clearTimeout(longPressTimer);
+            isDragging = false;
             if (isLongPress || e.target.id === "contentTextBox") return;
 
             const touch = e.changedTouches[0];
@@ -513,7 +539,6 @@
             const diffY = touch.clientY - touchStartY;
             const now = Date.now();
 
-            // Alsó zónás swipe előhívás (alsó 10%)
             const screenH = window.innerHeight;
             if (touchStartY > screenH * 0.9 && diffY < -30 && Math.abs(diffX) < 30) {
                 if (!configBarFixed) {
@@ -524,7 +549,6 @@
                 return;
             }
 
-            // Dupla koppintás (Double Tap) ellenőrzése
             if (now - lastTapTime < 300) {
                 handleDoubleTap();
                 lastTapTime = 0;
@@ -532,17 +556,12 @@
             }
             lastTapTime = now;
 
-            // Swipe gesztusok szűrése és végrehajtása
+            // Csak akkor hívjuk meg a végállás-lapozó logikát, ha jelentősebb függőleges mozgás történt
             if (Math.abs(diffY) > 40 && Math.abs(diffX) < 40) {
-                if (diffY < 0) {
-                    handleSwipeUp();
-                } else {
-                    handleSwipeDown();
-                }
+                handleDragEndNavigation(diffY);
             }
         }, { passive: true });
 
-        // Szövegdoboz külön dupla koppintásos bezárása
         document.getElementById("contentTextBox").addEventListener("touchend", (e) => {
             const now = Date.now();
             if (now - lastTapTime < 300) {
@@ -567,21 +586,26 @@
 
         // JAVASCRIPT GESZTUSMOTOR 5 RESZ VEGE
 
-                // === JAVASCRIPT 6. RÉSZ: SWIPE NAVIGÁCIÓ ÉS LAPOZÁSI LOGIKA ===
-        function handleSwipeUp() {
+
+               // === JAVASCRIPT 6. RÉSZ: FOLYAMATOS GÖRDÍTÉS UTÁNI NAVIGÁCIÓS LOGIKA ===
+        function handleDragEndNavigation(diffY) {
             if (txtActive) {
                 const textBox = document.getElementById("contentTextBox");
-                const isAtEnd = textBox.scrollHeight - textBox.scrollTop <= textBox.clientHeight + 2;
-                if (isAtEnd) {
-                    navigateNext();
-                } else {
-                    textBox.scrollBy({ top: window.innerHeight * 0.4, behavior: 'smooth' });
+                if (diffY < 0) { // Felfelé húzás -> Lefelé görgetés
+                    const isAtEnd = textBox.scrollHeight - textBox.scrollTop <= textBox.clientHeight + 2;
+                    if (isAtEnd) navigateNext();
+                } else { // Lefelé húzás -> Felfelé görgetés
+                    const isAtTop = textBox.scrollTop <= 2;
+                    if (isAtTop) navigatePrev();
                 }
             } else {
                 if (!activeMagazineData) return;
                 const elements = activeMagazineData.pages[pageIdx].elements || [];
-                if (blockIdx === -1) { navigateNext(); return; }
-                
+                if (blockIdx === -1) {
+                    if (diffY < 0) navigateNext();
+                    return;
+                }
+
                 const block = elements[blockIdx];
                 if (block.type === "Hasáb") {
                     const viewport = document.getElementById("canvasViewport");
@@ -594,43 +618,27 @@
                     const totalElementHeight = bh * baseScale * zoom;
 
                     if (totalElementHeight > screenH) {
-                        const overlapH = Math.floor(screenH * 0.05);
-                        const stepSize = screenH - overlapH;
                         const maxPossibleScrollY = totalElementHeight - screenH;
-                        const currentScrollY = subWindowIdx * stepSize;
 
-                        if (currentScrollY < maxPossibleScrollY - 2) {
-                            const nextScrollY = (subWindowIdx + 1) * stepSize;
-                            if (nextScrollY < maxPossibleScrollY) {
-                                subWindowIdx++;
-                            } else {
-                                subWindowIdx = maxPossibleScrollY / stepSize;
-                            }
-                            resizeLayout();
+                        // Ha a hasáb alján vagyunk és tovább húzzuk felfelé -> Lapozás előre
+                        if (diffY < 0 && subWindowIdx >= maxPossibleScrollY - 2) {
+                            navigateNext();
                             return;
                         }
+                        // Ha a hasáb tetején vagyunk és tovább húzzuk lefelé -> Lapozás vissza
+                        if (diffY > 0 && subWindowIdx <= 2) {
+                            navigatePrev();
+                            return;
+                        }
+                    } else {
+                        // Ha a hasáb eleve rövidebb, mint a képernyő, a húzás azonnal lapoz
+                        if (diffY < 0) navigateNext();
+                        if (diffY > 0) navigatePrev();
                     }
-                }
-                navigateNext();
-            }
-        }
-
-        function handleSwipeDown() {
-            if (txtActive) {
-                const textBox = document.getElementById("contentTextBox");
-                const isAtTop = textBox.scrollTop <= 2;
-                if (isAtTop) {
-                    navigatePrev();
                 } else {
-                    textBox.scrollBy({ top: -window.innerHeight * 0.4, behavior: 'smooth' });
-                }
-            } else {
-                if (subWindowIdx > 0) {
-                    subWindowIdx = Math.floor(subWindowIdx - 1);
-                    if (subWindowIdx < 0) subWindowIdx = 0;
-                    resizeLayout();
-                } else {
-                    navigatePrev();
+                    // Nem hasáb típusú elemeknél (pl. képek) a swipe azonnal lapoz
+                    if (diffY < 0) navigateNext();
+                    if (diffY > 0) navigatePrev();
                 }
             }
         }
@@ -639,7 +647,7 @@
             if (!activeMagazineData) return;
             const elements = activeMagazineData.pages[pageIdx].elements || [];
             
-            subWindowIdx = 0; 
+            subWindowIdx = 0; // Új elemnél a görgetés nulláról indul
             if (blockIdx < elements.length - 1) { 
                 blockIdx++; 
                 resizeLayout(); 
@@ -665,6 +673,7 @@
         }
 
         // JAVASCRIPT NAVIGACIOS LOGIKA 6 RESZ VEGE
+
 
                 // === JAVASCRIPT 7. RÉSZ: ESEMÉNYKEZELŐK ÉS INICIALIZÁLÁS ===
         window.addEventListener("resize", resizeLayout);
