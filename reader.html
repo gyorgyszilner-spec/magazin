@@ -476,28 +476,34 @@
 
 
 
-               // === JAVASCRIPT 5. RÉSZ: INTERAKTÍV GÖRDÍTÉSI LAKAT ÉS GESZTUSMOTOR ===
+             // === JAVASCRIPT 5. RÉSZ: INTELLIGENS, SZELEKTÍV GÖRDÍTÉSI LAKAT ===
         let touchStartX = 0;
         let touchStartY = 0;
         let lastTapTime = 0;
         let longPressTimer = null;
         let isLongPress = false;
-        // ÚJ: Logikai változó, ami szétválasztja a folyamatos görgetést és a tiszta suhintást
         let canPageFlip = false; 
 
         const viewportElement = document.getElementById("canvasViewport");
 
         viewportElement.addEventListener("touchstart", (e) => {
             if (e.target.id === "contentTextBox") return;
-            const touch = e.touches[0];
+            const touch = e.touches;
             touchStartX = touch.clientX;
             touchStartY = touch.clientY;
             isLongPress = false;
 
-            // Csak akkor engedélyezzük elméletben a lapozást, ha MÁR a határon áll a doboz
+            // Ellenőrizzük, hogy van-e egyáltalán görgethető tartalom a dobozban
             const currentScroll = viewportElement.scrollTop;
             const maxScroll = viewportElement.scrollHeight - viewportElement.clientHeight;
-            canPageFlip = (currentScroll <= 1 || currentScroll >= maxScroll - 1);
+
+            if (maxScroll > 5) {
+                // Ha VALÓBAN van mit görgetni, akkor élesítjük a lakatot a határokra
+                canPageFlip = (currentScroll <= 3 || currentScroll >= maxScroll - 3);
+            } else {
+                // Ha NINCS mit görgetni (rövid cikk, kép, vagy alapnézet), a lakat szabad utat ad a swipe-nak
+                canPageFlip = true;
+            }
 
             longPressTimer = setTimeout(() => {
                 isLongPress = true;
@@ -508,8 +514,10 @@
 
         viewportElement.addEventListener("touchmove", (e) => {
             if (longPressTimer) clearTimeout(longPressTimer);
-            // Ha az ujj mozog és valós görgetés történik, a lakat azonnal letiltja az ugrást
-            if (!isLongPress && e.target.id !== "contentTextBox") {
+            
+            // Csak akkor tiltjuk le a lapozást ujjmozgás közben, ha valóban van mit görgetni a dobozban
+            const maxScroll = viewportElement.scrollHeight - viewportElement.clientHeight;
+            if (!isLongPress && e.target.id !== "contentTextBox" && maxScroll > 5) {
                 canPageFlip = false; 
             }
         }, { passive: true });
@@ -518,7 +526,7 @@
             if (longPressTimer) clearTimeout(longPressTimer);
             if (isLongPress || e.target.id === "contentTextBox") return;
 
-            const touch = e.changedTouches[0];
+            const touch = e.changedTouches;
             const diffX = touch.clientX - touchStartX;
             const diffY = touch.clientY - touchStartY;
             const now = Date.now();
@@ -540,7 +548,7 @@
             }
             lastTapTime = now;
 
-            // CSAK akkor engedjük át a suhintást a navigációnak, ha a lakat nem tiltotta le (tiszta új swipe)
+            // Ha szabad az út (vagy tiszta új swipe van, vagy nem görgethető az elem), suhintunk
             if (canPageFlip && Math.abs(diffY) > 50 && Math.abs(diffX) < 40) {
                 handleBoundarySwipe(diffY);
             }
@@ -569,6 +577,7 @@
         }
 
         // JAVASCRIPT GESZTUSMOTOR 5 RESZ VEGE
+
 
 
  // === JAVASCRIPT 6. RÉSZ: BIZTONSÁGOS HATÁR-ALAPÚ BLOKKVÁLTÁS ===
