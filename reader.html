@@ -391,12 +391,16 @@
 
         // JAVASCRIPT REZIDENS FORRAS 3 RESZ VEGE
 
-              // === JAVASCRIPT 4. RÉSZ: GUIDED VIEW LOGIKA ÉS FOLYAMATOS GÖRDÍTÉS ===
+               // === JAVASCRIPT 4. RÉSZ: NATÍV GÖRDÍTÉSRE ÉPÍTŐ GUIDED VIEW LOGIKA ===
         function applyGuidedViewLogic(maxW, maxH) {
             const img = document.getElementById("comicImage");
             const highlight = document.getElementById("focusHighlight");
             const viewport = document.getElementById("canvasViewport");
             if (!img || !img.naturalWidth || !activeMagazineData) return;
+
+            // Aktiváljuk a natív görgetést a konténeren
+            viewport.style.overflowY = "auto";
+            viewport.style.webkitOverflowScrolling = "touch";
 
             const nw = img.naturalWidth;
             const nh = img.naturalHeight;
@@ -410,15 +414,15 @@
             const baseScale = Math.min(scaleX, scaleY);
 
             const barOffset = viewport.offsetTop;
-            const initialX = viewport.offsetLeft + (maxW - (nw * baseScale)) / 2;
-            const initialY = barOffset + (maxH - (nh * baseScale)) / 2;
+            const initialX = (maxW - (nw * baseScale)) / 2;
+            const initialY = (maxH - (nh * baseScale)) / 2;
 
             if (blockIdx === -1 || !elements[blockIdx]) {
                 img.style.width = nw + "px";
                 img.style.height = nh + "px";
                 img.style.transform = `translate(${initialX}px, ${initialY}px) scale(${baseScale})`;
                 highlight.style.display = "none";
-                subWindowIdx = 0; // Alaphelyzetbe állítja a görgetést
+                viewport.scrollTop = 0; 
             } else {
                 highlight.style.display = "block";
                 const block = elements[blockIdx];
@@ -439,38 +443,35 @@
                     const zoomX = maxW / (bw * baseScale); 
                     const zoomY = maxH / (bh * baseScale);
                     zoom = Math.min(zoomX, zoomY) * 0.95;
-                    subWindowIdx = 0;
                 }
 
                 const totalScale = baseScale * zoom;
-                const moveX = viewport.offsetLeft + (maxW / 2) - ((bx1 + bw / 2) * totalScale);
-                let moveY = barOffset - (by1 * totalScale);
+                const moveX = (maxW / 2) - ((bx1 + bw / 2) * totalScale);
+                
+                // A képet fixen rögzítjük a hasáb tetejéhez igazítva
+                let moveY = -(by1 * totalScale);
 
-                if (block.type === "Hasáb") {
-                    const totalElementHeight = bh * totalScale;
-                    if (totalElementHeight > maxH) {
-                        const maxPossibleScrollY = totalElementHeight - maxH;
-                        // Szigorú határellenőrzés: nem engedi a tartományon kívülre
-                        if (subWindowIdx < 0) subWindowIdx = 0;
-                        if (subWindowIdx > maxPossibleScrollY) subWindowIdx = maxPossibleScrollY;
-                        
-                        moveY = barOffset - (by1 * totalScale) - subWindowIdx;
-                    } else {
-                        subWindowIdx = 0;
-                    }
-                }
-
+                // Megadjuk a képnek a fix transzformációt
                 img.style.transform = `translate(${moveX}px, ${moveY}px) scale(${totalScale})`;
+
+                // A kiemelést is ehhez mérten fixáljuk a képen
                 highlight.style.left = (bx1 * totalScale + moveX) + "px";
                 highlight.style.top = (by1 * totalScale + moveY) + "px";
                 highlight.style.width = (bw * totalScale) + "px";
                 highlight.style.height = (bh * totalScale) + "px";
+
+                // Ha új hasábra léptünk, a dobozt visszatekerjük a tetejére
+                if (subWindowIdx === 0) {
+                    viewport.scrollTop = 0;
+                    subWindowIdx = 1; // Jelzi, hogy már inicializáltuk az új pozíciót
+                }
             }
         }
 
         function loadCurrentPage() {
             if (!activeMagazineData || !activeMagazineData.pages.length) return;
             const img = document.getElementById("comicImage");
+            subWindowIdx = 0; // Alaphelyzetbe állítás új oldalnál
             resetImageStyles();
             const pageData = activeMagazineData.pages[pageIdx];
             img.src = `magazines/${currentFolder}/${pageData.imagePath}`;
@@ -480,14 +481,13 @@
         // JAVASCRIPT GUIDED VIEW MOTOR 4 RESZ VEGE
 
 
-               // === JAVASCRIPT 5. RÉSZ: FINOMÍTOTT ÉRINTÉSVEZÉRLÉS (SMOOTH DRAG) ===
+
+         // === JAVASCRIPT 5. RÉSZ: NATÍV GÖRDÍTÉS ÉS SUHINTÁS-ELLENŐRZÉS ===
         let touchStartX = 0;
         let touchStartY = 0;
-        let lastTouchY = 0;
         let lastTapTime = 0;
         let longPressTimer = null;
         let isLongPress = false;
-        let isDragging = false;
 
         const viewportElement = document.getElementById("canvasViewport");
 
@@ -496,48 +496,16 @@
             const touch = e.touches[0];
             touchStartX = touch.clientX;
             touchStartY = touch.clientY;
-            lastTouchY = touch.clientY;
             isLongPress = false;
-            isDragging = true;
 
             longPressTimer = setTimeout(() => {
                 isLongPress = true;
-                isDragging = false;
                 handleLongPress();
             }, 600);
         }, { passive: true });
 
-        viewportElement.addEventListener("touchmove", (e) => {
-            if (longPressTimer) clearTimeout(longPressTimer);
-            if (isLongPress || !isDragging || e.target.id === "contentTextBox") return;
-            if (txtActive) return;
-
-            if (!activeMagazineData) return;
-            const elements = activeMagazineData.pages[pageIdx].elements || [];
-            const block = elements[blockIdx];
-
-            if (block && block.type === "Hasáb") {
-                const touch = e.touches[0];
-                // 2.5x-ös szorzó az azonnali, reszponzív reakcióért
-                const deltaY = (touch.clientY - lastTouchY) * 2.5;
-                lastTouchY = touch.clientY;
-
-                subWindowIdx -= deltaY;
-                
-                // Közvetlen kép- és kereteltolás a sima futásért, teljes layout-újraszámítás nélkül
-                const img = document.getElementById("comicImage");
-                const highlight = document.getElementById("focusHighlight");
-                if (img) {
-                    const currentTransform = img.style.transform;
-                    // Kivonjuk a meglévő Y eltolást és korrigáljuk a deltaY-al
-                    applyGuidedViewLogic(window.innerWidth, viewportElement.clientHeight);
-                }
-            }
-        }, { passive: true });
-
         viewportElement.addEventListener("touchend", (e) => {
             if (longPressTimer) clearTimeout(longPressTimer);
-            isDragging = false;
             if (isLongPress || e.target.id === "contentTextBox") return;
 
             const touch = e.changedTouches[0];
@@ -562,9 +530,9 @@
             }
             lastTapTime = now;
 
-            // Csak határozott, szándékos suhintásra engedjük át a lapozást
-            if (Math.abs(diffY) > 60 && Math.abs(diffX) < 50) {
-                handleDragEndNavigation(diffY);
+            // Ha a függőleges elmozdulás jelentős, átadjuk a döntést a határellenőrzőnek
+            if (Math.abs(diffY) > 50 && Math.abs(diffX) < 40) {
+                handleScrollBoundaryNavigation(diffY);
             }
         }, { passive: true });
 
@@ -591,6 +559,7 @@
         }
 
         // JAVASCRIPT GESZTUSMOTOR 5 RESZ VEGE
+
 
 
 
