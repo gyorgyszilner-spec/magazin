@@ -374,16 +374,12 @@
 
         // JAVASCRIPT REZIDENS FORRAS 3 RESZ VEGE
 
-               // === JAVASCRIPT 4. RÉSZ: UNIVERZÁLIS NATÍV MOTOR BIZTONSÁGI SÁVVAL ===
+              // === JAVASCRIPT 4. RÉSZ: JAVÍTOTT NATÍV MOTOR (PADDING-ALAPÚ) ===
         function applyGuidedViewLogic(maxW, maxH) {
             const img = document.getElementById("comicImage");
             const highlight = document.getElementById("focusHighlight");
             const viewport = document.getElementById("canvasViewport");
             if (!img || !img.naturalWidth || !activeMagazineData) return;
-
-            // Eltávolítjuk a régi extra helyet biztosító elemet, ha létezik
-            const oldSpacer = document.getElementById("viewportSpacer");
-            if (oldSpacer) oldSpacer.remove();
 
             const nw = img.naturalWidth;
             const nh = img.naturalHeight;
@@ -404,6 +400,8 @@
                 img.style.height = nh + "px";
                 img.style.transform = `translate(${initialX}px, ${initialY}px) scale(${baseScale})`;
                 highlight.style.display = "none";
+                
+                viewport.style.paddingBottom = "0px";
                 viewport.scrollTop = 0; 
                 subWindowIdx = 0; 
             } else {
@@ -441,20 +439,16 @@
 
                 if (block.type === "Hasáb") {
                     const totalElementHeight = bh * totalScale;
-                    // Létrehozunk egy láthatatlan elemet, ami garantálja a hasáb aljáig görgetést
-                    const spacer = document.createElement("div");
-                    spacer.id = "viewportSpacer";
-                    spacer.style.position = "absolute";
-                    spacer.style.left = "0px";
-                    spacer.style.top = "0px";
-                    spacer.style.width = "1px";
-                    // A hasáb teljes magassága + egy kis extra biztonsági kifutó sáv
-                    spacer.style.height = (totalElementHeight + 40) + "px";
-                    spacer.style.pointerEvents = "none";
-                    viewport.appendChild(spacer);
-                    
-                    subWindowIdx = totalElementHeight - maxH;
+                    if (totalElementHeight > maxH) {
+                        // ÚJ: Láthatatlan elem helyett tiszta belső margó, így nem sérül a tapicskolás!
+                        viewport.style.paddingBottom = (totalElementHeight - maxH + 60) + "px";
+                        subWindowIdx = totalElementHeight - maxH;
+                    } else {
+                        viewport.style.paddingBottom = "0px";
+                        subWindowIdx = 0;
+                    }
                 } else {
+                    viewport.style.paddingBottom = "0px";
                     subWindowIdx = 0;
                 }
             }
@@ -463,7 +457,10 @@
         function loadCurrentPage() {
             if (!activeMagazineData || !activeMagazineData.pages.length) return;
             const viewport = document.getElementById("canvasViewport");
-            if (viewport) viewport.scrollTop = 0;
+            if (viewport) {
+                viewport.scrollTop = 0;
+                viewport.style.paddingBottom = "0px";
+            }
             resetImageStyles();
             const pageData = activeMagazineData.pages[pageIdx];
             document.getElementById("comicImage").src = `magazines/${currentFolder}/${pageData.imagePath}`;
@@ -580,7 +577,7 @@
 
 
 
- // === JAVASCRIPT 6. RÉSZ: BIZTONSÁGOS HATÁR-ALAPÚ BLOKKVÁLTÁS ===
+        // === JAVASCRIPT 6. RÉSZ: UNIVERZÁLIS NAVIGÁCIÓS MOTOR ===
         function handleBoundarySwipe(diffY) {
             const viewport = document.getElementById("canvasViewport");
             if (!viewport) return;
@@ -592,42 +589,44 @@
                 const textBox = document.getElementById("contentTextBox");
                 if (diffY < 0) { 
                     const isAtEnd = textBox.scrollHeight - textBox.scrollTop <= textBox.clientHeight + 4;
-                    if (isAtEnd && diffY < -60) navigateNext();
+                    if (isAtEnd && diffY < -60) triggerNext();
                 } else { 
                     const isAtTop = textBox.scrollTop <= 4;
-                    if (isAtTop && diffY > 60) navigatePrev();
+                    if (isAtTop && diffY > 60) triggerPrev();
                 }
             } else {
                 if (!activeMagazineData) return;
                 const elements = activeMagazineData.pages[pageIdx].elements || [];
                 if (blockIdx === -1) {
-                    if (diffY < -60) navigateNext();
+                    if (diffY < -60) triggerNext();
                     return;
                 }
 
                 const block = elements[blockIdx];
-                if (block.type === "Hasáb") {
-                    // Ha a hasáb a legvégén áll, és ÚJABB suhintással húzzuk felfelé -> Lapozás előre
-                    if (diffY < -60 && currentScroll >= maxScroll - 3) {
-                        navigateNext();
-                        return;
-                    }
-                    // Ha a hasáb a legtetején áll, és ÚJABB suhintással húzzuk lefelé -> Lapozás vissza
-                    if (diffY > 60 && currentScroll <= 3) {
-                        navigatePrev();
-                        return;
+                if (block.type === "Hasáb" && maxScroll > 5) {
+                    // Tiszta, új suhintás a határokon
+                    if (diffY < -60 && currentScroll >= maxScroll - 5) {
+                        triggerNext();
+                    } else if (diffY > 60 && currentScroll <= 5) {
+                        triggerPrev();
                     }
                 } else {
-                    // Nem hasáb típusú elemeknél az új suhintás azonnal lapoz
-                    if (diffY < -60) navigateNext();
-                    if (diffY > 60) navigatePrev();
+                    // Nem görgethető vagy normál elemeknél az új swipe azonnal vált
+                    if (diffY < -60) triggerNext();
+                    if (diffY > 60) triggerPrev();
                 }
             }
         }
 
-        function navigateNext() {
+        function triggerNext() {
             if (!activeMagazineData) return;
             const elements = activeMagazineData.pages[pageIdx].elements || [];
+            const viewport = document.getElementById("canvasViewport");
+            
+            if (viewport) {
+                viewport.scrollTop = 0;
+                viewport.style.paddingBottom = "0px";
+            }
             
             if (blockIdx < elements.length - 1) { 
                 blockIdx++; 
@@ -639,8 +638,15 @@
             }
         }
 
-        function navigatePrev() {
+        function triggerPrev() {
             if (!activeMagazineData) return;
+            const viewport = document.getElementById("canvasViewport");
+            
+            if (viewport) {
+                viewport.scrollTop = 0;
+                viewport.style.paddingBottom = "0px";
+            }
+            
             if (blockIdx > -1) { 
                 blockIdx--; 
                 resizeLayout(); 
@@ -656,7 +662,8 @@
 
 
 
-                // === JAVASCRIPT 7. RÉSZ: ESEMÉNYKEZELŐK ÉS INICIALIZÁLÁS ===
+
+              // === JAVASCRIPT 7. RÉSZ: ESEMÉNYKEZELŐK ÉS INICIALIZÁLÁS ===
         window.addEventListener("resize", resizeLayout);
 
         window.addEventListener("DOMContentLoaded", async () => {
@@ -694,9 +701,9 @@
             
             document.getElementById("btnMenu").onclick = () => { document.getElementById("popSettings").style.display = "flex"; };
 
-            // Alsó fix gombok kattintáskezelői (ha láthatóvá válnak)
-            document.getElementById("btnNext").onclick = () => { handleSwipeUp(); };
-            document.getElementById("btnPrev").onclick = () => { handleSwipeDown(); };
+            // ⭐ JAVÍTOTT: Az alsó fix gombok most már a tiszta lapozó motorfüggvényeket hívják meg
+            document.getElementById("btnNext").onclick = () => { triggerNext(); };
+            document.getElementById("btnPrev").onclick = () => { triggerPrev(); };
 
             // Nyelvválasztó ablak logikája
             document.querySelectorAll(".lang-opt").forEach(btn => {
@@ -711,7 +718,6 @@
             document.getElementById("btnCloseLang").onclick = () => { document.getElementById("popLang").style.display = "none"; };
 
             // Beállítások (Hamburger) ablak logikája
-            // Szövegméret gombok
             document.getElementById("btnSizeS").onclick = function() {
                 configTxtSize = "small";
                 document.getElementById("btnSizeS").classList.add("active");
@@ -731,7 +737,6 @@
                 document.getElementById("btnSizeL").classList.add("active");
             };
 
-            // Sebesség gombok
             document.getElementById("btnSpeedS").onclick = function() {
                 configSpeed = 0.8;
                 document.getElementById("btnSpeedS").classList.add("active");
@@ -751,7 +756,6 @@
                 document.getElementById("btnSpeedF").classList.add("active");
             };
 
-            // Hangtípus ciklikus váltó
             document.getElementById("btnVoiceToggle").onclick = function() {
                 if (this.getAttribute("disabled")) return;
                 configVoiceGender = (configVoiceGender === "female") ? "male" : "female";
@@ -759,7 +763,6 @@
                 checkVoiceAvailability(langOverride);
             };
 
-            // Alsó sáv ciklikus váltó
             document.getElementById("btnBarToggle").onclick = function() {
                 configBarFixed = !configBarFixed;
                 updateUiLanguage();
