@@ -472,13 +472,12 @@
 
 
 
-              // === JAVASCRIPT 5. RÉSZ: INTELLIGENS ÉRINTÉSVEZÉRLÉS GÖRDÍTÉSI LAKATTAL ===
+         // === JAVASCRIPT 5. RÉSZ: TISZTA GESZTUSMOTOR TILTÁSOK NÉLKÜL ===
         let touchStartX = 0;
         let touchStartY = 0;
         let lastTapTime = 0;
         let longPressTimer = null;
         let isLongPress = false;
-        let canPageFlip = false; 
 
         const viewportElement = document.getElementById("canvasViewport");
 
@@ -489,33 +488,14 @@
             touchStartY = touch.clientY;
             isLongPress = false;
 
-            // Kiszámítjuk, hogy a doboz éppen görgethető-e és hol áll
-            const currentScroll = viewportElement.scrollTop;
-            const maxScroll = viewportElement.scrollHeight - viewportElement.clientHeight;
-
-            if (maxScroll > 5) {
-                // Ha van mit görgetni, a lapozás CSAK a legtetején vagy legalján engedélyezett elméletben
-                canPageFlip = (currentScroll <= 3 || currentScroll >= maxScroll - 3);
-            } else {
-                // Ha nincs mit görgetni (alapnézet, kép, rövid cikk), a lakat nyitva van a sima swipe-hoz
-                canPageFlip = true;
-            }
-
             longPressTimer = setTimeout(() => {
                 isLongPress = true;
-                canPageFlip = false;
                 handleLongPress();
             }, 600);
         }, { passive: true });
 
         viewportElement.addEventListener("touchmove", (e) => {
             if (longPressTimer) clearTimeout(longPressTimer);
-            
-            // Ha ujjmozgás közben valós görgetés folyik egy hosszú hasábon, azonnal tiltjuk a lapozást
-            const maxScroll = viewportElement.scrollHeight - viewportElement.clientHeight;
-            if (!isLongPress && e.target.id !== "contentTextBox" && maxScroll > 5) {
-                canPageFlip = false; 
-            }
         }, { passive: true });
 
         viewportElement.addEventListener("touchend", (e) => {
@@ -544,8 +524,8 @@
             }
             lastTapTime = now;
 
-            // Ha a lakat engedi és határozott függőleges suhintás történt, indítjuk a határellenőrzőt
-            if (canPageFlip && Math.abs(diffY) > 50 && Math.abs(diffX) < 40) {
+            // Bármilyen határozott fel-le suhintás azonnal meghívja a lapozást, nincs lakatolás
+            if (Math.abs(diffY) > 50 && Math.abs(diffX) < 40) {
                 handleBoundarySwipe(diffY);
             }
         }, { passive: true });
@@ -577,44 +557,14 @@
 
 
 
-        // === JAVASCRIPT 6. RÉSZ: UNIVERZÁLIS NAVIGÁCIÓS MOTOR ===
+
+           // === JAVASCRIPT 6. RÉSZ: NYERS NAVIGÁCIÓS VÁLTÓ ===
         function handleBoundarySwipe(diffY) {
-            const viewport = document.getElementById("canvasViewport");
-            if (!viewport) return;
-
-            const currentScroll = viewport.scrollTop;
-            const maxScroll = viewport.scrollHeight - viewport.clientHeight;
-
-            if (txtActive) {
-                const textBox = document.getElementById("contentTextBox");
-                if (diffY < 0) { 
-                    const isAtEnd = textBox.scrollHeight - textBox.scrollTop <= textBox.clientHeight + 4;
-                    if (isAtEnd && diffY < -60) triggerNext();
-                } else { 
-                    const isAtTop = textBox.scrollTop <= 4;
-                    if (isAtTop && diffY > 60) triggerPrev();
-                }
-            } else {
-                if (!activeMagazineData) return;
-                const elements = activeMagazineData.pages[pageIdx].elements || [];
-                if (blockIdx === -1) {
-                    if (diffY < -60) triggerNext();
-                    return;
-                }
-
-                const block = elements[blockIdx];
-                if (block.type === "Hasáb" && maxScroll > 5) {
-                    // Tiszta, új suhintás a határokon
-                    if (diffY < -60 && currentScroll >= maxScroll - 5) {
-                        triggerNext();
-                    } else if (diffY > 60 && currentScroll <= 5) {
-                        triggerPrev();
-                    }
-                } else {
-                    // Nem görgethető vagy normál elemeknél az új swipe azonnal vált
-                    if (diffY < -60) triggerNext();
-                    if (diffY > 60) triggerPrev();
-                }
+            // Nem vizsgálunk scrollTop pozíciót, a suhintás iránya azonnal lapoz
+            if (diffY < 0) {
+                triggerNext(); // Suhintás felfelé -> Következő blokk
+            } else if (diffY > 0) {
+                triggerPrev(); // Suhintás lefelé -> Előző blokk
             }
         }
 
@@ -659,6 +609,7 @@
         }
 
         // JAVASCRIPT NAVIGACIOS LOGIKA 6 RESZ VEGE
+
 
 
 
