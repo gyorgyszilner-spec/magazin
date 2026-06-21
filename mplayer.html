@@ -1,0 +1,196 @@
+<!-- FÁJLNEV: mplayer.html -->
+<!DOCTYPE html>
+<html lang="hu">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>Magazin Player V1 - Stand Fix</title>
+    
+    <!-- ⭐ RETRÓ BETŰTÍPUS BEÁGYAZÁSA -->
+    <link rel="preconnect" href="https://googleapis.com">
+    <link rel="preconnect" href="https://gstatic.com" crossorigin>
+    <link href="https://googleapis.com/css2?family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    
+    <style>
+        body {
+            background-color: #0f1014;
+            margin: 0; padding: 0;
+            width: 100vw; height: 100vh;
+            overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* ⭐ FIX: Fix méretű doboz, ami egyben fog skálázódni, így SOHA nem tud szétesni */
+        #appContainer {
+            width: 360px;
+            height: 640px;
+            background: #0f1014 url('ui/magazin.png') no-repeat center center;
+            background-size: 100% 100%;
+            position: relative;
+            display: flex;
+            flex-direction: column;
+            box-sizing: border-box;
+            /* Margók a papír belső fehér területéhez igazítva */
+            padding: 90px 30px 110px 30px;
+            transform-origin: center center;
+        }
+
+        /* A 2x2-es rácsunk a dobozon belül fixen rögzítve */
+        .magazine-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            grid-template-rows: 1fr 1fr;
+            gap: 15px;
+            width: 100%; height: 100%;
+            box-sizing: border-box;
+        }
+
+        .magazine-card {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            height: 100%;
+            overflow: hidden;
+            cursor: pointer;
+            transition: transform 0.2s ease;
+        }
+
+        .magazine-card:active {
+            transform: scale(0.95);
+        }
+
+        .magazine-thumb {
+            max-width: 100%;
+            max-height: 75%;
+            object-fit: contain;
+            border-radius: 4px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.5);
+            display: block;
+        }
+
+        /* ⭐ FIX: Patinás antik barna retró betűstílus */
+        .magazine-title {
+            margin-top: 8px;
+            font-size: 14px;
+            font-weight: 700;
+            font-style: italic; /* A dőlt betű hozza a régi hírlapok stílusát */
+            color: #5c3a21 !important; /* Patinás antik barna */
+            font-family: 'Playfair Display', 'Georgia', serif; 
+            text-shadow: 1px 1px 1px rgba(255, 255, 255, 0.6);
+            white-space: nowrap;
+            width: 92%;
+            overflow: hidden;
+            text-overflow: ellipsis;
+        }
+
+        /* Helyőrző stílus a még üres helyeknek */
+        .placeholder-card {
+            opacity: 0.3;
+            cursor: default;
+        }
+        .placeholder-card .magazine-thumb {
+            opacity: 0.15;
+            filter: grayscale(1);
+        }
+        .placeholder-card .magazine-title {
+            opacity: 0.4;
+        }
+    </style>
+</head>
+<body>
+
+    <div id="appContainer">
+        <div class="magazine-grid" id="magazineGrid">
+            <!-- Dinamikus tartalom -->
+        </div>
+    </div>
+
+    <!-- ⭐ AUTOMATIKUS SKÁLÁZÓ SCRIPT -->
+    <script>
+        function resizeApp() {
+            const app = document.getElementById("appContainer");
+            const scaleX = window.innerWidth / 360;
+            const scaleY = window.innerHeight / 640;
+            const scale = Math.min(scaleX, scaleY);
+            app.style.transform = `scale(${scale})`;
+        }
+        window.addEventListener("resize", resizeApp);
+        window.addEventListener("DOMContentLoaded", resizeApp);
+    </script>
+
+    <!-- ⭐ DINAMIKUS BETÖLTŐ MOTOR -->
+    <script>
+        // A magazines mappán belüli exportált mappa neve
+        const magazineFolders = [
+            "orszag-vilag-1-export"
+        ];
+
+        async function loadMagazines() {
+            const grid = document.getElementById("magazineGrid");
+            grid.innerHTML = ""; 
+
+            for (let i = 0; i < 4; i++) {
+                const folderName = magazineFolders[i];
+
+                if (folderName) {
+                    try {
+                        const response = await fetch(`magazines/${folderName}/data.json`);
+                        
+                        if (response.ok) {
+                            const projectData = await response.json();
+                            const title = projectData.meta?.title || "Névtelen magazin";
+                            
+                            const card = document.createElement("div");
+                            card.className = "magazine-card";
+                            card.onclick = () => {
+                                window.location.href = `reader.html?magazine=${folderName}`;
+                            };
+
+                            card.innerHTML = `
+                                <img class="magazine-thumb" src="magazines/${folderName}/thumbnail.jpg" alt="${title}">
+                                <div class="magazine-title">${title}</div>
+                            `;
+                            grid.appendChild(card);
+                            continue;
+                        }
+                    } catch (err) {
+                        console.warn("Helyi fájl mód (CORS)...");
+                    }
+
+                    // BIZTONSÁGI FALLBACK (Helyi megnyitás esetére)
+                    const fallbackCard = document.createElement("div");
+                    fallbackCard.className = "magazine-card";
+                    fallbackCard.onclick = () => {
+                        window.location.href = `reader.html?magazine=${folderName}`;
+                    };
+                    
+                    const fallbackTitle = folderName.replace("-export", "").replace(/-/g, " ");
+
+                    fallbackCard.innerHTML = `
+                        <img class="magazine-thumb" src="magazines/${folderName}/thumbnail.jpg" alt="Borító">
+                        <div class="magazine-title" style="text-transform: capitalize;">${fallbackTitle}</div>
+                    `;
+                    grid.appendChild(fallbackCard);
+                    continue;
+                }
+
+                // Üres helyek (Hamarosan...)
+                const placeholder = document.createElement("div");
+                placeholder.className = "magazine-card placeholder-card";
+                placeholder.innerHTML = `
+                    <img class="magazine-thumb" src="magazines/orszag-vilag-1-export/thumbnail.jpg" alt="Borító" onerror="this.style.opacity='0.05';">
+                    <div class="magazine-title">Hamarosan...</div>
+                `;
+                grid.appendChild(placeholder);
+            }
+        }
+
+        window.addEventListener("DOMContentLoaded", loadMagazines);
+    </script>
+
+</body>
+</html>
