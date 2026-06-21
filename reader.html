@@ -472,12 +472,13 @@
 
 
 
-         // === JAVASCRIPT 5. RÉSZ: TISZTA GESZTUSMOTOR TILTÁSOK NÉLKÜL ===
+         // === JAVASCRIPT 5. RÉSZ: ZÓNÁS ÉRINTÉSVEZÉRLÉS ÉS TISZTA GÖRDÍTÉS ===
         let touchStartX = 0;
         let touchStartY = 0;
         let lastTapTime = 0;
         let longPressTimer = null;
         let isLongPress = false;
+        let isMoving = false; // Figyeli, hogy történt-e ujjmozgatás (görgetés)
 
         const viewportElement = document.getElementById("canvasViewport");
 
@@ -487,6 +488,7 @@
             touchStartX = touch.clientX;
             touchStartY = touch.clientY;
             isLongPress = false;
+            isMoving = false; // Minden új érintésnél alaphelyzet
 
             longPressTimer = setTimeout(() => {
                 isLongPress = true;
@@ -496,6 +498,8 @@
 
         viewportElement.addEventListener("touchmove", (e) => {
             if (longPressTimer) clearTimeout(longPressTimer);
+            // Ha az ujj elmozdul, akkor a felhasználó görget, nem pedig lapozni akar
+            isMoving = true; 
         }, { passive: true });
 
         viewportElement.addEventListener("touchend", (e) => {
@@ -507,7 +511,10 @@
             const diffY = touch.clientY - touchStartY;
             const now = Date.now();
 
+            const screenW = window.innerWidth;
             const screenH = window.innerHeight;
+
+            // Alsó zónás swipe előhívás (alsó 10%)
             if (touchStartY > screenH * 0.9 && diffY < -30 && Math.abs(diffX) < 30) {
                 if (!configBarFixed) {
                     const bBar = document.getElementById("bottomBar");
@@ -517,16 +524,28 @@
                 return;
             }
 
-            if (now - lastTapTime < 300) {
-                handleDoubleTap();
-                lastTapTime = 0;
-                return;
-            }
-            lastTapTime = now;
+            // Ha nem történt ujjmozgás (tiszta koppintás / tapicskolás történt)
+            if (!isMoving) {
+                // Megnézzük a kattintás pontos vízszintes helyét
+                const clickX = touch.clientX;
 
-            // Bármilyen határozott fel-le suhintás azonnal meghívja a lapozást, nincs lakatolás
-            if (Math.abs(diffY) > 50 && Math.abs(diffX) < 40) {
-                handleBoundarySwipe(diffY);
+                if (clickX > screenW * 0.75) {
+                    // JOBB SZÉLSŐ 25%: Azonnali ugrás előre
+                    triggerNext();
+                    return;
+                } else if (clickX < screenW * 0.25) {
+                    // BAL SZÉLSŐ 25%: Azonnali ugrás hátra
+                    triggerPrev();
+                    return;
+                } else {
+                    // KÖZÉPSŐ 50%: Itt él a dupla koppintásos szövegkezelés
+                    if (now - lastTapTime < 300) {
+                        handleDoubleTap();
+                        lastTapTime = 0;
+                        return;
+                    }
+                    lastTapTime = now;
+                }
             }
         }, { passive: true });
 
@@ -558,21 +577,14 @@
 
 
 
-           // === JAVASCRIPT 6. RÉSZ: NYERS NAVIGÁCIÓS VÁLTÓ ===
-        function handleBoundarySwipe(diffY) {
-            // Nem vizsgálunk scrollTop pozíciót, a suhintás iránya azonnal lapoz
-            if (diffY < 0) {
-                triggerNext(); // Suhintás felfelé -> Következő blokk
-            } else if (diffY > 0) {
-                triggerPrev(); // Suhintás lefelé -> Előző blokk
-            }
-        }
 
+             // === JAVASCRIPT 6. RÉSZ: UNIVERZÁLIS, TISZTA NAVIGÁCIÓS MOTOR ===
         function triggerNext() {
             if (!activeMagazineData) return;
             const elements = activeMagazineData.pages[pageIdx].elements || [];
             const viewport = document.getElementById("canvasViewport");
             
+            // Ha új blokkra lépünk, a görgetődobozt visszaállítjuk a tetejére
             if (viewport) {
                 viewport.scrollTop = 0;
                 viewport.style.paddingBottom = "0px";
@@ -592,6 +604,7 @@
             if (!activeMagazineData) return;
             const viewport = document.getElementById("canvasViewport");
             
+            // Ha visszalépünk egy blokkot, a görgetődobozt visszaállítjuk a tetejére
             if (viewport) {
                 viewport.scrollTop = 0;
                 viewport.style.paddingBottom = "0px";
@@ -609,6 +622,7 @@
         }
 
         // JAVASCRIPT NAVIGACIOS LOGIKA 6 RESZ VEGE
+
 
 
 
