@@ -1,5 +1,5 @@
 <!-- FÁJLNEV: reader.html [1/3 RÉSZ] -->
-<!-- FÁJLNEV: reader.html [MODOSÍTOTT 1. RÉSZ] -->
+<!-- FÁJLNEV: reader.html [VÉGLEGES 1. RÉSZ] -->
 <!DOCTYPE html>
 <html lang="hu">
 <head>
@@ -40,14 +40,13 @@
         }
         #btnLang { font-size: 14px; font-weight: bold; color: #ff9d3b; }
         
-        /* ⭐ ÚJ: A viewport maga lesz a görgető doboz, abszolút pozicionált elemekkel */
+        /* ⭐ FIX: Visszaállítva a flex-grow és a kényszerített belső görgetés a valós magassághoz */
         #canvasViewport {
-            position: relative; overflow-x: hidden !important; overflow-y: auto !important;
-            -webkit-overflow-scrolling: touch; display: block; box-sizing: border-box;
-            width: 100%; flex-grow: 1; background-color: #000; margin-top: 46px; margin-bottom: 0px;
-            transition: margin-bottom 0.3s ease;
+            position: relative; overflow-x: hidden !important; overflow-y: scroll !important;
+            -webkit-overflow-scrolling: touch; display: flex; align-items: flex-start; justify-content: flex-start;
+            box-sizing: border-box; width: 100%; flex-grow: 1; background-color: #000; 
+            margin-top: 46px; margin-bottom: 0px; transition: margin-bottom 0.3s ease;
         }
-        /* ⭐ ÚJ: A kép és a kiemelés FIXED helyett ABSOLUTE, hogy kövessék a doboz belső görgetését */
         #comicImage {
             position: absolute; display: block; top: 0; left: 0; transform-origin: 0 0;
             opacity: 1; transition: transform 0.1s linear; will-change: transform;
@@ -473,7 +472,7 @@
 
 
 
-             // === JAVASCRIPT 5. RÉSZ: INTELLIGENS, SZELEKTÍV GÖRDÍTÉSI LAKAT ===
+              // === JAVASCRIPT 5. RÉSZ: INTELLIGENS ÉRINTÉSVEZÉRLÉS GÖRDÍTÉSI LAKATTAL ===
         let touchStartX = 0;
         let touchStartY = 0;
         let lastTapTime = 0;
@@ -485,20 +484,20 @@
 
         viewportElement.addEventListener("touchstart", (e) => {
             if (e.target.id === "contentTextBox") return;
-            const touch = e.touches;
+            const touch = e.touches[0];
             touchStartX = touch.clientX;
             touchStartY = touch.clientY;
             isLongPress = false;
 
-            // Ellenőrizzük, hogy van-e egyáltalán görgethető tartalom a dobozban
+            // Kiszámítjuk, hogy a doboz éppen görgethető-e és hol áll
             const currentScroll = viewportElement.scrollTop;
             const maxScroll = viewportElement.scrollHeight - viewportElement.clientHeight;
 
             if (maxScroll > 5) {
-                // Ha VALÓBAN van mit görgetni, akkor élesítjük a lakatot a határokra
+                // Ha van mit görgetni, a lapozás CSAK a legtetején vagy legalján engedélyezett elméletben
                 canPageFlip = (currentScroll <= 3 || currentScroll >= maxScroll - 3);
             } else {
-                // Ha NINCS mit görgetni (rövid cikk, kép, vagy alapnézet), a lakat szabad utat ad a swipe-nak
+                // Ha nincs mit görgetni (alapnézet, kép, rövid cikk), a lakat nyitva van a sima swipe-hoz
                 canPageFlip = true;
             }
 
@@ -512,7 +511,7 @@
         viewportElement.addEventListener("touchmove", (e) => {
             if (longPressTimer) clearTimeout(longPressTimer);
             
-            // Csak akkor tiltjuk le a lapozást ujjmozgás közben, ha valóban van mit görgetni a dobozban
+            // Ha ujjmozgás közben valós görgetés folyik egy hosszú hasábon, azonnal tiltjuk a lapozást
             const maxScroll = viewportElement.scrollHeight - viewportElement.clientHeight;
             if (!isLongPress && e.target.id !== "contentTextBox" && maxScroll > 5) {
                 canPageFlip = false; 
@@ -523,7 +522,7 @@
             if (longPressTimer) clearTimeout(longPressTimer);
             if (isLongPress || e.target.id === "contentTextBox") return;
 
-            const touch = e.changedTouches;
+            const touch = e.changedTouches[0];
             const diffX = touch.clientX - touchStartX;
             const diffY = touch.clientY - touchStartY;
             const now = Date.now();
@@ -545,7 +544,7 @@
             }
             lastTapTime = now;
 
-            // Ha szabad az út (vagy tiszta új swipe van, vagy nem görgethető az elem), suhintunk
+            // Ha a lakat engedi és határozott függőleges suhintás történt, indítjuk a határellenőrzőt
             if (canPageFlip && Math.abs(diffY) > 50 && Math.abs(diffX) < 40) {
                 handleBoundarySwipe(diffY);
             }
@@ -574,6 +573,7 @@
         }
 
         // JAVASCRIPT GESZTUSMOTOR 5 RESZ VEGE
+
 
 
 
