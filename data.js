@@ -1,7 +1,7 @@
 window.MAGAZINE_DATA = {
   "meta": {
-    "title": "Példa Magazin",
-    "author": "Országvilág (1925)",
+    "title": "Képprojekt",
+    "author": "",
     "volume": "",
     "issue": "",
     "isbn": "",
@@ -12,306 +12,7 @@ window.MAGAZINE_DATA = {
   },
   "pages": [
     {
-      "id": "1790590716672-1781881164053-orszagvilag_oldal_1.jpg",
-      "type": "image",
-      "text": "",
-      "audioPath": "",
-      "guides": {
-        "v": [],
-        "h": []
-      },
-      "elements": [
-        {
-          "id": 1424,
-          "type": "Kép",
-          "x1": 111,
-          "y1": 86,
-          "x2": 1779,
-          "y2": 590,
-          "content": "",
-          "audioPath": ""
-        },
-        {
-          "id": 645513,
-          "type": "Kép",
-          "x1": 714,
-          "y1": 593,
-          "x2": 1156,
-          "y2": 701,
-          "content": "",
-          "audioPath": ""
-        },
-        {
-          "id": 284283,
-          "type": "Hasáb",
-          "x1": 111,
-          "y1": 595,
-          "x2": 711,
-          "y2": 701,
-          "content": "Szerkesztőség: Budapest, VI., Horn Ede-utca 18., földszint 3.\nKiadóhívatal címe: Budapest, V. kerület, Hold-utca 7. szám.\nKiadótulajdonos: a , Pesti Könyvnyomda Részvénytársaság\".\nMegjelenik minden héten egyszer: vasárnapon.",
-          "audioPath": "audio/1790590726954-Bevezeto_hang.wav"
-        },
-        {
-          "id": 732278,
-          "type": "Hasáb",
-          "x1": 1176,
-          "y1": 593,
-          "x2": 1779,
-          "y2": 701,
-          "content": "ált SESZTÁK TESZ ESÉSE TA SS A sss nát\nElőfizetési ár: Egy évre 120,000 korona. Fél évre 60,000 korona,\nnegyed évre 30,000 korona, egy kepez éli 45,000 korona. Egyes\nszám ára tőzsdékben és a pályaudvarokon 3,000 korona. Külföldi\nelőfizetésekhez a postailag meghatározott vifeldíj is csatolandó.",
-          "audioPath": ""
-        },
-        {
-          "id": 599688,
-          "type": "Hasáb",
-          "x1": 111,
-          "y1": 701,
-          "x2": 664,
-          "y2": 1171,
-          "content": "A MAGYAR LOVAREGYLET ÚJ VERSENYPÁLYÁJA,\nÍrta STADLER ISTVÁN.\n\nAz ország legrégibb sportegyesülete, a Magyar Lovaregylet, melyet gróf Széchenyi István 1827-ben alapított és 20 éven át, 1827-—1847-ig volt a vezetője, első elnöke, május 10-én nyitja\nmeg az új versenypályáját s ezzel új irányt ad a magyar lósport fejlődésének, mely így is nagyon szép, csaknem 100 éves multra tekinthet vissza.\nAz első lóverseny ugyanis, amelyet a Magyar Lovaregylet tartott, 1827. június 6-án folyt le. Ennek az volt a célja, hogy a lónemesítés kedvelését terjessze és tekintettel arra, hogy",
-          "audioPath": ""
-        },
-        {
-          "id": 939348,
-          "type": "Hasáb",
-          "x1": 664,
-          "y1": 701,
-          "x2": 1220,
-          "y2": 1171,
-          "content": "az ország hatalmas kiterjedésű síksága, me-\nzősége különösen a lábasjószág tfenyésztésé-\nnek kedvez, így a lótenyésztés a magyar gaz-\ndálkodás főága lehet, erre csakugyan szükség\nvolí. Még az is vezette a nemes grófot, aki\nezt az első versenyt példaadásul és serken-\ntésül rendezte, hogy így a hazában nevelt lo-\nvaknak a becsületét — mint az egykorú lapok\nírják — nevelje.\n\nAz Üllői-úttól jobbra feküdt az első lóver-\nsenypálya, körülbelül középtájt a határvendég-\nfogadó és a fábori raktárak között. Kerülete\n1.236 pozsonyi ől volt s a szép férséget gyen-\ngén emelkedő dombok környékezték, melyek\nígy szinte természeti církusszá fetfék. A pá-\nlyának lapult kerekségét fehérre festett oszlo-\npok jelezték, melyeken minden 25-—5) ölnyíre",
-          "audioPath": ""
-        },
-        {
-          "id": 537572,
-          "type": "Hasáb",
-          "x1": 1220,
-          "y1": 701,
-          "x2": 1779,
-          "y2": 1171,
-          "content": "az ország színeivel díszeskedő zászlócskák lobogtak. Ezeken kívül volt a köröskörül 25 ől széles tulajdonképeni futópálya, melyet barázda választott el a nézőktől. A pályának déli részén s az említett barázdán kívül volfak az amfiteátrumképen készített, részint födött, részint födetlen, de deszkákkal befoglalt ülőhelyek, melyeknek kél széle fágas galériákból, közepe pedig szinte emeletes lozsikból állott.\n\nA bal galéria és a lozsik között külön ud-\nvarban, magasabbra emelt helyiségben, mely-\n\"nek két oldalán kís harangok függtek s a jel-\nadásra szolgáltak, foglalt helyet a rendnek és\na jutalomnak elítélésére választott bíróság. A\nbírói emelvény mellett egy zöld posztóval be-\nvont oszlopon állott a verseny első díja, egy",
-          "audioPath": ""
-        },
-        {
-          "id": 624444,
-          "type": "Kép",
-          "x1": 111,
-          "y1": 1171,
-          "x2": 935,
-          "y2": 1735,
-          "content": "AZ I. HELY TRIBÜNTJÉNEK HOMLOKZATA",
-          "audioPath": ""
-        },
-        {
-          "id": 224490,
-          "type": "Kép",
-          "x1": 957,
-          "y1": 1171,
-          "x2": 1779,
-          "y2": 1735,
-          "content": "AZ I HELY TRIBÜNJE A PÁLYA FELŐL",
-          "audioPath": ""
-        },
-        {
-          "id": 750122,
-          "type": "Kép",
-          "x1": 111,
-          "y1": 1733,
-          "x2": 1779,
-          "y2": 1785,
-          "content": "Az I. hely tribünjének hossza 7610, szélessége 33735 méter, a beépített alapterület 2,580\", Két sorban elhelyezve van 36 páholy (hat és négy ülésesek) és külön udvari páholy. A tribün emeletes és 2,000 ülőhely van rajta, de szükség esetén háromszorennyi ember is el tud itt helyezkedni.",
-          "audioPath": ""
-        },
-        {
-          "id": 369017,
-          "type": "Kép",
-          "x1": 111,
-          "y1": 1793,
-          "x2": 935,
-          "y2": 2458,
-          "content": "AZ I. HELY TRIBŰNJE A BEJÁRÓ FELŐL.\nZoltvány felvételei.",
-          "audioPath": ""
-        },
-        {
-          "id": 787305,
-          "type": "Kép",
-          "x1": 952,
-          "y1": 1796,
-          "x2": 1779,
-          "y2": 2460,
-          "content": "A II. HELY TRIBŰNJE A BEJÁRÓ FELŐL.\nA II. hely tribünje 9075 méter hosszú, van rajta 4,500 ülőhely, de szükség esetén háromszor ennyi ember is el tud itt helyezkedni.",
-          "audioPath": ""
-        },
-        {
-          "id": 260916,
-          "type": "Kép",
-          "x1": 227,
-          "y1": 2482,
-          "x2": 1629,
-          "y2": 2541,
-          "content": "A MAGYAR LOVAREGYLET MÁJUS j0-ÉN MEGNYILÓ BUDAPESTI ÚJ LÓVERSENYPÁLYÁJÁNAK TRIBUNJEI.",
-          "audioPath": ""
-        }
-      ],
-      "imagePath": "images/1790590716672-1781881164053-orszagvilag_oldal_1.jpg"
-    },
-    {
-      "id": "1790590719470-1781881164074-orszagvilag_oldal_2.jpg",
-      "type": "image",
-      "text": "",
-      "audioPath": "",
-      "guides": {
-        "v": [],
-        "h": []
-      },
-      "elements": [
-        {
-          "id": 112246,
-          "type": "Kép",
-          "x1": 113,
-          "y1": 183,
-          "x2": 1190,
-          "y2": 1072,
-          "content": "A MÁJUS 10-ÉN MEGNYILÓ BUDAPESTI UJ LÓVERSENYTÉR.",
-          "audioPath": ""
-        },
-        {
-          "id": 361354,
-          "type": "Hasáb",
-          "x1": 113,
-          "y1": 1072,
-          "x2": 672,
-          "y2": 2508,
-          "content": "100 aranyat érő ezüst billikom, melynek az egyik felét az ország címere díszítette, a másik felén két futó ló volt látható s alatta ezen\nszavak : Magyar Országi Ló-Pályai-jutalom, készíté Mayerhcfer Székesfehérvári magyar Bétsben 1827.\nAz ülőhelyek közelében állottak a frissítő italokkal, kávéval és borral szolgáló külön készített deszkabódék. A galériáknak két végétől jobbra, balra álltak a kocsik, lovaikkal kifelé fordítva s ezeknek folytában foglaltak helyet a gyalognézők s így az egész cirkusz\nfuttatáskor kocsik és emberek által volt körülvéve. \nA versenyzők — csak az úrlovasok — a verseny előtti napon jelentkeztek a Nemzeti Múzeum háta mögött épült Lóiskolában — a\nNemzeti Lovarda régi neve — hol a versenyen való részvételért 3 aranyat kellett fizetniők. Ebből fedezfék a kiadásokat és a nyerők jutalomdíját. A parasztok lovai is — mert csikósok és lótartó pesti és pestkörnyéki gazdák is résztvettek a versenyen — beírattak ugyan,\nde a lovaglók és nyergek terhét nem mérték meg, mivel ők szőrén ülték meg a lovat.\nA helyszűke miatt — mondja az egykorú szabályzat — tíz lónál több egyszerre nem futhat s így ha tíznél főbb lépne a pályára,\nakkor sors szerént két csoportba osztatnak fel s a két futtatás után a két győző külön fog a jutalomért ismét vívni. Ha pedig még\nszámosabb ló gyűlne, akkor számukhoz képest három, vagy főbb csapatba szakasztatnak s a győzők mindösszesen még egyszer\nfutnak, hogy végre az igaz diadalma kifessék s az egybegyült pénzt elnyerje. A lovak csapatba osztása, ha számuk kívánná, minden\nkövetkező ilyen esetben sors által fog történni.\nAz első versenyre, mely június 6-án 10 órakor kezdődött, számosan jelentkeztek és így a versenyzőket 3 csapatba kellett osztani. A\npálya 1,232 ölre volt határozva s az első szakaszban futott Bohus János 6 esztendős Fickó nevű fekete lova 133 font és gróf Széchenyi István 7 esztendős szürke lova Gawing 134\nfont teherrel. A Gawing lovasa fehér-veres, a Fickóé tiszta fehér dreszben volt. Velük együtt futott 6 parasztló. A futamban első lett gróf Széchenyi lova, utána érkezett Rizai Pál és Király István parasztlova.\nA második szakaszban kiállottak a pályára gróf Esterházy Mihály 6 esztendős sárga lova, Arandéka, melynek a lovasa kék-sárga dreszt viselt és gróf Károlyi György ugyancsak 6 esztendős sárga lova, Babiéka. Az előbbi 132, az utóbbi 133 font teherrel s ennek a lovasa kék-veres dreszt hordott, Ezekkel is több parasztló futott. A célhoz legközelebb jutott Ba-",
-          "audioPath": ""
-        },
-        {
-          "id": 704003,
-          "type": "Hasáb",
-          "x1": 672,
-          "y1": 1072,
-          "x2": 1234,
-          "y2": 2508,
-          "content": "bička, utána Arandéka és harmadik lett Medeczki József parasztlova.\nA harmadik szakaszban gróf Pejacsevich Péter világos pej lova, Romana versenyzett 113 font teherrel, báró Wesselényi Miklós m.éve iratott gróf Széchenyi Istvánnak idős pej lovával Snappal, mely 134 és fél font terhet vitt. Romana színe veres-kék, Snapé kékkel csíkos fehér. Velük együtt indult Uzovics Sándor lova, Tündér és több parasztló. A célhoz legelőször érkezett Snap és utána Romana, majd Obornyák István parasztlova. Ezen három szakaszbeli futtatás után a három első lónak kellett együtt versenyeznie ugyanazon pályahosszon és ekkor Babička lett a nyertes.\nA második futamban csak nem ménesed gazdák által nevelt lovak vehettek részt. A díj 50 arany volt, melyből harmincat, mint első Bánó László nyert, tizenhetet Záborszky István és nyolcat Obornyák István. A pályának a hossza 866 öl volt.\nHarmadik futtatásra, melyben ismét csak nem ménesed gazdák lovai futhattak, 60 ezüst tallér volt a jutalom, úgy, hogy az aranyakat nyert lovak kimaradjanak. Ott is, mert sok volt a jelentkező, három szakaszra osztották a versenyzőket és három részre a jutalmakat. Az elsők Suhaida György, Peles György és Medeczki Mihály lettek. \nA futtatáson, noha mind ez, mind a következő versenynapokon, kisebb-nagyobb eső volt, a nézőket összesen 25,000-re lehetett tenni és a kocsik számát közel háromezerre, a lóháton lévőkön kívül.\nEzen temérdek sokaságnak becsületére, a magyaroknak rendtartást szerető indulatját világosan megmutatta azon körülmény, hogy ezen sokaságnak rendbe tartására elégségesek voltak a város részéről egynéhány komiszáriusok s a vármegye részéről egynéhány hajdú és katona, úgy, hogy minden a legnagyobb rendben mehetett végbe — jegyzi meg az egykorú szemtanú és még hozzá teszi, hogy a futtatásoknak szerencsés következése már most is abból hitszettett, hogy több paraszt és úri lovak jó áron elkeltek s ezey nemes mulatságot az uraságok annyira megkedvelték, hogy a jövő esztendőbeli lófuttatásokra tetemes summákat előre ajánlottak.\nA nemes sportot azon a régi pályán 1880-ig űzték. Az egyesület akkori elnöke 1870—91-ig báró Wenckheim Béla volt, aki sokat tett a lósport előmozdítása érdekében, majd gróf Batthyány Elemér vette át a vezetést és ő volt az elnök 1891—1907-ig. Alatta a Magyar Lovaregylet az Aréna-úton kapott pályát a Városliget mellett és itt lett naggyá, nevessé az egyesület.\nEnnek a pályának a méreteit már a háború",
-          "audioPath": ""
-        },
-        {
-          "id": 74897,
-          "type": "Hasáb",
-          "x1": 1234,
-          "y1": 183,
-          "x2": 1787,
-          "y2": 2508,
-          "content": "előtti időkben túlszárnyalta a sportkedvelő közönség, úgyszintén elavult, ósdiak voltak a tribünök és kicsi a pálya, hogy a nagy versenyek, hasonló mérvben, mint a többi nagy világvárosban, megtartassanak. Ezenkívül egy bizonyos társaság harcot indított a Magyar Lovaregylet ellen, pályáját parcellázni akarta és sikerült is azt elérnie, hogy a Lovaregyletnek új pálya után kellett néznie. A legfőbb ok azonban az volt, hogy 1915-ben a régi pályára lejárt a fővárossal kötött szerződés. Már 1908-ban kezdődtek meg a tárgyalások az új versenypálya építkezéséről, míg végre 1912-ben hozzájárult a székesfőváros ahhoz, a Magyar Lovaregylet a Liget telki-dűlőn fekvő, mintegy 180 kataszteri hold területű telket vegye céljaira bérbe.\nA Magyar Lovaregylet, mit sem késve, hozzáfogott az előmunkálatokhoz, csatornázáshoz, víztorony építéséhez és a megfelelő számú legmodernebbül berendezett istállók felépítéséhez. Csekonics Gyula gróf, aki 1913-tól elnöke a Lovaregyletnek, Ruppert Vilmos építésszel készíttetett terveket. Az óriási I. és II. oszt. tribünökön kívül egyleti tribün, királyi elhelyezett mázsálóházzal, úgyszintén egy udvari tribün-tervezetet. Ez utóbbi a képzelhető legnagyobb luxussal kiállítva márványból, férő- és pihenőtermekkel, melegítővel modernizálta lépcsők vezettek. A behajtó a tribünökhöz kőből épített szélesméretű árkádsor volt.\nAz építkezés megkezdését azonban megakasztotta a háború. A pályatérre szinte feltöltöttek s orosz hadifoglyok a planírozást elvégezték, de kitört a forradalom, utána a cseh, románok kerekedtek, mely alatt a régi pályát gőzekékkel felszántották, a tribünöket tönkretették, a fákat kivágták és az új pályán épített istállókba munkáscsaládokat telepítettek.\nA nyugalom helyreálltával szó sem lehetett egyelőre arról, hogy a futtatásokat a régi pályán, melyet teljesen tönkretettek, vagy az új pályán, melynek még csak a pályateste volt kész, le lehessen bonyolítani, azért a versenyeket Alagon tartották meg.\nA Lovaregylet vezetősége tudatában annak, hogy az ideiglenesen Alagra helyezett versenyeket de állandósítani nem lehet, sokasokszoros munkával dolgozott azon, hogy a nyugodtabb idők bekövetkeztével az első percet felhasználja arra, hogy az új pályát felépítse.A pálya felépítésének költségeit egy részvénytársaság vállalta, melyet Tibor Róbert vezérigazgató hozott össze. A részvénytársaság kötelezte magát, hogy a tribünöket a Lovaregylet elnökének merész tervei szerint fogja felépíteni és garantálja a megfelelő tőkének dollárkötvények kibocsátása úgjan való előteremtését.\nMinthogy a jelen viszonyok között szó sem lehetett a régi, nagyszabású tervekről, azért Wellisch Andor műépítész, a régi tervek figyelembevételével, megkezdte az új tervek készítését. Minden felesleges luxust kerülendő: csak az I. és II. osztályú tribün építésére lehetett gondolni. Az egyleti tribünt, az udvari páholyt, szalonokat és a mázsálóházat az I. osztályú tribünbe kellett elhelyezni.\nEzen problémák tanulmányozása végett Wellisch Andor beutazta Európa összes legszebb pályáit. Kint járt Londonban s a Newmarck Epson stb. pályáit, majd Párizsban, a Longchamp, Le Trambley, Auteuil tribünöket tanulmányozta, nem kevésbbé a híres milánói, úgyszintén a bécsi lóversenytereket Ezen új tapasztalataival merész fogott teljes erővel a tervezés munkálataihoz.\nA tervek elkészítése után 1923-ban a Magyar Lovaregylet szeptemberi közgyűlése elhatározta a tribünök felépítését és új tervek alapján. Kiírták a pályázatot az összes iparos-munkára, melynek alapján a Keuder és Feledi cég nyerte el az építőmesteri és ezzel kapcsolatos munkákat s megbízták a munkálatok megkezdését, azonban az 1923—24 évi kemény tél megakadályozta és így a kiviteli munkák csak 1924. évi március hó 15-én kezdődhettek meg.\nAz építkezés még a napokban is, mikor Zellyényi fotóriporterrel, aki a felvételeket készítette, kint jártunk a pályán, ahol gróf Csáky István műépítész kalauzolt bennünket, lázasan folyt, száz és száz munkás foglalatoskodott, az utolsó simításokat végezte, hogy a május 10-i megnyitásra mindennel elkészüljenek.\nA versenytéren, hová a Ferenc József-lak",
-          "audioPath": ""
-        }
-      ],
-      "imagePath": "images/1790590719470-1781881164074-orszagvilag_oldal_2.jpg"
-    },
-    {
-      "id": "1790590722121-1781881164061-orszagvilag_oldal_3.jpg",
-      "type": "image",
-      "text": "",
-      "audioPath": "",
-      "guides": {
-        "v": [],
-        "h": []
-      },
-      "elements": [
-        {
-          "id": 588510,
-          "type": "Hasáb",
-          "x1": 108,
-          "y1": 207,
-          "x2": 667,
-          "y2": 1887,
-          "content": "tanyán túl fekvő vasúti átjárón áthaladva a széncsűrdűlő mentén épített új úton jutunk, a nagy tribün lep meg bennünket a római Colosseumra emlékeztető méreteivel. Van benne valami palotaszerű, valami múzeális vonás, mely épületté teszi a tribünt. Hossza 76*10 méter, szélessége 33*35 méter vagyis összesen a beépített alapterület 2,380 m². A homlokzat az olasz renaissance stílusból merített motívumok felhasználásával elvágja a monumentális hatás jelleget kölcsönöz az épületnek, mint egy esetleges, gyorsan idejét múló modern homlokzat. A homlokzatot terranovával vakolták, rusztikus kőfugázással a lábazat dunaszalmási terméskőből van, a tetőzet bádogból zöld színben mázolva.\nA nézőtérre egy hatalmas pilléreken nyugvó boltozatos bejáró vezet és innét indul ki két monumentális lépcső a páholyokhoz. Összesen 2 páholysor van, jelenleg 36 páhollyal — a nagyobbak 6—6, a kisebbek 4—4 üléssel. Van külön udvari páholy és mögötte az udvar részére külön előtér és teázó-szalon a hozzátartozó teakonyhával és toilethelyiségekkel.\nA páholyok mögött vannak a cementből készített ülőhelyek, melyeket vastag deszkalapok borítanak. A tribün emeletes és 2,000 ülőhely van rajta, mi azonban nem zárja ki azt, hogy nagy versenyek idején háromszor annyi ember is el tudjon itt helyezkedni.\nA tribün tetőzetét vékony vasoszlopok tartják, melyek úgy vannak elhelyezve, hogy a nézőközönségnek minél kisebb részét zavarják a kilátásban. Ezen megoldás eredményezte azt, hogy a 19 méter szélességű tetőnek 14·3 méterje szabadon áll. Itt meg kell említenünk Felly Róbert és dr. Janicsek mérnök, műegyetemi tanársegédek nevét, akik a vasbeton-munkák statisztikai számítását végezték.\nFelhaladva a tribün legfelső soráig, ajtókon át egy széles, fedett folyosóra jutunk, ahol versenyek között majd kényelmes, jó séta esik. A széles folyosó két végén lépcsőhöz érünk, amelyen felmenve az épület második emeletére, egyszerre csak egy újabb, de nyitott folyosón vagyunk. Ez a sóhajok folyosója. Itt vannak ugyanis a totalizatőr-pénztárak a be- és kifizetésre, továbbá büffé, távíró- és távbeszélőállomás, posta, úgy, hogy aki felment a tribünre, akár le se jöjjön egész délután.\nEz a tribün külseje, alatta az épület földszintjén, a bejárattól jobbra van a nagy étkező, melynek egyrésze boltozatosan, másrésze pedig gerendázott mennyezettel van fedve. Az étkező mögött a szükséges tálaló folyosó és egy ételfelvonó lift van, mely levezet az óriási méretű konyhába, mely mellett a nagy mosogatónyólyag, éléskamra, fa-, szén- és borpincék vannak.\nAz étteremmel szimmetrikusan, balra a vesztibülből van a monumentális hatású mázsálóház. Előtte nagy terrasz terül el a lovaregyleti tagok számára. A mázsálóház főbejárata az épület oldalhomlokzatáról nyílik s előtte van a lenyergelő. Ezen külön bejárat mellett foglal helyet az igazgatósági és titkári szoba, a mázsálóhelyiség körül pedig külön-külön nagy méretben az úrorvosok, zsokék és lovászfiúk öltözői és fürdőszobái vannak.\nA tribün alatti monumentális helyiségek",
-          "audioPath": ""
-        },
-        {
-          "id": 986203,
-          "type": "Kép",
-          "x1": 108,
-          "y1": 1915,
-          "x2": 901,
-          "y2": 2525,
-          "content": "SÓHAJOK FOLYOSÓJA.\nA budapesti új lóversenytér I. helyi tribünjének emeleti fogadófolyosója.\nZoltvány felvétele.",
-          "audioPath": ""
-        },
-        {
-          "id": 767820,
-          "type": "Kép",
-          "x1": 667,
-          "y1": 207,
-          "x2": 1230,
-          "y2": 1101,
-          "content": "A BUDAPESTI UJ LÓVERSENYTÉR I. HELYI TRIBÜNJÉNEK FŐBEJÁRATA.\nZoltvány felvétele.",
-          "audioPath": ""
-        },
-        {
-          "id": 471608,
-          "type": "Hasáb",
-          "x1": 667,
-          "y1": 1115,
-          "x2": 1230,
-          "y2": 2525,
-          "content": "mennyezetének megoldása nehéz problémát adott a tervező építésznek, mert a lépcsőzetes vasbetonkonstrukciók és az általuk adódott ferde mennyezet nem nyújtott volna kellemes képet, miért is ezen helyiségek különféle, de egymással harmonizáló boltozatokkal oldattak meg, melyek a termeknek mindenesetre kedvezőbb képet adnak.\nA II. osztályú tribün nápnyugati frontja nem olyan díszes, mint a nagy tribüné, de alaprajzi méreteiben túlszárnyalja az I. osztályút, mivel hossza 90·75 méter, az ülőhelyek száma 4,500, de nagy versenyek alkalmával ez a szám megháromszorozódhatik. Ülései ennek is betonból vannak. Kissé messze esik a céltól, de annál jobban fogják az ottlevők látni, hogy mi is történik a távoszlop vidékén, hol a döntő előretörések és a végleges lemaradások szoktak történni. Hogy a távolság dacára is a finisht jól lehessen látni, a II. osztályú tribün bizonyos szögletet alkot az egyenes pályával, amely szöglet nem akadályozza, hogy a versenyek a starttól kezdve megfigyelhetők legyenek.\nItt is gondoskodás történt, hogy a magasabb sorokban levő közönség a tribün felső része alatt elhelyezett hosszú folyosókon bonyolíthassa le a versennyel összefüggő ügyeit.\nA tribünök alatt, a vesztibülben foglalnak helyet a ruhatárak, jobbra az I. osztályúénál nagyobb étterem, mely pillérsorral és nagy keresztboltozatokkal van megoldva. A világítást 15 darab nagy, félkörű ablak szolgáltatja, mely ablakok mindegyike 25 m² nagyságú. Ezen nagy ablaknyílások és a köztük lévő erős pillérek adják meg ezen egyébként meglehetősen sima felületekkel bíró épületnek a monumentális jelleget.\nNoha a II. osztályú tribün kivitele lényegesen egyszerűbb, mint az I. osztályú, mindamellett stílusban, valamint a részletek megoldásában és kivitelében harmonizál a két épület egymással. A konstruktív megoldása a két tribünnek hasonló, természetesen azonban alkalmazkodva mindegyiknek méreteihez.",
-          "audioPath": ""
-        },
-        {
-          "id": 923223,
-          "type": "Hasáb",
-          "x1": 1230,
-          "y1": 207,
-          "x2": 1795,
-          "y2": 1978,
-          "content": "A III. osztályú hely csak alacsony, elnyult épület lapos tetővel — a pálya holt területén foglal helyet, melyhez a Kerepesi-úti villamosállomástól külön alagút vezet olyképpen, hogy a közönségnek a pályát ne kelljen kereszteznie. Az egész belső pályán egy fa nem látható, mert azokat a kommün alatt a vörös kertészeti felügyelő saját hasznára, vagy mert ellenszenvvel viseltetett a fákkal szemben, kivágatta és így ennek a helynek látogatói jócskán ki lesznek téve a nap sugarainak, no meg adandó alkalommal a szélnek, esőnek.\nAz I. és II. osztályú tribünök előtt terül el a tulajdonképpeni pálya, mely maga is egyedüli érdemelt. Három, egyenkint 50 méter széles pálya van egymás mellett, melyeket élősövénykerítés választ el egymástól. Az első, majdnem 1,600 méter hosszú nyílegyenes pálya esik legközelebb a tribünökhöz. A rövid távolságú versenyek, valamint a kétévesek összes futamai ezen a széles, egyenes és sima felületű pályán kerülnek dűlőre. Mellette húzódik az egyfordulós pálya, melyen a középhosszúságú versenyek folynak le és ezen kívül van az úgynevezett 50 méter széles ovális pálya, gyenge fordulóval, a hosszú távolságok számára. Itt kerül majd döntőre a Derby, a Kancadíj és a St. Leger. Fekvése olyan, hogy az üdvözlők t a még olyan hosszú futamokat kezdettől fogva a legvégig mindig háborítatlanul élvezhetik. A három versenypálya mögött terül el a munkapálya, a tréningek számára. A pályák dűlője simaságúak, a fordulók enyhék és az egésznek a vonalai grandiózusak.\nA pályák mögött van 26 istálló, melyek mindegyikében 6—6 ló van, de a nemesebb lovak külön épületet kaptak előszobával és ápolólakással.\nA versenytér kiesése távol esik a várostól, de még sem annyira, hogy aki elveszíti minden pénzét, ne tudjon minden nagyobb fáradság nélkül gyalog is hazamenni. Tekintettel azonban arra, hogy a kényelem az első, nyolc pontjáról könnyű megközelíteni villamossal, elég hamar elérhető a pálya. A Kossuth Lajos-utcától nincs messzebb, mint az ügető versenytér. Az újrendszerű villamosjegyekkel a Keleti pályaudvarhoz érkező villamosokról át lehet szállni a kocsikra s öt pár perc alatt kiviszi a publikumot a helyszínére. A kőbányaiak merő kocsik is megközelítik a pályát és a közönségnek a megállótól alig pár percnyi utat kell megtennie. A Nyugati pályaudvarról induló vonatokkal is 10-12 perc alatt kijuthat az ember a Ferenc József-laktanya megállóhoz, honnét szépen kövezett, széles út vezet az I. osztályú tribün mellett egész a II. osztályig.\nAz új versenytérre büszkék lehetünk: olyat mutathatunk a külföldieknek, amit másutt aligha látnak. Ez Wellisch Andor műépítész érdeme, aki Budapestnek egy szenzációs látnivalót emelt. A munkából oroszlánrészt vett ki Neuhauser Lajos építész, a tervező műépítész helyettese, míg a Magyar Lovaregylet külön műszaki bizottsága: nevezetesen gróf Csáky István és Joó István miniszteri tanácsos gyakorolták az ellenőrzést és bevégezték az istállóépületek átalakítását és a tereppel összefüggő munkálatokat.",
-          "audioPath": ""
-        },
-        {
-          "id": 897787,
-          "type": "Hasáb",
-          "x1": 1389,
-          "y1": 1976,
-          "x2": 1621,
-          "y2": 2034,
-          "content": "HETVEN ÉV.",
-          "audioPath": ""
-        },
-        {
-          "id": 351429,
-          "type": "Hasáb",
-          "x1": 1230,
-          "y1": 2031,
-          "x2": 1494,
-          "y2": 2365,
-          "content": "Eljöttél ? Hát itt vagy ?\nHatalmas nagy idő!\nSzeretném azt tudni :\nUtánad még mi jő?\n\nLesznek-e új lombok\nA száradó ágon ?\nVagy a korhadó törzs\nTavaszt már ne várjon?\n\nNe reméljek rügyet?\nSzínpompás virágot ?\nMikor lelkem mindig\nTündérkertet látott.\n\nHogy mondjak le végkép\nSzívem tavaszáról ?\nA még fenn tündöklő\nIllatozó máról ?",
-          "audioPath": ""
-        },
-        {
-          "id": 168850,
-          "type": "Hasáb",
-          "x1": 1500,
-          "y1": 2031,
-          "x2": 1795,
-          "y2": 2384,
-          "content": "Nem, nem ! még egy kicsit\nGyönyörködöm benne,\nAzután hadd hulljon\nSzemem égő könnye. \n\nMossa el reményem\nVégső csillanását,\nEmlékeim örök,\nFájó lobogását.\n\nOmoljak le létünk\nMélységes titkába,\nAhol a megnyugvás\nSebzett szívem várja,\n\nMilyen jó lesz ottan\nAhol néma minden,\nAhol sajgó szívem\nVégre majd megpihen.\n\nVarga Borbála.",
-          "audioPath": ""
-        },
-        {
-          "id": 687410,
-          "type": "Hasáb",
-          "x1": 1230,
-          "y1": 2384,
-          "x2": 1795,
-          "y2": 2525,
-          "content": "Varga Borbála szegedi nyugalmazott tanárnő, lapunk régi kedves munkatársának ezt a Welles tej kis versét örömmel OvAutűt] most, amikor életének 70-ik határkövéhez ért, és szívesen csatlakozunk mi is az üdvözlők seregéhez. Hisszük és reméljük, hogy még sokszor fogjuk olvasni e poétalelkű derék pedagógusnőnk lelkes, szép írásait.",
-          "audioPath": ""
-        }
-      ],
-      "imagePath": "images/1790590722121-1781881164061-orszagvilag_oldal_3.jpg"
-    },
-    {
-      "id": "1790590724755-kling_20260620_IMAGE_1970s_retr_3530_0.jpg",
+      "id": "1790662168098-P1370943.JPG",
       "type": "image",
       "text": "",
       "audioPath": "",
@@ -320,10 +21,10 @@ window.MAGAZINE_DATA = {
         "h": []
       },
       "elements": [],
-      "imagePath": "images/1790590724755-kling_20260620_IMAGE_1970s_retr_3530_0.jpg"
+      "imagePath": "images/1790662168098-P1370943.jpg"
     },
     {
-      "id": "1790590726945-Peldavideo.mp4",
+      "id": "1790662386860-Heatwavekesz.mp4",
       "type": "video",
       "text": "",
       "audioPath": "",
@@ -332,7 +33,7 @@ window.MAGAZINE_DATA = {
         "h": []
       },
       "elements": [],
-      "videoPath": "video/1790590726945-Peldavideo.mp4"
+      "videoPath": "video/1790662386860-Heatwavekesz.mp4"
     },
     {
       "id": "_credits",
