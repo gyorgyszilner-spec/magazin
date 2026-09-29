@@ -1,21 +1,25 @@
-{
+window.MAGAZINE_DATA = {
   "meta": {
-    "title": "Ország Világ",
-    "author": "Dr. Falk Zsigmond",
-    "volume": "1925",
-    "issue": "19",
-    "isbn": "-",
-    "issn": "-",
-    "type": "weekly",
-    "genre": "Társasági",
+    "title": "Példa Magazin",
+    "author": "Országvilág (1925)",
+    "volume": "",
+    "issue": "",
+    "isbn": "",
+    "issn": "",
+    "type": "magazine",
+    "genre": "",
     "coverPageNumber": 1
   },
   "pages": [
     {
+      "id": "1790590716672-1781881164053-orszagvilag_oldal_1.jpg",
       "type": "image",
-      "fileName": "1781881164053-orszagvilag_oldal_1.jpg",
-      "status": "editing",
-      "imagePath": "images/1781881164053-orszagvilag_oldal_1.jpg",
+      "text": "",
+      "audioPath": "",
+      "guides": {
+        "v": [],
+        "h": []
+      },
       "elements": [
         {
           "id": 1424,
@@ -45,7 +49,7 @@
           "x2": 711,
           "y2": 701,
           "content": "Szerkesztőség: Budapest, VI., Horn Ede-utca 18., földszint 3.\nKiadóhívatal címe: Budapest, V. kerület, Hold-utca 7. szám.\nKiadótulajdonos: a , Pesti Könyvnyomda Részvénytársaság\".\nMegjelenik minden héten egyszer: vasárnapon.",
-          "audioPath": ""
+          "audioPath": "audio/1790590726954-Bevezeto_hang.wav"
         },
         {
           "id": 732278,
@@ -148,26 +152,17 @@
           "audioPath": ""
         }
       ],
-      "guides": {
-        "v": [
-          111,
-          664,
-          1220,
-          1779
-        ],
-        "h": [
-          701,
-          1171,
-          2541
-        ]
-      },
-      "id": 0
+      "imagePath": "images/1790590716672-1781881164053-orszagvilag_oldal_1.jpg"
     },
     {
+      "id": "1790590719470-1781881164074-orszagvilag_oldal_2.jpg",
       "type": "image",
-      "fileName": "1781881164074-orszagvilag_oldal_2.jpg",
-      "status": "editing",
-      "imagePath": "images/1781881164074-orszagvilag_oldal_2.jpg",
+      "text": "",
+      "audioPath": "",
+      "guides": {
+        "v": [],
+        "h": []
+      },
       "elements": [
         {
           "id": 112246,
@@ -210,26 +205,17 @@
           "audioPath": ""
         }
       ],
-      "guides": {
-        "v": [
-          113,
-          672,
-          1234,
-          1787
-        ],
-        "h": [
-          183,
-          1072,
-          2508
-        ]
-      },
-      "id": 1
+      "imagePath": "images/1790590719470-1781881164074-orszagvilag_oldal_2.jpg"
     },
     {
+      "id": "1790590722121-1781881164061-orszagvilag_oldal_3.jpg",
       "type": "image",
-      "fileName": "1781881164061-orszagvilag_oldal_3.jpg",
-      "status": "editing",
-      "imagePath": "images/1781881164061-orszagvilag_oldal_3.jpg",
+      "text": "",
+      "audioPath": "",
+      "guides": {
+        "v": [],
+        "h": []
+      },
       "elements": [
         {
           "id": 588510,
@@ -322,19 +308,41 @@
           "audioPath": ""
         }
       ],
+      "imagePath": "images/1790590722121-1781881164061-orszagvilag_oldal_3.jpg"
+    },
+    {
+      "id": "1790590724755-kling_20260620_IMAGE_1970s_retr_3530_0.jpg",
+      "type": "image",
+      "text": "",
+      "audioPath": "",
       "guides": {
-        "v": [
-          108,
-          667,
-          1230,
-          1795
-        ],
-        "h": [
-          207,
-          2525
-        ]
+        "v": [],
+        "h": []
       },
-      "id": 2
+      "elements": [],
+      "imagePath": "images/1790590724755-kling_20260620_IMAGE_1970s_retr_3530_0.jpg"
+    },
+    {
+      "id": "1790590726945-Peldavideo.mp4",
+      "type": "video",
+      "text": "",
+      "audioPath": "",
+      "guides": {
+        "v": [],
+        "h": []
+      },
+      "elements": [],
+      "videoPath": "video/1790590726945-Peldavideo.mp4"
+    },
+    {
+      "id": "_credits",
+      "type": "credits",
+      "elements": [],
+      "guides": {
+        "v": [],
+        "h": []
+      },
+      "text": "Készült a Magazinszerkesztő programmal"
     }
   ]
-}
+};
