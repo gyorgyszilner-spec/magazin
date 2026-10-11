@@ -15,6 +15,8 @@
         /* F24/1: a vízszintes suhintás ne váltson böngésző-előzményt (vissza/előre gesztus) */
         html, body { overscroll-behavior-x: none; }
         button, input, select, textarea { font-family: inherit; }
+        #canvasViewport { scrollbar-width: none; }
+        #canvasViewport::-webkit-scrollbar { display: none; }
         #canvasViewport { touch-action: pan-y; }
         body {
             background-color: #0f1014; margin: 0; padding: 0;
@@ -37,13 +39,21 @@
             cursor: pointer; padding: 5px 10px; display: flex; align-items: center; justify-content: center;
             transition: all 0.2s ease; min-width: 40px; min-height: 40px; border-radius: 4px;
         }
+        /* felső sor: kompakt, hogy keskeny telefonon is kiférjen */
+        #topBar .retro-btn { font-size: 15px; min-width: 32px; min-height: 34px; padding: 3px 5px; }
+        #topBar .top-right-group, #topBar .top-left-group { gap: 1px; }
+        #btnView { font-size: 12px !important; letter-spacing: 0; }
+        #topBar { padding: 0 6px; }
+        #topBar .retro-btn.active { box-shadow: none; }
+        .pv-hide-placeholder {
+        }
         .retro-btn:active { transform: scale(0.9); }
         .retro-btn.active { 
             color: #ff9d3b; background: rgba(139, 90, 43, 0.25);
             box-shadow: inset 0 0 8px rgba(255, 157, 59, 0.3); border: 1px solid rgba(255, 157, 59, 0.4);
         }
-        #pageCounter { font-size: 13px; color: #9aa0a6; white-space: nowrap; margin-left: 4px; }
-        #btnLang { font-size: 14px; font-weight: bold; color: #ff9d3b; }
+        #pageCounter { font-size: 12px; color: #9aa0a6; white-space: nowrap; margin-left: 4px; }
+        #topBar #btnLang { font-size: 13px; min-width: 0; padding: 3px 6px; font-weight: bold; color: #ff9d3b; }
         /* Lenyíló nyelvválasztó (a szerző által az exportnál megadott játszó-nyelvek) */
         #langWrap { position: relative; }
         #langDropdown {
@@ -144,8 +154,9 @@
             display: none; flex-direction: column; background: #0f1014; color: #f4f1ea;
             padding: 10px 6px 8px; box-sizing: border-box; overflow: hidden;
         }
-        #introLegend { display: flex; flex-wrap: wrap; gap: 3px 14px; justify-content: center; font-size: 13px; color: #c9c2b3; padding: 0 22px; }
-        #introLegend span b { font-size: 15px; margin-right: 4px; }
+        #introLegend { display: flex; flex-direction: column; gap: 4px; align-items: flex-start; font-size: 13px; color: #c9c2b3; padding: 2px 26px 0; }
+        #introLegend .row { display: flex; align-items: center; gap: 8px; }
+        #introLegend .ico { width: 38px; text-align: center; font-size: 14px; font-weight: bold; color: #f4f1ea; flex: none; }
         #introMain { flex: 1; min-height: 0; display: flex; align-items: center; justify-content: space-between; gap: 4px; }
         .intro-side { writing-mode: vertical-rl; color: #ff9d3b; font-weight: bold; font-size: 15px; letter-spacing: 2px; white-space: nowrap; }
         .intro-side.left { transform: rotate(180deg); }
@@ -176,10 +187,10 @@
                      "HU/EN" gomb, változatlan). Csak akkor jelenik meg, ha
                      a projektnek van legalább egy elmentett fordítása
                      (ld. initPlayer()). -->
-                <button id="btnView" class="retro-btn" data-pl-title="plViewTitle">GV</button>
+                <button id="btnSound" class="retro-btn" data-pl-title="plSoundTitle">🔊</button>
                 <button id="btnSubs" class="retro-btn" data-pl-title="plSubsTitle">💬</button>
                 <button id="btnMusic" class="retro-btn active" data-pl-title="plMusicTitle">🎵</button>
-                <button id="btnSound" class="retro-btn" data-pl-title="plSoundTitle">🔊</button>
+                <button id="btnView" class="retro-btn" data-pl-title="plViewTitle">GV</button>
                 <button id="btnMenu" class="retro-btn" data-pl-title="plSetTitle">☰</button>
             </div>
         </div>
@@ -434,7 +445,7 @@
             document.querySelectorAll("[data-pl]").forEach(el => { el.textContent = pt(el.getAttribute("data-pl")); });
             document.querySelectorAll("[data-pl-title]").forEach(el => { el.title = pt(el.getAttribute("data-pl-title")); });
             document.querySelectorAll("[data-pl-alt]").forEach(el => { el.alt = pt(el.getAttribute("data-pl-alt")); });
-            document.getElementById("btnLang").innerText = playerLangName(currentLang) + " ▾";
+            document.getElementById("btnLang").innerText = String(currentLang).toUpperCase() + " ▾";
 
             const vBtn = document.getElementById("btnVoiceToggle");
             if (vBtn.getAttribute("disabled")) {
@@ -529,7 +540,7 @@
             }
 
             positionSubtitleBar();
-            applyGuidedViewLogic(screenW, viewHeight);
+            applyGuidedViewLogic((viewport && viewport.clientWidth) || screenW, (viewport && viewport.clientHeight) || viewHeight);
         }
 
         // ⭐ FORDÍTÁSI RENDSZER - 2. réteg: "oldalID" / "oldalID:blokkID"
@@ -751,6 +762,16 @@
         // JAVASCRIPT REZIDENS FORRAS 3 RESZ VEGE
 
               // === JAVASCRIPT 4. RÉSZ: JAVÍTOTT NATÍV MOTOR (PADDING-ALAPÚ) ===
+        // A videó a lap TETEJÉRE kerül (a menüsor alá), képarányosan, vízszintesen középen; a vezérlősáv a videó alján van.
+        function layoutVideo(maxW, maxH) {
+            const v = document.getElementById("pageVideo");
+            const ar = (v.videoWidth && v.videoHeight) ? v.videoWidth / v.videoHeight : 16 / 9;
+            let w = maxW, h = maxW / ar;
+            if (h > maxH) { h = maxH; w = maxH * ar; }
+            v.style.width = w + "px"; v.style.height = h + "px";
+            v.style.left = ((maxW - w) / 2) + "px"; v.style.top = "0px";
+        }
+
         function applyGuidedViewLogic(maxW, maxH) {
             const img = document.getElementById("comicImage");
             const highlight = document.getElementById("focusHighlight");
@@ -762,7 +783,8 @@
                 document.getElementById("focusHighlight").style.display = "none";
                 return;
             }
-            if (activeMagazineData && ["video", "credits"].includes(currentPageType())) { updateTextAndAudio(null); return; }
+            if (activeMagazineData && currentPageType() === "video") { layoutVideo(maxW, maxH); updateTextAndAudio(null); return; }
+            if (activeMagazineData && ["credits"].includes(currentPageType())) { updateTextAndAudio(null); return; }
             if (!img || !img.naturalWidth || !activeMagazineData) return;
 
             const nw = img.naturalWidth;
@@ -862,9 +884,9 @@
             if (first && first.type !== "video" && first.type !== "credits" && first.imagePath) { img.src = first.imagePath; img.style.display = ""; }
             else img.style.display = "none";
             const items = [
-                ["btnLang", "文A", "plIntroLang"],
+                ["btnLang", "", "plIntroLang"], ["btnSound", "🔊", "plIntroSound"],
                 ["btnSubs", "💬", "plIntroSubs"], ["btnMusic", "🎵", "plIntroMusic"],
-                ["btnSound", "🔊", "plIntroSound"], ["btnView", "GV/PV", "plIntroView"], ["btnMenu", "☰", "plIntroMenu"]
+                ["btnView", "GV/PV", "plIntroView"], ["btnMenu", "☰", "plIntroMenu"]
             ];
             const lg = document.getElementById("introLegend");
             lg.innerHTML = "";
@@ -872,9 +894,10 @@
                 const b = document.getElementById(id);
                 if (!b || b.style.display === "none") continue;   // csak a ténylegesen jelen lévő gombok
                 if (id === "btnLang" && document.getElementById("langWrap").style.display === "none") continue;
-                const sp = document.createElement("span");
-                const bi = document.createElement("b"); bi.textContent = ico;
-                sp.appendChild(bi); sp.appendChild(document.createTextNode(pt(key)));
+                const sp = document.createElement("div"); sp.className = "row";
+                const bi = document.createElement("span"); bi.className = "ico"; bi.textContent = (id === "btnLang") ? String(currentLang).toUpperCase() + " ▾" : ico;
+                const tx = document.createElement("span"); tx.textContent = pt(key);
+                sp.appendChild(bi); sp.appendChild(tx);
                 lg.appendChild(sp);
             }
             const note = document.getElementById("introNote");
@@ -898,6 +921,8 @@
             unlockAudioFromGesture();
             loadCurrentPage();
         }
+
+        document.getElementById("pageVideo").addEventListener("loadedmetadata", () => resizeLayout());
 
         function stopVideo() {
             const video = document.getElementById("pageVideo");
@@ -1215,13 +1240,12 @@
             const type = currentPageType();
             if (type === "video") {
                 const v = document.getElementById("pageVideo");
-                const vw = vp.clientWidth, vh = vp.clientHeight;
-                const ar = (v.videoWidth && v.videoHeight) ? v.videoWidth / v.videoHeight : vw / vh;
-                let w = vw, h = vw / ar; if (h > vh) { h = vh; w = vh * ar; }
+                const vr = v.getBoundingClientRect(), pr = vp.getBoundingClientRect();
+                const w = vr.width, h = vr.height, vw = vp.clientWidth, vh = vp.clientHeight;
                 const c = document.createElement("canvas");
                 c.width = v.videoWidth || 2; c.height = v.videoHeight || 2; c.style.cssText = "width:100%; height:100%; display:block; background:#000;";
                 try { c.getContext("2d").drawImage(v, 0, 0, c.width, c.height); } catch (_) {}
-                playTurn(c, { x: (vw - w) / 2, y: (vh - h) / 2, w, h }, swapToNextPage);
+                playTurn(c, { x: vr.left - pr.left, y: vr.top - pr.top, w, h }, swapToNextPage);
                 return;
             }
             const needZoomOut = blockIdx >= 0 || viewScale > 1;
