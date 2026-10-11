@@ -1,95 +1,192 @@
 window.MAGAZINE_DATA = {
   "meta": {
-    "title": "ZoomComic FX",
+    "title": "Zéország",
     "author": "",
     "volume": "",
     "issue": "",
     "isbn": "",
     "issn": "",
-    "type": "magazine",
     "genre": "",
-    "coverPageNumber": 1
+    "coverPageNumber": 1,
+    "backgroundAudio": "",
+    "backgroundTracks": [
+      {
+        "id": 7,
+        "audioPath": "/media/Z%C3%A9orsz%C3%A1g/sound/1791712130981-Good%20Boy%20on%20the%20Poster.mp3",
+        "startPage": 2,
+        "endPage": null,
+        "label": ""
+      }
+    ],
+    "nextTrackId": 8,
+    "originalLang": "hu",
+    "playerLangs": [
+      "en",
+      "De",
+      "hu",
+      "ru"
+    ],
+    "playerDefaultLang": "hu"
+  },
+  "lang": "hu",
+  "playerUi": {
+    "default": "hu",
+    "languages": {
+      "en": {
+        "plLangName": "English",
+        "plLangTitle": "Language",
+        "plPrev": "◄ Prev",
+        "plNext": "Next ►",
+        "plSetTitle": "Settings",
+        "plSetTxtSize": "Text size",
+        "plSetSpeed": "Reading speed",
+        "plSetVoice": "Voice type",
+        "plSetBar": "Fix the bottom bar",
+        "plSmall": "Small",
+        "plMedium": "Medium",
+        "plLarge": "Large",
+        "plSlow": "Slow",
+        "plNormal": "Normal",
+        "plFast": "Fast",
+        "plFemale": "Female",
+        "plMale": "Male",
+        "plOn": "ON",
+        "plOff": "OFF",
+        "plDone": "Done",
+        "plNoVoice": "Not available",
+        "plCreditsMade": "Made with ZoomComicFX",
+        "plCreditsTagline": "for the creators of the 21st century",
+        "plCredits1": "Small-screen optimization - Guided View",
+        "plCredits2": "Seamless integration of videos and animations",
+        "plCredits3": "Attach audio files for narration and sound effects",
+        "plCredits4": "Background music or continuous narration",
+        "plCredits5": "Multilingual subtitles",
+        "plCredits6": "Machine reading aloud in multiple languages",
+        "plContentLangTitle": "Text language",
+        "plOriginal": "Original",
+        "plSubsTitle": "Subtitles",
+        "plSoundTitle": "Read aloud / sound",
+        "plLoadError": "The content cannot be loaded (data.js is missing or corrupted).",
+        "plImgAlt": "Magazine page"
+      },
+      "De": {
+        "plLangName": "Deutsch",
+        "plLangTitle": "Sprache",
+        "plPrev": "◄ Zurück",
+        "plNext": "Weiter ►",
+        "plSetTitle": "Einstellungen",
+        "plSetTxtSize": "Textgröße",
+        "plSetSpeed": "Lesegeschwindigkeit",
+        "plSetVoice": "Stimmentyp",
+        "plSetBar": "Untere Leiste fixieren",
+        "plSmall": "Klein",
+        "plMedium": "Mittel",
+        "plLarge": "Groß",
+        "plSlow": "Langsam",
+        "plNormal": "Normal",
+        "plFast": "Schnell",
+        "plFemale": "Weiblich",
+        "plMale": "Männlich",
+        "plOn": "AN",
+        "plOff": "AUS",
+        "plDone": "Fertig",
+        "plNoVoice": "Nicht verfügbar",
+        "plCreditsMade": "Erstellt mit ZoomComicFX",
+        "plCreditsTagline": "für die Ersteller des 21. Jahrhunderts",
+        "plCredits1": "Optimierung für kleine Bildschirme - Guided View",
+        "plCredits2": "Nahtlose Integration von Videos und Animationen",
+        "plCredits3": "Audiodateien für Erzählung und Soundeffekte anhängen",
+        "plCredits4": "Hintergrundmusik oder kontinuierliche Erzählung",
+        "plCredits5": "Mehrsprachige Untertitel",
+        "plCredits6": "Maschinelles Vorlesen in mehreren Sprachen",
+        "plContentLangTitle": "Textsprache",
+        "plOriginal": "Original",
+        "plSubsTitle": "Untertitel",
+        "plSoundTitle": "Vorlesen / Ton",
+        "plLoadError": "Der Inhalt kann nicht geladen werden (data.js fehlt oder ist beschädigt).",
+        "plImgAlt": "Magazinseite"
+      },
+      "hu": {
+        "plLangName": "Magyar",
+        "plLangTitle": "Nyelv",
+        "plPrev": "◄ Előző",
+        "plNext": "Következő ►",
+        "plSetTitle": "Beállítások",
+        "plSetTxtSize": "Szövegméret",
+        "plSetSpeed": "Felolvasás sebessége",
+        "plSetVoice": "Hang típusa",
+        "plSetBar": "Alsó menüsor rögzítése",
+        "plSmall": "Kicsi",
+        "plMedium": "Közép",
+        "plLarge": "Nagy",
+        "plSlow": "Lassú",
+        "plNormal": "Normál",
+        "plFast": "Gyors",
+        "plFemale": "Női",
+        "plMale": "Férfi",
+        "plOn": "BE",
+        "plOff": "KI",
+        "plDone": "Kész",
+        "plNoVoice": "Nem elérhető",
+        "plCreditsMade": "Készült a ZoomComicFX programmal",
+        "plCreditsTagline": "a XXI. század alkotóinak",
+        "plCredits1": "Kisképernyős optimalizálás - Guided View",
+        "plCredits2": "Videók és animációk zökkenőmentes beépítése",
+        "plCredits3": "Hangfájlok csatolása narrációhoz és hangeffektekhez",
+        "plCredits4": "Aláfestő zene vagy folyamatos narráció",
+        "plCredits5": "Többnyelvű feliratozás",
+        "plCredits6": "Gépi felolvasás több nyelven",
+        "plContentLangTitle": "Szöveg nyelve",
+        "plOriginal": "Eredeti",
+        "plSubsTitle": "Feliratok",
+        "plSoundTitle": "Felolvasás / hang",
+        "plLoadError": "A tartalom nem tölthető be (data.js hiányzik vagy sérült).",
+        "plImgAlt": "Magazin oldal"
+      },
+      "ru": {
+        "plLangName": "Русский",
+        "plLangTitle": "Язык",
+        "plPrev": "◄ Назад",
+        "plNext": "Вперед ►",
+        "plSetTitle": "Настройки",
+        "plSetTxtSize": "Размер текста",
+        "plSetSpeed": "Скорость чтения",
+        "plSetVoice": "Тип голоса",
+        "plSetBar": "Закрепить нижнюю панель",
+        "plSmall": "Маленький",
+        "plMedium": "Средний",
+        "plLarge": "Большой",
+        "plSlow": "Медленно",
+        "plNormal": "Обычная",
+        "plFast": "Быстро",
+        "plFemale": "Женский",
+        "plMale": "Мужской",
+        "plOn": "ВКЛ",
+        "plOff": "ВЫКЛ",
+        "plDone": "Готово",
+        "plNoVoice": "Недоступно",
+        "plCreditsMade": "Создано в ZoomComicFX",
+        "plCreditsTagline": "для авторов 21 века",
+        "plCredits1": "Оптимизация для малых экранов - Guided View",
+        "plCredits2": "Плавная интеграция видео и анимации",
+        "plCredits3": "Прикрепление аудио для озвучки и эффектов",
+        "plCredits4": "Фоновая музыка или непрерывный рассказ",
+        "plCredits5": "Многоязычные субтитры",
+        "plCredits6": "Автоматическое чтение вслух на разных языках",
+        "plContentLangTitle": "Язык текста",
+        "plOriginal": "Оригинал",
+        "plSubsTitle": "Субтитры",
+        "plSoundTitle": "Чтение вслух / звук",
+        "plLoadError": "Не удалось загрузить контент (data.js отсутствует или поврежден).",
+        "plImgAlt": "Страница журнала"
+      }
+    }
   },
   "pages": [
     {
-      "id": "1790680373165-Kszts_egy_kpet_ami_egy_kpregny_oldala_a_kpregny_5_eltr_mret.jpg",
+      "id": "1791562815421-01 - Zéország_ A zombiinvázió története.jpg",
       "type": "image",
-      "text": "",
-      "audioPath": "",
-      "guides": {
-        "v": [],
-        "h": []
-      },
-      "elements": [
-        {
-          "id": 1,
-          "type": "Kép",
-          "x1": 10,
-          "y1": 8,
-          "x2": 527,
-          "y2": 720,
-          "content": "",
-          "audioPath": ""
-        },
-        {
-          "id": 2,
-          "type": "Kép",
-          "x1": 538,
-          "y1": 11,
-          "x2": 824,
-          "y2": 528,
-          "content": "",
-          "audioPath": ""
-        },
-        {
-          "id": 3,
-          "type": "Kép",
-          "x1": 533,
-          "y1": 541,
-          "x2": 818,
-          "y2": 948,
-          "content": "",
-          "audioPath": ""
-        },
-        {
-          "id": 4,
-          "type": "Kép",
-          "x1": 536,
-          "y1": 960,
-          "x2": 822,
-          "y2": 1240,
-          "content": "",
-          "audioPath": ""
-        },
-        {
-          "id": 5,
-          "type": "Kép",
-          "x1": 10,
-          "y1": 736,
-          "x2": 522,
-          "y2": 1232,
-          "content": "",
-          "audioPath": ""
-        }
-      ],
-      "imagePath": "images/1790680373165-Kszts_egy_kpet_ami_egy_kpregny_oldala_a_kpregny_5_eltr_mret.jpg"
-    },
-    {
-      "id": "1790680337286-kling_20260929_Lip_Sync__4869_0.mp4",
-      "type": "video",
-      "text": "",
-      "audioPath": "",
-      "guides": {
-        "v": [],
-        "h": []
-      },
-      "elements": [],
-      "videoPath": "video/1790680337286-kling_20260929_Lip_Sync__4869_0.mp4"
-    },
-    {
-      "id": "1790680342672-Kszts_egy_kpet_ami_egy_kpregny_oldala_a_kpregny_6_eltr_mret.jpg",
-      "type": "image",
-      "text": "",
+      "text": "George Colt novellája alapján\nZÉORSZÁG\nA nagy magyar zombiinvázió története\nPolitikai sci-fi szatíra\n",
       "audioPath": "",
       "guides": {
         "v": [],
@@ -100,84 +197,695 @@ window.MAGAZINE_DATA = {
           "id": 1,
           "type": "Kép",
           "x1": 30,
-          "y1": 29,
-          "x2": 409,
-          "y2": 593,
-          "content": "ZoomComic FX",
+          "y1": 1237,
+          "x2": 455,
+          "y2": 1469,
+          "content": "A Zoomcomic FX demóképregénye. Készült George Colt az Elmúlt négy év című novellája alapján AI segítségével. A szórakoztatáson kívül a Zoomcomic FX képességeinek bemutatását szolgálja. A szereplők és események a képzelet szüleményei.",
+          "audioPath": ""
+        }
+      ],
+      "imagePath": "images/1791562815421-01_-_Zeorszag__A_zombiinvazio_tortenete.jpg"
+    },
+    {
+      "id": "1791613403856-02 - Fáradt politikus, graffitizett kampányplakát.jpg",
+      "type": "image",
+      "text": "",
+      "audioPath": "",
+      "guides": {
+        "v": [],
+        "h": []
+      },
+      "elements": [
+        {
+          "id": 1,
+          "type": "Kép",
+          "x1": 13,
+          "y1": 9,
+          "x2": 1018,
+          "y2": 653,
+          "content": "Még soha egy miniszterelnök sem akart választást annyira elveszíteni, mint most én. De ez egy hosszú történet…",
           "audioPath": ""
         },
         {
           "id": 2,
           "type": "Kép",
-          "x1": 420,
-          "y1": 25,
-          "x2": 585,
-          "y2": 442,
-          "content": "Képekre, szövegre zoomolás.",
+          "x1": 6,
+          "y1": 675,
+          "x2": 1018,
+          "y2": 1519,
+          "content": "Négy éve, a kampány alatt még minden szép volt, az arcommal volt tele az ország.\nSzavazz ránk, és jobb lesz!\nnektek",
+          "audioPath": ""
+        }
+      ],
+      "imagePath": "images/1791613403856-02_-_Faradt_politikus_graffitizett_kampanyplakat.jpg"
+    },
+    {
+      "id": "1791613404775-03 - A hatalom ára a választók felett.jpg",
+      "type": "image",
+      "text": "",
+      "audioPath": "",
+      "guides": {
+        "v": [],
+        "h": []
+      },
+      "elements": [
+        {
+          "id": 1,
+          "type": "Kép",
+          "x1": 4,
+          "y1": 0,
+          "x2": 532,
+          "y2": 473,
+          "content": "Sokan elmentek szavazni…",
+          "audioPath": ""
+        },
+        {
+          "id": 2,
+          "type": "Kép",
+          "x1": 547,
+          "y1": 0,
+          "x2": 1020,
+          "y2": 470,
+          "content": "…de hát lottót is sokan vesznek, mert alapvetően optimista választók laknak az országban, akik azt hiszik, ez változtat majd a sorsukon.",
           "audioPath": ""
         },
         {
           "id": 3,
           "type": "Kép",
-          "x1": 598,
-          "y1": 27,
-          "x2": 807,
-          "y2": 445,
-          "content": "",
+          "x1": 4,
+          "y1": 488,
+          "x2": 526,
+          "y2": 995,
+          "content": "Nyertünk! Mosolyogva álltam a kamerák kereszttüzében a beiktatásomon, készen arra, hogy azok érdekeit figyelembe véve vezessem az országot...",
           "audioPath": ""
         },
         {
           "id": 4,
           "type": "Kép",
-          "x1": 423,
-          "y1": 450,
-          "x2": 807,
-          "y2": 701,
-          "content": "Animált oldalalak és videók beszúrása.",
+          "x1": 547,
+          "y1": 481,
+          "x2": 1018,
+          "y2": 992,
+          "content": "... akik a kampányomra a pénzt adták.",
           "audioPath": ""
         },
         {
           "id": 5,
           "type": "Kép",
-          "x1": 25,
-          "y1": 606,
-          "x2": 414,
-          "y2": 854,
+          "x1": 2,
+          "y1": 1010,
+          "x2": 524,
+          "y2": 1532,
+          "content": "Természetesen a saját bankszámlám gyarapodását is szem előtt tartva.",
+          "audioPath": ""
+        },
+        {
+          "id": 6,
+          "type": "Kép",
+          "x1": 545,
+          "y1": 1003,
+          "x2": 1022,
+          "y2": 1530,
+          "content": "És a választók? Hát, ők onnantól csak zavartak.",
+          "audioPath": ""
+        }
+      ],
+      "imagePath": "images/1791613404775-03_-_A_hatalom_ara_a_valasztok_felett.jpg"
+    },
+    {
+      "id": "1791613405573-04 - Zombijárvány Magyarországon_ Hatpanelira.jpg",
+      "type": "image",
+      "text": "",
+      "audioPath": "",
+      "guides": {
+        "v": [],
+        "h": []
+      },
+      "elements": [
+        {
+          "id": 1,
+          "type": "Kép",
+          "x1": 6,
+          "y1": 4,
+          "x2": 513,
+          "y2": 470,
+          "content": "Egészen simán mentek a dolgok addig, amíg valaki Kínában ki nem próbált egy új receptet.",
+          "audioPath": ""
+        },
+        {
+          "id": 2,
+          "type": "Kép",
+          "x1": 526,
+          "y1": 2,
+          "x2": 1020,
+          "y2": 468,
+          "content": "Az elején még örültünk is, hogy végre nem a mi kis dolgainkról szólnak a hírek.\nZombik Amerikában!\n- Ezek mit szívtak?\n- Nekem is kell!",
+          "audioPath": ""
+        },
+        {
+          "id": 3,
+          "type": "Kép",
+          "x1": 4,
+          "y1": 486,
+          "x2": 507,
+          "y2": 977,
+          "content": "De még azon a télen beütött a krach...",
+          "audioPath": ""
+        },
+        {
+          "id": 4,
+          "type": "Kép",
+          "x1": 528,
+          "y1": 486,
+          "x2": 1015,
+          "y2": 977,
+          "content": "…és mire észbe kaptunk, már hatmillió magyar és hárommillió zombi miniszterelnöke voltam. Mit mondjak, nem hiányzott.",
+          "audioPath": ""
+        },
+        {
+          "id": 5,
+          "type": "Kép",
+          "x1": 6,
+          "y1": 992,
+          "x2": 496,
+          "y2": 1527,
+          "content": "Az ellátási láncok összeomlottak, a boltok polcai kiürültek.",
+          "audioPath": ""
+        },
+        {
+          "id": 6,
+          "type": "Kép",
+          "x1": 515,
+          "y1": 990,
+          "x2": 1018,
+          "y2": 1521,
+          "content": "Azt mesélték, annyira nem volt liszt, hogy a pártházban kokainból próbáltunk lángost sütni. Erre nem emlékszem. Meg az utána jövő két hétre sem.\n- Főnök, ez a tészta nem kel meg!",
+          "audioPath": ""
+        }
+      ],
+      "imagePath": "images/1791613405573-04_-_Zombijarvany_Magyarorszagon__Hatpanelira.jpg"
+    },
+    {
+      "id": "1791649247786-05 - Videofile3 jo.mp4",
+      "type": "video",
+      "text": "Aztán egy kisebb csoda történt. Az egyik magyar kutatóintézetben felfedezték az ellenanyagot.",
+      "audioPath": "",
+      "guides": {
+        "v": [],
+        "h": []
+      },
+      "elements": [],
+      "videoPath": "video/1791649247786-05_-_Videofile3_jo.mp4"
+    },
+    {
+      "id": "1791562819402-06 - Zombiantidotum és kapzsi hatalom.jpg",
+      "type": "image",
+      "text": "",
+      "audioPath": "",
+      "guides": {
+        "v": [],
+        "h": []
+      },
+      "elements": [
+        {
+          "id": 1,
+          "type": "Kép",
+          "x1": 4,
+          "y1": 4,
+          "x2": 359,
+          "y2": 436,
+          "content": "Magyar kutatók felfedezték a zombikór ellenszerét!",
+          "audioPath": ""
+        },
+        {
+          "id": 2,
+          "type": "Kép",
+          "x1": 376,
+          "y1": 2,
+          "x2": 702,
+          "y2": 432,
+          "content": "A levegőbe permetezve a Z anyagot megállítható a vírus terjedése.",
+          "audioPath": ""
+        },
+        {
+          "id": 3,
+          "type": "Kép",
+          "x1": 719,
+          "y1": 4,
+          "x2": 1018,
+          "y2": 432,
+          "content": "Átadják a licencjogokat a világ összes gyógyszergyárának.",
+          "audioPath": ""
+        },
+        {
+          "id": 4,
+          "type": "Kép",
+          "x1": 6,
+          "y1": 449,
+          "x2": 337,
+          "y2": 982,
+          "content": "",
+          "audioPath": ""
+        },
+        {
+          "id": 5,
+          "type": "Kép",
+          "x1": 356,
+          "y1": 449,
+          "x2": 663,
+          "y2": 980,
           "content": "",
           "audioPath": ""
         },
         {
           "id": 6,
           "type": "Kép",
-          "x1": 420,
-          "y1": 709,
-          "x2": 808,
-          "y2": 855,
-          "content": "Idegen nyelvű feliratozás.",
+          "x1": 685,
+          "y1": 451,
+          "x2": 1018,
+          "y2": 977,
+          "content": "",
           "audioPath": ""
         },
         {
           "id": 7,
           "type": "Kép",
-          "x1": 25,
-          "y1": 862,
-          "x2": 337,
-          "y2": 1219,
-          "content": "Hangeffektek, felolvasás mód.",
+          "x1": 9,
+          "y1": 992,
+          "x2": 481,
+          "y2": 1527,
+          "content": "Persze nem ingyen adtuk, ilyen jó fejek azért nem voltunk.",
           "audioPath": ""
         },
         {
           "id": 8,
           "type": "Kép",
-          "x1": 345,
-          "y1": 863,
-          "x2": 807,
-          "y2": 1223,
-          "content": "Önmagát lejátszó export a honlapodra.",
+          "x1": 507,
+          "y1": 990,
+          "x2": 1018,
+          "y2": 1532,
+          "content": "Egy biztos, még sohasem volt ilyen gazdag az ország, mindenkinek jutott a pénzből, annyi volt, hogy egyszerűen nem bírtuk mind ellopni.",
           "audioPath": ""
         }
       ],
-      "imagePath": "images/1790680342672-Kszts_egy_kpet_ami_egy_kpregny_oldala_a_kpregny_6_eltr_mret.jpg"
+      "imagePath": "images/1791562819402-06_-_Zombiantidotum_es_kapzsi_hatalom.jpg"
+    },
+    {
+      "id": "1791562820202-07 - Zombik, kormányzás és elszökött pénzeszsákok.jpg",
+      "type": "image",
+      "text": "",
+      "audioPath": "",
+      "guides": {
+        "v": [],
+        "h": []
+      },
+      "elements": [
+        {
+          "id": 1,
+          "type": "Kép",
+          "x1": 4,
+          "y1": 0,
+          "x2": 610,
+          "y2": 410,
+          "content": "De basszus, kormányozni kellett! Gyönyörűen eltűnt mindenki, amikor arról volt szó, hogy döntéseket kell hozni, felelősséget kell vállalni. Szépen magamra hagyott a pártom, vigyem el én a balhét. A pénzért bezzeg sorban álltak!\n- Hé, és dolgozni ki fog?",
+          "audioPath": ""
+        },
+        {
+          "id": 2,
+          "type": "Kép",
+          "x1": 610,
+          "y1": 0,
+          "x2": 1020,
+          "y2": 408,
+          "content": "",
+          "audioPath": ""
+        },
+        {
+          "id": 3,
+          "type": "Kép",
+          "x1": 2,
+          "y1": 419,
+          "x2": 554,
+          "y2": 803,
+          "content": "A zombik kognitív képességei növekedést mutatnak.\nA zombik 3-5 év alatt visszaváltozhatnak emberré.",
+          "audioPath": ""
+        },
+        {
+          "id": 4,
+          "type": "Kép",
+          "x1": 575,
+          "y1": 423,
+          "x2": 1020,
+          "y2": 803,
+          "content": "Tulajdonképpen azért nem irtottuk ki addig a Z-ket, mert elfogyott a lőszer. Az előző kormányok nem költöttek eleget a seregre, és ezt is én szívtam meg. De, visszatérve a helyzetre, értik, mi a probléma?",
+          "audioPath": ""
+        },
+        {
+          "id": 5,
+          "type": "Kép",
+          "x1": 2,
+          "y1": 814,
+          "x2": 554,
+          "y2": 1175,
+          "content": "Azoknak a testvéreknek, férjeknek, anyósoknak, akik elpusztítandó szörnyekké változtak, megvolt az esélyük újra testvérekké, férjekké, anyósokká válni…",
+          "audioPath": ""
+        },
+        {
+          "id": 6,
+          "type": "Kép",
+          "x1": 569,
+          "y1": 814,
+          "x2": 1018,
+          "y2": 1173,
+          "content": "…bármennyire nem hiányzott ez utóbbi senkinek.",
+          "audioPath": ""
+        },
+        {
+          "id": 8,
+          "type": "Kép",
+          "x1": 524,
+          "y1": 1182,
+          "x2": 1011,
+          "y2": 1530,
+          "content": "És akkor az ellenzéknél elgurult a gyógyszer.\n- Joguk van újra emberré válni.",
+          "audioPath": ""
+        },
+        {
+          "id": 9,
+          "type": "Kép",
+          "x1": 2,
+          "y1": 1184,
+          "x2": 502,
+          "y2": 1523,
+          "content": "A zombiölés betiltását követeli.",
+          "audioPath": ""
+        }
+      ],
+      "imagePath": "images/1791562820202-07_-_Zombik_kormanyzas_es_elszokott_penzeszsakok.jpg"
+    },
+    {
+      "id": "1791562821004-08 - Politikai zombikomédia négy panelben.jpg",
+      "type": "image",
+      "text": "",
+      "audioPath": "",
+      "guides": {
+        "v": [],
+        "h": []
+      },
+      "elements": [
+        {
+          "id": 1,
+          "type": "Kép",
+          "x1": 6,
+          "y1": 4,
+          "x2": 502,
+          "y2": 694,
+          "content": "Na most, eddig, ha a rendőr látott egyet, ott helyben fejbe durrantotta, és kész. Innentől igazoltatnia kellett. Aztán hazavinni. Igazoltattak már zomboidot?\n- Neve? Lakcíme?\n- Hrrrr…",
+          "audioPath": ""
+        },
+        {
+          "id": 2,
+          "type": "Kép",
+          "x1": 520,
+          "y1": 4,
+          "x2": 1018,
+          "y2": 690,
+          "content": "Nagyon örültünk, hogy visszakaptuk a nagypapát. Kicsit sok nyers húst eszik, és le kell kötözni, de biztosak vagyunk benne, nemsokára meggyógyul.",
+          "audioPath": ""
+        },
+        {
+          "id": 3,
+          "type": "Kép",
+          "x1": 9,
+          "y1": 711,
+          "x2": 502,
+          "y2": 1527,
+          "content": "Állami Menhely Z-korúaknak\nMajdnem minden háztartásba került Z, volt, ahová több is. Nem is beszélve szegény árva zombornyákokról, akiknek nem volt hova menni, őket össze kellett gyűjteni valahová. Én adtam át az első „árvaházat”, a többit a hülye államtitkárokra bíztam.",
+          "audioPath": ""
+        },
+        {
+          "id": 4,
+          "type": "Kép",
+          "x1": 517,
+          "y1": 709,
+          "x2": 1013,
+          "y2": 1530,
+          "content": "További fejfájást okozott, hogy az ország népességének harmada kiesett a termelésből. Hosszú éjszakákon át dolgoztam az infrastruktúra megmentésén. Így egyáltalán nem maradt energiám a korrupcióra, komoly kritikákat is kaptunk mérvadó keleti posztkommunista országoktól…\nNálatok már csúszópénz nélkül is lehet tendert nyerni?!\n",
+          "audioPath": ""
+        }
+      ],
+      "imagePath": "images/1791562821004-08_-_Politikai_zombikomedia_negy_panelben.jpg"
+    },
+    {
+      "id": "1791562821807-09 - Z-Állampolgári Jogok Szatirikus Képregénye.jpg",
+      "type": "image",
+      "text": "",
+      "audioPath": "",
+      "guides": {
+        "v": [],
+        "h": []
+      },
+      "elements": [
+        {
+          "id": 1,
+          "type": "Kép",
+          "x1": 6,
+          "y1": 4,
+          "x2": 648,
+          "y2": 391,
+          "content": "Majdnem sikerült stabilizálni a helyzetet, amikor az ellenzékben tetőzött a hülyeség, és előjöttek a zombijogokkal. Joguk van az életre, a táplálásra, ilyenek. Meg „Z állampolgár” legyen a megnevezésük, mert tulajdonképpen emberek. Lesznek. Talán. Szerencsére a Z-k egészséges párkapcsolatát nem nekem kellett biztosítani.",
+          "audioPath": ""
+        },
+        {
+          "id": 2,
+          "type": "Kép",
+          "x1": 6,
+          "y1": 9,
+          "x2": 1013,
+          "y2": 702,
+          "content": "Z IS EMBER!\nJOGOT A TÁPLÁLÁSRA!\nÉLETET A Z-KNEK!\nZ ÁLLAMPOLGÁR = EMBER\nZ-Állampolgári jogokat",
+          "audioPath": ""
+        },
+        {
+          "id": 3,
+          "type": "Kép",
+          "x1": 2,
+          "y1": 718,
+          "x2": 601,
+          "y2": 1093,
+          "content": "Hát ebből elegem van! Itt mindenki hülye? \nA következő választást el kell bukni, ha tetszik a pártnak, ha nem!",
+          "audioPath": ""
+        },
+        {
+          "id": 4,
+          "type": "Kép",
+          "x1": 2,
+          "y1": 1100,
+          "x2": 595,
+          "y2": 1532,
+          "content": "Ennek érdekében először is az ellenzék összes hülyeségét elfogadtuk. Persze ez nem járt következmények nélkül, az első ország lettünk, ahol törvénybe iktatták a zombijogokat…",
+          "audioPath": ""
+        },
+        {
+          "id": 5,
+          "type": "Kép",
+          "x1": 612,
+          "y1": 722,
+          "x2": 1015,
+          "y2": 1532,
+          "content": "…én meg az év embere lettem a magazinban. Gandhi, Gorbacsov, Hitler, én, szép egy társaság, égett is miattam a család.",
+          "audioPath": ""
+        }
+      ],
+      "imagePath": "images/1791562821807-09_-_Z-Allampolgari_Jogok_Szatirikus_Kepregenye.jpg"
+    },
+    {
+      "id": "1791562822680-10 - Zombihírek budapesti szatírája.jpg",
+      "type": "image",
+      "text": "",
+      "audioPath": "",
+      "guides": {
+        "v": [],
+        "h": []
+      },
+      "elements": [
+        {
+          "id": 1,
+          "type": "Kép",
+          "x1": 4,
+          "y1": 6,
+          "x2": 500,
+          "y2": 509,
+          "content": "Küldjük haza a külföldi Z-ket!\nEgyre több külföldi Z érkezik az országba. A kormány vizsgálja a hazaküldésük lehetőségét.",
+          "audioPath": ""
+        },
+        {
+          "id": 2,
+          "type": "Kép",
+          "x1": 522,
+          "y1": 4,
+          "x2": 1018,
+          "y2": 505,
+          "content": "Bűncselekmény a Z állampolgárokkal való bármilyen szexuális tevékenységet…\nKórházi zárójelentés (részlet)\nOlyan aranyos volt, aztán elkezdtünk franciázni...",
+          "audioPath": ""
+        },
+        {
+          "id": 3,
+          "type": "Kép",
+          "x1": 4,
+          "y1": 518,
+          "x2": 500,
+          "y2": 885,
+          "content": "Kiegészült a zombimunka szabályaival a törvénykönyve.Új szabályok a munkaerőpiacon - a Z állampolgárok is dolgozhatnak\n",
+          "audioPath": ""
+        },
+        {
+          "id": 4,
+          "type": "Kép",
+          "x1": 517,
+          "y1": 520,
+          "x2": 1018,
+          "y2": 879,
+          "content": "Ki fizesse a Z állampolgárok Tb-jét?\nSzakértők szerint több százmilliárdos teher lehet az államnak a zombik egészségügyi ellátása.",
+          "audioPath": ""
+        },
+        {
+          "id": 5,
+          "type": "Kép",
+          "x1": 2,
+          "y1": 896,
+          "x2": 650,
+          "y2": 1530,
+          "content": "Még zombipornó botrány is volt.",
+          "audioPath": ""
+        },
+        {
+          "id": 6,
+          "type": "Kép",
+          "x1": 502,
+          "y1": 892,
+          "x2": 1013,
+          "y2": 1532,
+          "content": "...akkor esett a Dunába a laptopom. \nVéletlenül.",
+          "audioPath": ""
+        }
+      ],
+      "imagePath": "images/1791562822680-10_-_Zombihirek_budapesti_szatiraja.jpg"
+    },
+    {
+      "id": "1791649220633-11 - videofile, jo.mp4",
+      "type": "video",
+      "text": "Ráadásul a köztársasági elnök több törvényt tépett szét, mint írt alá, mert egyike volt az elsőknek, akik elkapták a kórt, és lekötözve tartottuk az irodájában. Az ellenzék szerencsére nem jött rá. Így derült ki az is, hogy senki sem nézi az újévi köszöntőt.",
+      "audioPath": "",
+      "guides": {
+        "v": [],
+        "h": []
+      },
+      "elements": [],
+      "videoPath": "video/1791649220633-11_-_videofile_jo.mp4"
+    },
+    {
+      "id": "1791563475301-12 - Zombik, választás és politikai káosz.jpg",
+      "type": "image",
+      "text": "",
+      "audioPath": "",
+      "guides": {
+        "v": [],
+        "h": []
+      },
+      "elements": [
+        {
+          "id": 1,
+          "type": "Kép",
+          "x1": 6,
+          "y1": 0,
+          "x2": 374,
+          "y2": 352,
+          "content": "A zombikból üzlet lett\nA legtisztább Z eledel 100% marhahúsból\nZ-nap a gyógyfürdőben\nÚj Z funkciók a legújabb telefonon",
+          "audioPath": ""
+        },
+        {
+          "id": 2,
+          "type": "Kép",
+          "x1": 391,
+          "y1": 0,
+          "x2": 681,
+          "y2": 348,
+          "content": "Zombisport\nKovács Z László megdöntötte a futórekordot a Z derbin.\nÚjabb Z debütált ketrecharcban.",
+          "audioPath": ""
+        },
+        {
+          "id": 3,
+          "type": "Kép",
+          "x1": 689,
+          "y1": 0,
+          "x2": 1020,
+          "y2": 346,
+          "content": "Társadalmi kérdések\nA Z állampolgárokat újra oktatni kell.\nLegyen-e szavazójoga a Z állampolgároknak?\nKi képviselje a Z-ket az új testületben?",
+          "audioPath": ""
+        },
+        {
+          "id": 4,
+          "type": "Kép",
+          "x1": 2,
+          "y1": 361,
+          "x2": 369,
+          "y2": 788,
+          "content": "Akkor már nagyon mehetnékem volt a politikából, ennyi hülyeséget még senki sem kapott a nyakába négy év alatt.",
+          "audioPath": ""
+        },
+        {
+          "id": 5,
+          "type": "Kép",
+          "x1": 391,
+          "y1": 363,
+          "x2": 659,
+          "y2": 780,
+          "content": "Nagyon készültem a bukásra, hatalmas taktikát találtam ki: egyszerűen elkéssük a választási törvény szerinti határidőt a jelölések leadásával, így ha akarnánk, sem tudnánk megnyerni a választást, mivel senki sem indul közülünk. Volt néhány szövetségesem a pártban, de így is saját kezemmel zártam rá az ajtót a srácokra, hogy ne tudjanak elindulni a papírokkal. Aztán csak várni kellett. A percek óráknak tűntek, az órák napoknak, végül eljött a határidő, és mi nem adtunk be semmit. Bekészítettem egy ünnepi csík kólát a tévé elé, úgy vártam, hogy az ellenzék vezére bejelenti a győzelmüket.",
+          "audioPath": ""
+        },
+        {
+          "id": 6,
+          "type": "Kép",
+          "x1": 665,
+          "y1": 361,
+          "x2": 1018,
+          "y2": 780,
+          "content": "Választási iroda",
+          "audioPath": ""
+        },
+        {
+          "id": 7,
+          "type": "Kép",
+          "x1": 9,
+          "y1": 797,
+          "x2": 511,
+          "y2": 1087,
+          "content": "",
+          "audioPath": ""
+        },
+        {
+          "id": 8,
+          "type": "Kép",
+          "x1": 492,
+          "y1": 795,
+          "x2": 1018,
+          "y2": 1100,
+          "content": "Az ellenzék és a kormány is lekéste a leadási határidőt. \nA kormány még legalább fél évig ideiglenesen hatalmon marad.",
+          "audioPath": ""
+        },
+        {
+          "id": 9,
+          "type": "Kép",
+          "x1": 4,
+          "y1": 1100,
+          "x2": 1018,
+          "y2": 1534,
+          "content": "Anyád!",
+          "audioPath": ""
+        }
+      ],
+      "imagePath": "images/1791563475301-12_-_Zombik_valasztas_es_politikai_kaosz.jpg"
     },
     {
       "id": "_credits",
@@ -187,7 +895,183 @@ window.MAGAZINE_DATA = {
         "v": [],
         "h": []
       },
-      "text": "Készült a Magazinszerkesztő programmal"
+      "text": ""
+    }
+  ],
+  "translations": {
+    "de": {
+      "1791562815421-01 - Zéország_ A zombiinvázió története.jpg": "Nach einer Erzählung von George Colt\nZÉORSZÁG\nDie große Zombie-Invasion in Ungarn\nPolitische Sci-Fi-Satire\n",
+      "1791562815421-01 - Zéország_ A zombiinvázió története.jpg:1": "Der Demo-Comic von Zoomcomic FX. Nach George Colts Erzählung „Die letzten vier Jahre“, erstellt mithilfe von KI. Er dient nicht nur der Unterhaltung, sondern zeigt auch die Möglichkeiten von Zoomcomic FX. Alle Figuren und Ereignisse sind frei erfunden.",
+      "1791613403856-02 - Fáradt politikus, graffitizett kampányplakát.jpg:1": "Noch nie wollte ein Ministerpräsident eine Wahl so sehr verlieren wie ich jetzt. Aber das ist eine lange Geschichte …",
+      "1791613403856-02 - Fáradt politikus, graffitizett kampányplakát.jpg:2": "Vor vier Jahren, im Wahlkampf, war noch alles wunderbar. Mein Gesicht prangte im ganzen Land.\nWählt uns, dann wird alles besser!\nFür euch.",
+      "1791613404775-03 - A hatalom ára a választók felett.jpg:1": "Viele gingen wählen …",
+      "1791613404775-03 - A hatalom ára a választók felett.jpg:2": "… aber viele spielen auch Lotto. Die Wähler hier sind eben Optimisten und glauben, damit ihr Schicksal ändern zu können.",
+      "1791613404775-03 - A hatalom ára a választók felett.jpg:3": "Wir hatten gewonnen! Bei meiner Amtseinführung lächelte ich in die Kameras, bereit, das Land im Interesse jener zu führen …",
+      "1791613404775-03 - A hatalom ára a választók felett.jpg:4": "… die meinen Wahlkampf finanziert hatten.",
+      "1791613404775-03 - A hatalom ára a választók felett.jpg:5": "Und natürlich wollte ich auch mein eigenes Konto ordentlich füllen.",
+      "1791613404775-03 - A hatalom ára a választók felett.jpg:6": "Und die Wähler? Die waren mir von da an nur noch lästig.",
+      "1791613405573-04 - Zombijárvány Magyarországon_ Hatpanelira.jpg:1": "Alles lief glatt, bis jemand in China ein neues Rezept ausprobierte.",
+      "1791613405573-04 - Zombijárvány Magyarországon_ Hatpanelira.jpg:2": "Anfangs waren wir sogar froh, dass die Nachrichten endlich nicht mehr von unseren kleinen Affären handelten.\nZombies in Amerika!\n– Was haben die denn geraucht?\n– Will ich auch!",
+      "1791613405573-04 - Zombijárvány Magyarországon_ Hatpanelira.jpg:3": "Doch noch im selben Winter brach das Chaos aus …",
+      "1791613405573-04 - Zombijárvány Magyarországon_ Hatpanelira.jpg:4": "… und ehe wir uns versahen, war ich Ministerpräsident von sechs Millionen Ungarn und drei Millionen Zombies. Darauf hätte ich gern verzichtet.",
+      "1791613405573-04 - Zombijárvány Magyarországon_ Hatpanelira.jpg:5": "Die Lieferketten brachen zusammen, die Supermarktregale waren leer.",
+      "1791613405573-04 - Zombijárvány Magyarországon_ Hatpanelira.jpg:6": "Angeblich war Mehl so knapp, dass wir in der Parteizentrale versuchten, Lángos aus Kokain zu backen. Daran erinnere ich mich nicht. An die folgenden zwei Wochen auch nicht.\n– Chef, der Teig geht nicht auf!",
+      "1791649247786-05 - Videofile3 jo.mp4": "Dann geschah ein kleines Wunder. Ein ungarisches Forschungsinstitut entdeckte ein Gegenmittel.",
+      "1791562819402-06 - Zombiantidotum és kapzsi hatalom.jpg:1": "Ungarische Forscher entdecken Mittel gegen die Zombie-Seuche!",
+      "1791562819402-06 - Zombiantidotum és kapzsi hatalom.jpg:2": "In die Luft gesprüht stoppt der Z-Stoff die Ausbreitung des Virus.",
+      "1791562819402-06 - Zombiantidotum és kapzsi hatalom.jpg:3": "Die Lizenzen gehen an alle Pharmakonzerne weltweit.",
+      "1791562819402-06 - Zombiantidotum és kapzsi hatalom.jpg:7": "Natürlich nicht gratis. So nett waren wir nun auch wieder nicht.",
+      "1791562819402-06 - Zombiantidotum és kapzsi hatalom.jpg:8": "Fest steht: Noch nie war das Land so reich. Jeder bekam etwas ab. Es war so viel Geld, dass wir unmöglich alles stehlen konnten.",
+      "1791562820202-07 - Zombik, kormányzás és elszökött pénzeszsákok.jpg:1": "Aber verdammt, irgendwer musste regieren! Sobald Entscheidungen und Verantwortung gefragt waren, verschwanden alle. Meine Partei ließ mich allein den Kopf hinhalten. Beim Geldkassieren standen sie dagegen Schlange!\n– Hey, und wer macht die Arbeit?",
+      "1791562820202-07 - Zombik, kormányzás és elszökött pénzeszsákok.jpg:3": "Die kognitiven Fähigkeiten der Zombies verbessern sich.\nZombies könnten binnen 3–5 Jahren wieder Menschen werden.",
+      "1791562820202-07 - Zombik, kormányzás és elszökött pénzeszsákok.jpg:4": "Eigentlich hatten wir die Zs nur deshalb nicht ausgerottet, weil uns die Munition ausgegangen war. Die Vorgängerregierungen hatten beim Militär gespart, und ich durfte es ausbaden. Aber verstehen Sie jetzt das Problem?",
+      "1791562820202-07 - Zombik, kormányzás és elszökött pénzeszsákok.jpg:5": "Brüder, Ehemänner und Schwiegermütter, die zu Monstern geworden waren, konnten wieder Brüder, Ehemänner und Schwiegermütter werden …",
+      "1791562820202-07 - Zombik, kormányzás és elszökött pénzeszsákok.jpg:6": "… auch wenn Letztere wirklich niemand vermisst hatte.",
+      "1791562820202-07 - Zombik, kormányzás és elszökött pénzeszsákok.jpg:8": "Und dann drehte die Opposition völlig durch.\n– Sie haben das Recht, wieder Menschen zu werden!",
+      "1791562820202-07 - Zombik, kormányzás és elszökött pénzeszsákok.jpg:9": "Sie fordert ein Verbot der Zombie-Tötung.",
+      "1791562821004-08 - Politikai zombikomédia négy panelben.jpg:1": "Früher schoss ein Polizist einem Zombie einfach in den Kopf. Fertig. Jetzt musste er erst die Personalien prüfen. Und ihn dann nach Hause bringen. Haben Sie je einen Zombie kontrolliert?\n– Name? Adresse?\n– Hrrrr …",
+      "1791562821004-08 - Politikai zombikomédia négy panelben.jpg:2": "Wir sind überglücklich, Opa wiederzuhaben. Er isst etwas viel rohes Fleisch und wir müssen ihn fesseln, aber bald wird er bestimmt gesund.",
+      "1791562821004-08 - Politikai zombikomédia négy panelben.jpg:3": "Staatliches Heim für Z-Senioren\nFast jeder Haushalt hatte nun einen Z, manche sogar mehrere. Dazu kamen die armen verwaisten Zombiekinder ohne Zuhause. Die mussten wir irgendwo unterbringen. Das erste „Waisenhaus“ eröffnete ich selbst, den Rest überließ ich meinen idiotischen Staatssekretären.",
+      "1791562821004-08 - Politikai zombikomédia négy panelben.jpg:4": "Dazu fiel ein Drittel der Bevölkerung als Arbeitskraft aus. Nächtelang arbeitete ich daran, die Infrastruktur zu retten. Für Korruption blieb mir keine Kraft. Dafür hagelte es Kritik aus führenden postkommunistischen Ländern des Ostens …\nBei euch kann man Ausschreibungen jetzt ohne Schmiergeld gewinnen?!\n",
+      "1791562821807-09 - Z-Állampolgári Jogok Szatirikus Képregénye.jpg:1": "Kaum war die Lage stabil, erreichte der Irrsinn der Opposition einen neuen Höhepunkt: Zombierechte! Recht auf Leben, auf Nahrung und so weiter. Sie sollten „Z-Bürger“ heißen, schließlich seien sie Menschen. Irgendwann. Vielleicht. Zum Glück musste ich nicht auch noch für ein gesundes Liebesleben der Zs sorgen.",
+      "1791562821807-09 - Z-Állampolgári Jogok Szatirikus Képregénye.jpg:2": "Z SIND MENSCHEN!\nRECHT AUF NAHRUNG!\nLEBEN FÜR DIE Zs!\nZ-BÜRGER = MENSCH\nBÜRGERRECHTE FÜR Zs",
+      "1791562821807-09 - Z-Állampolgári Jogok Szatirikus Képregénye.jpg:3": "Jetzt reicht’s! Sind hier alle bescheuert?\nWir müssen die nächste Wahl verlieren, ob es der Partei passt oder nicht!",
+      "1791562821807-09 - Z-Állampolgári Jogok Szatirikus Képregénye.jpg:4": "Also setzten wir erst mal jeden Unsinn der Opposition um. Nicht ohne Folgen: Wir waren das erste Land, das Zombierechte gesetzlich verankerte …",
+      "1791562821807-09 - Z-Állampolgári Jogok Szatirikus Képregénye.jpg:5": "… und ich wurde vom Magazin zur Person des Jahres gekürt. Gandhi, Gorbatschow, Hitler, ich – tolle Gesellschaft. Meine Familie schämte sich in Grund und Boden.",
+      "1791562822680-10 - Zombihírek budapesti szatírája.jpg:1": "Ausländische Zs nach Hause schicken!\nImmer mehr ausländische Zs kommen ins Land. Die Regierung prüft ihre Rückführung.",
+      "1791562822680-10 - Zombihírek budapesti szatírája.jpg:2": "Jede sexuelle Handlung mit Z-Bürgern ist strafbar …\nKrankenhausbericht (Auszug)\nEr war so süß, und dann fingen wir an, uns zu küssen …",
+      "1791562822680-10 - Zombihírek budapesti szatírája.jpg:3": "Arbeitsrecht um Regeln für Zombie-Arbeit ergänzt. Neue Regeln am Arbeitsmarkt – auch Z-Bürger dürfen arbeiten.\n",
+      "1791562822680-10 - Zombihírek budapesti szatírája.jpg:4": "Wer zahlt die Krankenversicherung der Z-Bürger?\nExperten rechnen mit Gesundheitskosten in dreistelliger Milliardenhöhe für den Staat.",
+      "1791562822680-10 - Zombihírek budapesti szatírája.jpg:5": "Sogar einen Zombie-Porno-Skandal gab es.",
+      "1791562822680-10 - Zombihírek budapesti szatírája.jpg:6": "… da fiel mein Laptop in die Donau.\nAus Versehen.",
+      "1791649220633-11 - videofile, jo.mp4": "Außerdem zerriss der Staatspräsident mehr Gesetze, als er unterschrieb. Er gehörte zu den ersten Infizierten, und wir hielten ihn gefesselt in seinem Büro. Zum Glück merkte die Opposition nichts. So fanden wir auch heraus, dass niemand seine Neujahrsansprache anschaut.",
+      "1791563475301-12 - Zombik, választás és politikai káosz.jpg:1": "Zombies werden zum Geschäft\nReinstes Z-Futter aus 100 % Rindfleisch\nZ-Tag im Thermalbad\nNeue Z-Funktionen fürs neueste Smartphone",
+      "1791563475301-12 - Zombik, választás és politikai káosz.jpg:2": "Zombiesport\nLászló Kovács Z bricht den Laufrekord beim Z-Derby.\nEin weiterer Z debütiert im Käfigkampf.",
+      "1791563475301-12 - Zombik, választás és politikai káosz.jpg:3": "Gesellschaftliche Fragen\nZ-Bürger müssen neu unterrichtet werden.\nSollen Z-Bürger wählen dürfen?\nWer vertritt die Zs im neuen Gremium?",
+      "1791563475301-12 - Zombik, választás és politikai káosz.jpg:4": "Damals wollte ich nur noch raus aus der Politik. So viel Schwachsinn hatte noch niemand in vier Jahren ertragen müssen.",
+      "1791563475301-12 - Zombik, választás és politikai káosz.jpg:5": "Ich bereitete meine Niederlage sorgfältig vor. Mein genialer Plan: Wir lassen die Frist zur Einreichung der Kandidaturen verstreichen. Ohne Kandidaten können wir die Wahl unmöglich gewinnen! Einige Parteifreunde waren eingeweiht. Trotzdem schloss ich die Jungs eigenhändig ein, damit sie die Unterlagen nicht abgeben konnten. Dann hieß es warten. Minuten wurden zu Stunden, Stunden zu Tagen. Endlich war die Frist vorbei. Wir hatten nichts eingereicht. Vor dem Fernseher legte ich mir zur Feier eine Line Koks zurecht und wartete auf die Siegesrede des Oppositionsführers.",
+      "1791563475301-12 - Zombik, választás és politikai káosz.jpg:6": "Wahlbüro",
+      "1791563475301-12 - Zombik, választás és politikai káosz.jpg:8": "Regierung und Opposition haben beide die Einreichungsfrist verpasst.\nDie Regierung bleibt mindestens ein weiteres halbes Jahr kommissarisch im Amt.",
+      "1791563475301-12 - Zombik, választás és politikai káosz.jpg:9": "Leck mich!"
+    },
+    "en": {
+      "1791562815421-01 - Zéország_ A zombiinvázió története.jpg": "Based on a story by George Colt\nZ-LAND\nThe Great Hungarian Zombie Invasion\nA Political Sci-Fi Satire\n",
+      "1791562815421-01 - Zéország_ A zombiinvázió története.jpg:1": "A Zoomcomic FX demo comic, adapted with AI from George Colt's short story The Past Four Years. Created to entertain and showcase Zoomcomic FX. All characters and events are fictional.",
+      "1791613403856-02 - Fáradt politikus, graffitizett kampányplakát.jpg:1": "No prime minister has ever wanted to lose an election as badly as I do now. But that's a long story…",
+      "1791613403856-02 - Fáradt politikus, graffitizett kampányplakát.jpg:2": "Four years ago, during the campaign, life was good. My face was everywhere.\nVote for us! Things will get better!\nFor you",
+      "1791613404775-03 - A hatalom ára a választók felett.jpg:1": "People turned out to vote…",
+      "1791613404775-03 - A hatalom ára a választók felett.jpg:2": "…but people buy lottery tickets too. Our voters are born optimists. They think a ticket can change their lives.",
+      "1791613404775-03 - A hatalom ára a választók felett.jpg:3": "We won! At my inauguration, I smiled for the cameras, ready to govern in the interests of those…",
+      "1791613404775-03 - A hatalom ára a választók felett.jpg:4": "…who'd funded my campaign.",
+      "1791613404775-03 - A hatalom ára a választók felett.jpg:5": "And, naturally, to make my own bank account grow.",
+      "1791613404775-03 - A hatalom ára a választók felett.jpg:6": "The voters? From then on, they were just a nuisance.",
+      "1791613405573-04 - Zombijárvány Magyarországon_ Hatpanelira.jpg:1": "Everything went smoothly until someone in China tried a new recipe.",
+      "1791613405573-04 - Zombijárvány Magyarországon_ Hatpanelira.jpg:2": "At first, we were glad the news wasn't about our little scandals for once.\nZombies in America!\n- What are those guys smoking?\n- I want some!",
+      "1791613405573-04 - Zombijárvány Magyarországon_ Hatpanelira.jpg:3": "But that very winter, all hell broke loose…",
+      "1791613405573-04 - Zombijárvány Magyarországon_ Hatpanelira.jpg:4": "…and before I knew it, I was prime minister of six million Hungarians and three million zombies. Just what I needed.",
+      "1791613405573-04 - Zombijárvány Magyarországon_ Hatpanelira.jpg:5": "Supply chains collapsed. Store shelves went bare.",
+      "1791613405573-04 - Zombijárvány Magyarországon_ Hatpanelira.jpg:6": "They say flour was so scarce we tried making lángos with cocaine at party headquarters. I don't remember that. Or the next two weeks.\n- Boss, this dough won't rise!",
+      "1791649247786-05 - Videofile3 jo.mp4": "Then a small miracle happened. A Hungarian research institute discovered an antidote.",
+      "1791562819402-06 - Zombiantidotum és kapzsi hatalom.jpg:1": "Hungarian scientists discover cure for zombie disease!",
+      "1791562819402-06 - Zombiantidotum és kapzsi hatalom.jpg:2": "Spraying Substance Z into the air can stop the virus spreading.",
+      "1791562819402-06 - Zombiantidotum és kapzsi hatalom.jpg:3": "Licensing rights offered to every pharmaceutical company worldwide.",
+      "1791562819402-06 - Zombiantidotum és kapzsi hatalom.jpg:7": "Not for free, of course. We weren't that generous.",
+      "1791562819402-06 - Zombiantidotum és kapzsi hatalom.jpg:8": "One thing's certain: the country had never been richer. There was money for everyone. So much that we couldn't steal it all.",
+      "1791562820202-07 - Zombik, kormányzás és elszökött pénzeszsákok.jpg:1": "But damn it, someone had to govern! Everyone vanished when decisions and responsibility came up. My party left me holding the bag. But they lined up for the money!\n- Hey! Who's going to do the work?",
+      "1791562820202-07 - Zombik, kormányzás és elszökött pénzeszsákok.jpg:3": "Zombie cognitive abilities are improving.\nZombies may become human again within 3–5 years.",
+      "1791562820202-07 - Zombik, kormányzás és elszökött pénzeszsákok.jpg:4": "Truth is, we hadn't wiped out the Zs because we'd run out of ammunition. Previous governments had skimped on the army, and I paid the price. But back to the point. See the problem?",
+      "1791562820202-07 - Zombik, kormányzás és elszökött pénzeszsákok.jpg:5": "Those brothers, husbands and mothers-in-law who'd turned into monsters we had to destroy might become brothers, husbands and mothers-in-law again…",
+      "1791562820202-07 - Zombik, kormányzás és elszökött pénzeszsákok.jpg:6": "…though nobody was looking forward to that last part.",
+      "1791562820202-07 - Zombik, kormányzás és elszökött pénzeszsákok.jpg:8": "Then the opposition went completely nuts.\n- They have the right to become human again.",
+      "1791562820202-07 - Zombik, kormányzás és elszökött pénzeszsákok.jpg:9": "Demands ban on killing zombies.",
+      "1791562821004-08 - Politikai zombikomédia négy panelben.jpg:1": "Before, a cop spotted a zombie, shot it in the head, end of story. Now he had to check its ID. Then take it home. Ever tried ID-checking a zombie?\n- Name? Address?\n- Grrrr…",
+      "1791562821004-08 - Politikai zombikomédia négy panelben.jpg:2": "We're thrilled to have Grandpa back. He eats a lot of raw meat and we have to tie him down, but we're sure he'll recover soon.",
+      "1791562821004-08 - Politikai zombikomédia négy panelben.jpg:3": "State Shelter for Zs\nAlmost every household had a Z, sometimes several. And the poor orphaned zombies had nowhere to go, so we had to house them. I opened the first 'orphanage' and left the rest to my idiot junior ministers.",
+      "1791562821004-08 - Politikai zombikomédia négy panelben.jpg:4": "Another headache: a third of the population was out of the workforce. I spent endless nights saving the infrastructure, leaving no energy for corruption. We even drew harsh criticism from respected Eastern post-communist states…\nYou can win government contracts without bribes now?!\n",
+      "1791562821807-09 - Z-Állampolgári Jogok Szatirikus Képregénye.jpg:1": "We'd nearly stabilized things when the opposition reached peak stupidity and demanded zombie rights. The right to life, to food, and so on. And we had to call them 'Z citizens', because they were basically human. Or would be. Maybe. Luckily, providing healthy relationships for Zs wasn't my job.",
+      "1791562821807-09 - Z-Állampolgári Jogok Szatirikus Képregénye.jpg:2": "ZS ARE PEOPLE TOO!\nTHE RIGHT TO BE FED!\nLET ZS LIVE!\nZ CITIZEN = HUMAN\nRIGHTS FOR Z CITIZENS",
+      "1791562821807-09 - Z-Állampolgári Jogok Szatirikus Képregénye.jpg:3": "I've had enough! Is everyone an idiot?\nWe have to lose the next election, whether my party likes it or not!",
+      "1791562821807-09 - Z-Állampolgári Jogok Szatirikus Képregénye.jpg:4": "So first we agreed to every stupid opposition demand. That had consequences, of course. We became the first country to enshrine zombie rights in law…",
+      "1791562821807-09 - Z-Állampolgári Jogok Szatirikus Képregénye.jpg:5": "…and I became the magazine's Person of the Year. Gandhi, Gorbachev, Hitler, me. Fine company. My family was mortified.",
+      "1791562822680-10 - Zombihírek budapesti szatírája.jpg:1": "Send foreign Zs home!\nMore foreign Zs are entering the country. The government is considering deportations.",
+      "1791562822680-10 - Zombihírek budapesti szatírája.jpg:2": "All sexual activity with Z citizens is now a criminal offense…\nHospital discharge report (excerpt)\nHe was so cute, then we started French kissing…",
+      "1791562822680-10 - Zombihírek budapesti szatírája.jpg:3": "Labor law now covers zombie employment. New labor-market rules: Z citizens can work too.\n",
+      "1791562822680-10 - Zombihírek budapesti szatírája.jpg:4": "Who pays for Z citizens' healthcare?\nExperts warn zombie healthcare could cost the state hundreds of billions.",
+      "1791562822680-10 - Zombihírek budapesti szatírája.jpg:5": "There was even a zombie porn scandal.",
+      "1791562822680-10 - Zombihírek budapesti szatírája.jpg:6": "…that's when my laptop fell into the Danube.\nBy accident.",
+      "1791649220633-11 - videofile, jo.mp4": "On top of that, the president tore up more laws than he signed. He was among the first infected, and we kept him tied up in his office. Luckily, the opposition never noticed. That's how we learned nobody watches the New Year's address.",
+      "1791563475301-12 - Zombik, választás és politikai káosz.jpg:1": "Zombies mean business\nPurest Z food: 100% beef\nZ Day at the thermal baths\nNew Z features on the latest phone",
+      "1791563475301-12 - Zombik, választás és politikai káosz.jpg:2": "Zombie sports\nLászló Z. Kovács breaks running record at Z Derby.\nAnother Z makes cage-fighting debut.",
+      "1791563475301-12 - Zombik, választás és politikai káosz.jpg:3": "Social issues\nZ citizens need re-education.\nShould Z citizens have the vote?\nWho will represent Zs on the new council?",
+      "1791563475301-12 - Zombik, választás és politikai káosz.jpg:4": "By then I was desperate to quit politics. Nobody had dealt with so much bullshit in four years.",
+      "1791563475301-12 - Zombik, választás és politikai káosz.jpg:5": "I had a brilliant plan to lose: miss the legal deadline for submitting our candidates. Then we couldn't win even if we wanted to, because none of us would be running. A few party allies were in on it, but I still had to lock the guys in myself to stop them filing the papers. Then we waited. Minutes felt like hours, hours like days. Finally the deadline passed. We'd filed nothing. I laid out a celebratory line of coke in front of the TV and waited for the opposition leader to declare victory.",
+      "1791563475301-12 - Zombik, választás és politikai káosz.jpg:6": "Election Office",
+      "1791563475301-12 - Zombik, választás és politikai káosz.jpg:8": "Both opposition and government miss nomination deadline.\nGovernment to remain in caretaker office for at least six more months.",
+      "1791563475301-12 - Zombik, választás és politikai káosz.jpg:9": "Motherfucker!"
+    },
+    "ru": {
+      "1791562815421-01 - Zéország_ A zombiinvázió története.jpg": "По мотивам рассказа Джорджа Кольта\nЗЕСТРАНА\nИстория великого нашествия зомби в Венгрии\nПолитическая научно-фантастическая сатира\n",
+      "1791562815421-01 - Zéország_ A zombiinvázió története.jpg:1": "Демонстрационный комикс Zoomcomic FX. Создан с помощью ИИ по рассказу Джорджа Кольта «Последние четыре года». Он не только развлекает, но и показывает возможности Zoomcomic FX. Все персонажи и события вымышлены.",
+      "1791613403856-02 - Fáradt politikus, graffitizett kampányplakát.jpg:1": "Ни один премьер-министр ещё не мечтал так сильно проиграть выборы, как я сейчас. Но это долгая история…",
+      "1791613403856-02 - Fáradt politikus, graffitizett kampányplakát.jpg:2": "Четыре года назад, во время кампании, всё было прекрасно. Моё лицо красовалось по всей стране.\nГолосуйте за нас — и жизнь станет лучше!\nДля вас",
+      "1791613404775-03 - A hatalom ára a választók felett.jpg:1": "Многие пошли голосовать…",
+      "1791613404775-03 - A hatalom ára a választók felett.jpg:2": "…но ведь и лотерейные билеты многие покупают. У нас живут неисправимые оптимисты: верят, что это изменит их судьбу.",
+      "1791613404775-03 - A hatalom ára a választók felett.jpg:3": "Мы победили! На инаугурации я улыбался под вспышками камер, готовый править страной в интересах тех…",
+      "1791613404775-03 - A hatalom ára a választók felett.jpg:4": "…кто оплатил мою кампанию.",
+      "1791613404775-03 - A hatalom ára a választók felett.jpg:5": "Разумеется, не забывая пополнять собственный банковский счёт.",
+      "1791613404775-03 - A hatalom ára a választók felett.jpg:6": "А избиратели? С тех пор они только мешали.",
+      "1791613405573-04 - Zombijárvány Magyarországon_ Hatpanelira.jpg:1": "Всё шло гладко, пока кто-то в Китае не решил попробовать новый рецепт.",
+      "1791613405573-04 - Zombijárvány Magyarországon_ Hatpanelira.jpg:2": "Сначала мы даже радовались: наконец новости были не о наших мелких делишках.\nЗомби в Америке!\n— Что они там курили?\n— Мне тоже дайте!",
+      "1791613405573-04 - Zombijárvány Magyarországon_ Hatpanelira.jpg:3": "Но уже той зимой грянула беда…",
+      "1791613405573-04 - Zombijárvány Magyarországon_ Hatpanelira.jpg:4": "…и не успел я опомниться, как стал премьером шести миллионов венгров и трёх миллионов зомби. Только этого мне не хватало.",
+      "1791613405573-04 - Zombijárvány Magyarországon_ Hatpanelira.jpg:5": "Цепочки поставок рухнули, полки магазинов опустели.",
+      "1791613405573-04 - Zombijárvány Magyarországon_ Hatpanelira.jpg:6": "Говорят, муки не было настолько, что в штаб-квартире партии мы пытались жарить лангош из кокаина. Не помню. Как и следующие две недели.\n— Шеф, тесто не поднимается!",
+      "1791649247786-05 - Videofile3 jo.mp4": "А потом случилось маленькое чудо. В одном венгерском институте нашли противоядие.",
+      "1791562819402-06 - Zombiantidotum és kapzsi hatalom.jpg:1": "Венгерские учёные нашли лекарство от зомби-вируса!",
+      "1791562819402-06 - Zombiantidotum és kapzsi hatalom.jpg:2": "Если распылить вещество Z в воздухе, распространение вируса остановится.",
+      "1791562819402-06 - Zombiantidotum és kapzsi hatalom.jpg:3": "Лицензии передадут всем фармкомпаниям мира.",
+      "1791562819402-06 - Zombiantidotum és kapzsi hatalom.jpg:7": "Конечно, не бесплатно. Не такие уж мы добряки.",
+      "1791562819402-06 - Zombiantidotum és kapzsi hatalom.jpg:8": "Одно точно: страна ещё никогда не была так богата. Денег хватило всем — их было столько, что мы просто не успевали всё разворовать.",
+      "1791562820202-07 - Zombik, kormányzás és elszökött pénzeszsákok.jpg:1": "Но, чёрт возьми, надо было ещё управлять страной! Как только понадобилось принимать решения и отвечать за них, все испарились. Партия бросила меня разгребать последствия. Зато за деньгами стояли в очереди!\n— Эй, а работать кто будет?",
+      "1791562820202-07 - Zombik, kormányzás és elszökött pénzeszsákok.jpg:3": "У зомби улучшаются когнитивные способности.\nЧерез 3–5 лет зомби могут снова стать людьми.",
+      "1791562820202-07 - Zombik, kormányzás és elszökött pénzeszsákok.jpg:4": "Вообще-то мы не перебили всех Z лишь потому, что кончились патроны. Предыдущие правительства экономили на армии, а расхлёбывать пришлось мне. Но вернёмся к делу. Понимаете, в чём проблема?",
+      "1791562820202-07 - Zombik, kormányzás és elszökött pénzeszsákok.jpg:5": "Братья, мужья и тёщи, превратившиеся в чудовищ, которых следовало уничтожить, получили шанс снова стать братьями, мужьями и тёщами…",
+      "1791562820202-07 - Zombik, kormányzás és elszökött pénzeszsákok.jpg:6": "…хотя последних никто особенно не ждал.",
+      "1791562820202-07 - Zombik, kormányzás és elszökött pénzeszsákok.jpg:8": "И тут оппозиция окончательно спятила.\n— Они имеют право снова стать людьми!",
+      "1791562820202-07 - Zombik, kormányzás és elszökött pénzeszsákok.jpg:9": "Требует запретить убийство зомби.",
+      "1791562821004-08 - Politikai zombikomédia négy panelben.jpg:1": "Раньше полицейский, увидев зомби, просто стрелял ему в голову. А теперь обязан проверить документы. Потом отвезти домой. Вы хоть раз проверяли документы у зомбоида?\n— Имя? Адрес?\n— Р-р-р…",
+      "1791562821004-08 - Politikai zombikomédia négy panelben.jpg:2": "Мы так рады, что дедушка вернулся! Правда, он ест многовато сырого мяса и его приходится привязывать, но мы уверены: скоро он поправится.",
+      "1791562821004-08 - Politikai zombikomédia négy panelben.jpg:3": "Государственный приют для Z-пожилых\nПочти в каждом доме появился Z, а где-то и несколько. Были ещё бедные осиротевшие зомбяшки, которым некуда идти. Их пришлось собирать в приюты. Первый «детдом» открыл лично я, остальные поручил тупым госсекретарям.",
+      "1791562821004-08 - Politikai zombikomédia négy panelben.jpg:4": "Ещё одна головная боль: треть населения выбыла из производства. Я ночами спасал инфраструктуру. На коррупцию сил уже не оставалось. Нас даже жёстко критиковали авторитетные восточные посткоммунистические страны…\nУ вас что, тендер теперь можно выиграть без взятки?!\n",
+      "1791562821807-09 - Z-Állampolgári Jogok Szatirikus Képregénye.jpg:1": "Мы почти стабилизировали ситуацию, когда оппозиция достигла пика идиотизма и заговорила о правах зомби. Право на жизнь, на питание и прочее. И называть их надо «гражданами Z», ведь они, по сути, люди. Будут. Возможно. К счастью, обеспечивать Z здоровые отношения в паре мне не пришлось.",
+      "1791562821807-09 - Z-Állampolgári Jogok Szatirikus Képregénye.jpg:2": "Z ТОЖЕ ЧЕЛОВЕК!\nПРАВО НА ПИТАНИЕ!\nЖИЗНЬ ДЛЯ Z!\nГРАЖДАНИН Z = ЧЕЛОВЕК\nПрава гражданам Z!",
+      "1791562821807-09 - Z-Állampolgári Jogok Szatirikus Képregénye.jpg:3": "Всё, с меня хватит! Здесь все идиоты?\nСледующие выборы мы обязаны проиграть, нравится это партии или нет!",
+      "1791562821807-09 - Z-Állampolgári Jogok Szatirikus Képregénye.jpg:4": "Для начала мы приняли всю чушь, которую предлагала оппозиция. Без последствий не обошлось: мы стали первой страной, узаконившей права зомби…",
+      "1791562821807-09 - Z-Állampolgári Jogok Szatirikus Képregénye.jpg:5": "…а меня журнал назвал человеком года. Ганди, Горбачёв, Гитлер, я — славная компания. Семье было за меня стыдно.",
+      "1791562822680-10 - Zombihírek budapesti szatírája.jpg:1": "Отправим иностранных Z домой!\nВ страну прибывает всё больше иностранных Z. Правительство изучает возможность их возвращения.",
+      "1791562822680-10 - Zombihírek budapesti szatírája.jpg:2": "Любые сексуальные действия с гражданами Z — преступление…\nИз выписки из больницы\nОн был таким милым, а потом мы начали целоваться с языком…",
+      "1791562822680-10 - Zombihírek budapesti szatírája.jpg:3": "В законодательство внесли правила труда зомби. Новые нормы рынка труда: гражданам Z тоже разрешено работать.\n",
+      "1791562822680-10 - Zombihírek budapesti szatírája.jpg:4": "Кто оплатит медстраховку граждан Z?\nПо оценкам экспертов, лечение зомби обойдётся государству в сотни миллиардов.",
+      "1791562822680-10 - Zombihírek budapesti szatírája.jpg:5": "Был даже скандал с зомби-порно.",
+      "1791562822680-10 - Zombihírek budapesti szatírája.jpg:6": "…вот тогда мой ноутбук и упал в Дунай.\nСлучайно.",
+      "1791649220633-11 - videofile, jo.mp4": "К тому же президент рвал больше законов, чем подписывал: он одним из первых заразился, и мы держали его связанным в кабинете. Оппозиция, к счастью, не догадалась. Заодно выяснилось, что новогоднее обращение президента никто не смотрит.",
+      "1791563475301-12 - Zombik, választás és politikai káosz.jpg:1": "Зомби стали бизнесом\nЧистейший корм для Z — 100% говядина\nДень Z в термальных купальнях\nНовые Z-функции в последнем смартфоне",
+      "1791563475301-12 - Zombik, választás és politikai káosz.jpg:2": "Зомби-спорт\nЛасло Ковач Z побил рекорд бега на Z-дерби.\nЕщё один Z дебютировал в боях в клетке.",
+      "1791563475301-12 - Zombik, választás és politikai káosz.jpg:3": "Общественные вопросы\nГраждан Z нужно обучать заново.\nДавать ли гражданам Z право голоса?\nКто представит Z в новом совете?",
+      "1791563475301-12 - Zombik, választás és politikai káosz.jpg:4": "К тому времени мне до смерти хотелось уйти из политики. Столько идиотизма за четыре года ещё никому не приходилось разгребать.",
+      "1791563475301-12 - Zombik, választás és politikai káosz.jpg:5": "Я вовсю готовился к поражению и придумал гениальный план: просто пропустить срок регистрации кандидатов. Тогда мы не сможем выиграть выборы, даже если захотим: от нас никто не будет баллотироваться. В партии у меня были союзники, но на всякий случай я собственноручно запер ребят, чтобы они не отнесли документы. Оставалось ждать. Минуты тянулись часами, часы — днями. Наконец срок истёк, а мы ничего не подали. Я приготовил праздничную дорожку кокса перед телевизором и ждал, когда лидер оппозиции объявит о победе.",
+      "1791563475301-12 - Zombik, választás és politikai káosz.jpg:6": "Избирательная комиссия",
+      "1791563475301-12 - Zombik, választás és politikai káosz.jpg:8": "И оппозиция, и правящая партия пропустили срок подачи документов.\nПравительство останется у власти как минимум ещё на полгода в качестве временного.",
+      "1791563475301-12 - Zombik, választás és politikai káosz.jpg:9": "Твою мать!"
+    }
+  },
+  "backgroundTracks": [
+    {
+      "id": 7,
+      "label": "",
+      "startPage": 2,
+      "endPage": 12,
+      "audioPath": "audio/1791712130981-Good_Boy_on_the_Poster.mp3"
     }
   ]
 };
