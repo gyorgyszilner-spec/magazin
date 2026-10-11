@@ -18,7 +18,7 @@ window.MAGAZINE_DATA = {
         "label": ""
       }
     ],
-    "nextTrackId": 8,
+    "nextTrackId": 9,
     "originalLang": "hu",
     "playerLangs": [
       "en",
@@ -26,7 +26,14 @@ window.MAGAZINE_DATA = {
       "hu",
       "ru"
     ],
-    "playerDefaultLang": "hu"
+    "playerDefaultLang": "hu",
+    "playerStart": {
+      "music": true,
+      "musicMode": "playlist",
+      "sound": false,
+      "viewMode": "GV",
+      "subs": false
+    }
   },
   "lang": "hu",
   "playerUi": {
@@ -67,7 +74,21 @@ window.MAGAZINE_DATA = {
         "plSubsTitle": "Subtitles",
         "plSoundTitle": "Read aloud / sound",
         "plLoadError": "The content cannot be loaded (data.js is missing or corrupted).",
-        "plImgAlt": "Magazine page"
+        "plImgAlt": "Magazine page",
+        "plMusicTitle": "Background music on/off",
+        "plIntroBack": "Back",
+        "plIntroFwd": "Forward",
+        "plIntroLang": "Languages",
+        "plIntroSubs": "Text",
+        "plIntroMusic": "Music",
+        "plIntroSound": "Sound / read aloud",
+        "plIntroMenu": "Settings",
+        "plIntroInApp": "Tip: for the best experience, open this page in your browser (⋯ menu → Open in browser).",
+        "plTxtZoomTitle": "Text size",
+        "plViewTitle": "Guided View / Page View",
+        "plIntroView": "Guided / free page view",
+        "plLangPlayer": "Player language",
+        "plLangComic": "Comic language"
       },
       "De": {
         "plLangName": "Deutsch",
@@ -104,7 +125,21 @@ window.MAGAZINE_DATA = {
         "plSubsTitle": "Untertitel",
         "plSoundTitle": "Vorlesen / Ton",
         "plLoadError": "Der Inhalt kann nicht geladen werden (data.js fehlt oder ist beschädigt).",
-        "plImgAlt": "Magazinseite"
+        "plImgAlt": "Magazinseite",
+        "plMusicTitle": "Háttérzene be/ki",
+        "plIntroBack": "Vissza",
+        "plIntroFwd": "Előre",
+        "plIntroLang": "Nyelvek",
+        "plIntroSubs": "Szöveg",
+        "plIntroMusic": "Zene",
+        "plIntroSound": "Hang / felolvasás",
+        "plIntroMenu": "Beállítások",
+        "plIntroInApp": "Tipp: a legjobb élményért nyisd meg ezt az oldalt a böngészőben (⋯ menü → Megnyitás böngészőben).",
+        "plTxtZoomTitle": "Szövegméret",
+        "plViewTitle": "Guided View / Page View",
+        "plIntroView": "Vezetett / szabad nézet",
+        "plLangPlayer": "Player nyelve",
+        "plLangComic": "Képregény nyelve"
       },
       "hu": {
         "plLangName": "Magyar",
@@ -141,7 +176,21 @@ window.MAGAZINE_DATA = {
         "plSubsTitle": "Feliratok",
         "plSoundTitle": "Felolvasás / hang",
         "plLoadError": "A tartalom nem tölthető be (data.js hiányzik vagy sérült).",
-        "plImgAlt": "Magazin oldal"
+        "plImgAlt": "Magazin oldal",
+        "plMusicTitle": "Háttérzene be/ki",
+        "plIntroBack": "Vissza",
+        "plIntroFwd": "Előre",
+        "plIntroLang": "Nyelvek",
+        "plIntroSubs": "Szöveg",
+        "plIntroMusic": "Zene",
+        "plIntroSound": "Hang / felolvasás",
+        "plIntroMenu": "Beállítások",
+        "plIntroInApp": "Tipp: a legjobb élményért nyisd meg ezt az oldalt a böngészőben (⋯ menü → Megnyitás böngészőben).",
+        "plTxtZoomTitle": "Szövegméret",
+        "plViewTitle": "Guided View / Page View",
+        "plIntroView": "Vezetett / szabad nézet",
+        "plLangPlayer": "Player nyelve",
+        "plLangComic": "Képregény nyelve"
       },
       "ru": {
         "plLangName": "Русский",
@@ -178,7 +227,21 @@ window.MAGAZINE_DATA = {
         "plSubsTitle": "Субтитры",
         "plSoundTitle": "Чтение вслух / звук",
         "plLoadError": "Не удалось загрузить контент (data.js отсутствует или поврежден).",
-        "plImgAlt": "Страница журнала"
+        "plImgAlt": "Страница журнала",
+        "plMusicTitle": "Háttérzene be/ki",
+        "plIntroBack": "Vissza",
+        "plIntroFwd": "Előre",
+        "plIntroLang": "Nyelvek",
+        "plIntroSubs": "Szöveg",
+        "plIntroMusic": "Zene",
+        "plIntroSound": "Hang / felolvasás",
+        "plIntroMenu": "Beállítások",
+        "plIntroInApp": "Tipp: a legjobb élményért nyisd meg ezt az oldalt a böngészőben (⋯ menü → Megnyitás böngészőben).",
+        "plTxtZoomTitle": "Szövegméret",
+        "plViewTitle": "Guided View / Page View",
+        "plIntroView": "Vezetett / szabad nézet",
+        "plLangPlayer": "Player nyelve",
+        "plLangComic": "Képregény nyelve"
       }
     }
   },
@@ -188,6 +251,7 @@ window.MAGAZINE_DATA = {
       "type": "image",
       "text": "George Colt novellája alapján\nZÉORSZÁG\nA nagy magyar zombiinvázió története\nPolitikai sci-fi szatíra\n",
       "audioPath": "",
+      "viewStart": "auto",
       "guides": {
         "v": [],
         "h": []
@@ -211,6 +275,7 @@ window.MAGAZINE_DATA = {
       "type": "image",
       "text": "",
       "audioPath": "",
+      "viewStart": "auto",
       "guides": {
         "v": [],
         "h": []
@@ -244,6 +309,7 @@ window.MAGAZINE_DATA = {
       "type": "image",
       "text": "",
       "audioPath": "",
+      "viewStart": "auto",
       "guides": {
         "v": [],
         "h": []
@@ -317,6 +383,7 @@ window.MAGAZINE_DATA = {
       "type": "image",
       "text": "",
       "audioPath": "",
+      "viewStart": "auto",
       "guides": {
         "v": [],
         "h": []
@@ -390,6 +457,7 @@ window.MAGAZINE_DATA = {
       "type": "video",
       "text": "Aztán egy kisebb csoda történt. Az egyik magyar kutatóintézetben felfedezték az ellenanyagot.",
       "audioPath": "",
+      "viewStart": "auto",
       "guides": {
         "v": [],
         "h": []
@@ -402,6 +470,7 @@ window.MAGAZINE_DATA = {
       "type": "image",
       "text": "",
       "audioPath": "",
+      "viewStart": "auto",
       "guides": {
         "v": [],
         "h": []
@@ -495,6 +564,7 @@ window.MAGAZINE_DATA = {
       "type": "image",
       "text": "",
       "audioPath": "",
+      "viewStart": "auto",
       "guides": {
         "v": [],
         "h": []
@@ -588,6 +658,7 @@ window.MAGAZINE_DATA = {
       "type": "image",
       "text": "",
       "audioPath": "",
+      "viewStart": "auto",
       "guides": {
         "v": [],
         "h": []
@@ -641,6 +712,7 @@ window.MAGAZINE_DATA = {
       "type": "image",
       "text": "",
       "audioPath": "",
+      "viewStart": "auto",
       "guides": {
         "v": [],
         "h": []
@@ -704,6 +776,7 @@ window.MAGAZINE_DATA = {
       "type": "image",
       "text": "",
       "audioPath": "",
+      "viewStart": "auto",
       "guides": {
         "v": [],
         "h": []
@@ -777,6 +850,7 @@ window.MAGAZINE_DATA = {
       "type": "video",
       "text": "Ráadásul a köztársasági elnök több törvényt tépett szét, mint írt alá, mert egyike volt az elsőknek, akik elkapták a kórt, és lekötözve tartottuk az irodájában. Az ellenzék szerencsére nem jött rá. Így derült ki az is, hogy senki sem nézi az újévi köszöntőt.",
       "audioPath": "",
+      "viewStart": "auto",
       "guides": {
         "v": [],
         "h": []
@@ -789,6 +863,7 @@ window.MAGAZINE_DATA = {
       "type": "image",
       "text": "",
       "audioPath": "",
+      "viewStart": "auto",
       "guides": {
         "v": [],
         "h": []
