@@ -342,7 +342,7 @@
         let playlistIdx = 0;
         function playerStart() { return (activeMagazineData && activeMagazineData.meta && activeMagazineData.meta.playerStart) || {}; }
         function musicMode() { return playerStart().musicMode === "playlist" ? "playlist" : "pages"; }
-        function bgTryPlay() { if (musicOn && gvMode && bgMusicPlayer.src) { const p = bgMusicPlayer.play(); if (p && p.catch) p.catch(() => {}); } }
+        function bgTryPlay() { if (musicOn && gvMode && !introActive && bgMusicPlayer.src) { const p = bgMusicPlayer.play(); if (p && p.catch) p.catch(() => {}); } }
 
         // Zene indítása CSAK felhasználói gesztusra megbízható (böngészők, és a Facebook/Messenger beépített
         // böngészője is) - ezért az első érintés/kattintás/billentyű mindig újrapróbálja, és az intro oldal
@@ -800,7 +800,7 @@
             const baseScale = Math.min(scaleX, scaleY);
 
             const initialX = (maxW - (nw * baseScale)) / 2;
-            const initialY = (maxH - (nh * baseScale)) / 2;
+            const initialY = 0;   // a teljes oldal közvetlenül a menüsor alatt indul (vízszintesen középen)
 
             if (blockIdx === -1 || !elements[blockIdx]) {
                 img.style.width = nw + "px";
@@ -811,7 +811,7 @@
                     const sc = baseScale * viewScale, sw = nw * sc, sh = nh * sc;
                     let tx = initialX + viewTx, ty = initialY + viewTy;
                     tx = (sw <= maxW) ? (maxW - sw) / 2 : Math.min(0, Math.max(maxW - sw, tx));
-                    ty = (sh <= maxH) ? (maxH - sh) / 2 : Math.min(0, Math.max(maxH - sh, ty));
+                    ty = (sh <= maxH) ? 0 : Math.min(0, Math.max(maxH - sh, ty));
                     viewTx = tx - initialX; viewTy = ty - initialY;
                     pvBase = { ix: initialX, iy: initialY, bs: baseScale, W: maxW, H: maxH, nw, nh };
                     lastFullRect = { x: tx, y: ty, w: sw, h: sh };
@@ -910,6 +910,7 @@
             introActive = true;
             blockIdx = -1;
             stopVideo();
+            bgMusicPlayer.pause();   // a bemutatóoldalon nem szól a zene; a továbblépéskor indul
             if (window.speechSynthesis) window.speechSynthesis.cancel();
             showPageKind("intro");
             renderIntro();
