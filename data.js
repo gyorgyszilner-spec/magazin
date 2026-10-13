@@ -34,7 +34,7 @@ window.MAGAZINE_DATA = {
       "viewMode": "PV",
       "subs": false
     },
-    "exportId": "mv6y4fj7"
+    "exportId": "mv6yb4gh"
   },
   "lang": "hu",
   "playerUi": {
