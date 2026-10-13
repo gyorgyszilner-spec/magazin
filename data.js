@@ -1,7 +1,7 @@
 window.MAGAZINE_DATA = {
   "meta": {
     "title": "Zéország",
-    "author": "",
+    "author": "George Colt",
     "volume": "",
     "issue": "",
     "isbn": "",
@@ -31,9 +31,10 @@ window.MAGAZINE_DATA = {
       "music": true,
       "musicMode": "playlist",
       "sound": false,
-      "viewMode": "GV",
+      "viewMode": "PV",
       "subs": false
-    }
+    },
+    "exportId": "mv6y4fj7"
   },
   "lang": "hu",
   "playerUi": {
@@ -88,7 +89,10 @@ window.MAGAZINE_DATA = {
         "plViewTitle": "Guided View / Page View",
         "plIntroView": "Guided view / free view",
         "plLangPlayer": "Player language",
-        "plLangComic": "Comic language"
+        "plLangComic": "Comic language",
+        "plVidPlay": "Play / pause",
+        "plVidMute": "Video sound on/off",
+        "plVidSeek": "Video position"
       },
       "De": {
         "plLangName": "Deutsch",
@@ -139,7 +143,10 @@ window.MAGAZINE_DATA = {
         "plViewTitle": "Guided View / Page View",
         "plIntroView": "Vezetett nézet / szabad nézet",
         "plLangPlayer": "Player nyelve",
-        "plLangComic": "Képregény nyelve"
+        "plLangComic": "Képregény nyelve",
+        "plVidPlay": "Lejátszás / szünet",
+        "plVidMute": "Videó hangja be/ki",
+        "plVidSeek": "Videó pozíciója"
       },
       "hu": {
         "plLangName": "Magyar",
@@ -190,7 +197,10 @@ window.MAGAZINE_DATA = {
         "plViewTitle": "Guided View / Page View",
         "plIntroView": "Vezetett nézet / szabad nézet",
         "plLangPlayer": "Player nyelve",
-        "plLangComic": "Képregény nyelve"
+        "plLangComic": "Képregény nyelve",
+        "plVidPlay": "Lejátszás / szünet",
+        "plVidMute": "Videó hangja be/ki",
+        "plVidSeek": "Videó pozíciója"
       },
       "ru": {
         "plLangName": "Русский",
@@ -241,7 +251,10 @@ window.MAGAZINE_DATA = {
         "plViewTitle": "Guided View / Page View",
         "plIntroView": "Vezetett nézet / szabad nézet",
         "plLangPlayer": "Player nyelve",
-        "plLangComic": "Képregény nyelve"
+        "plLangComic": "Képregény nyelve",
+        "plVidPlay": "Lejátszás / szünet",
+        "plVidMute": "Videó hangja be/ki",
+        "plVidSeek": "Videó pozíciója"
       }
     }
   },
@@ -463,7 +476,8 @@ window.MAGAZINE_DATA = {
         "h": []
       },
       "elements": [],
-      "videoPath": "video/1791649247786-05_-_Videofile3_jo.mp4"
+      "videoPath": "video/1791649247786-05_-_Videofile3_jo.mp4",
+      "posterPath": "video/1791649247786-05_-_Videofile3_jo.mp4.poster.jpg"
     },
     {
       "id": "1791562819402-06 - Zombiantidotum és kapzsi hatalom.jpg",
@@ -856,7 +870,8 @@ window.MAGAZINE_DATA = {
         "h": []
       },
       "elements": [],
-      "videoPath": "video/1791649220633-11_-_videofile_jo.mp4"
+      "videoPath": "video/1791649220633-11_-_videofile_jo.mp4",
+      "posterPath": "video/1791649220633-11_-_videofile_jo.mp4.poster.jpg"
     },
     {
       "id": "1791563475301-12 - Zombik, választás és politikai káosz.jpg",

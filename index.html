@@ -134,6 +134,25 @@
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             object-fit: contain; background: #000; display: none;
         }
+        /* T2/T12/T13: nincsenek natív vezérlők (iOS sötét fátyol + nagy gombok, Opera szürke felület);
+           helyettük a poszter (első képkocka) látszik, és egy saját, vékony vezérlősáv. */
+        #pageVideo::-webkit-media-controls,
+        #pageVideo::-webkit-media-controls-overlay-play-button,
+        #pageVideo::-webkit-media-controls-start-playback-button { display: none !important; -webkit-appearance: none; }
+        #pageVideo.vid-wait { visibility: hidden; }   /* poszter nélkül: rejtve, amíg az első képkocka meg nem jön */
+        #videoCtl {
+            position: absolute; display: none; align-items: center; gap: 6px; height: 44px; padding: 0 8px;
+            box-sizing: border-box; background: rgba(10, 11, 14, 0.62); z-index: 25; transition: opacity 0.3s ease;
+        }
+        #videoCtl.hidden { opacity: 0; pointer-events: none; }
+        .vc-btn {
+            flex: none; width: 38px; height: 38px; border: 0; padding: 0; background: none; color: #f4f1ea;
+            display: flex; align-items: center; justify-content: center; cursor: pointer; border-radius: 6px;
+        }
+        .vc-btn:active { background: rgba(255,255,255,0.12); }
+        #vcTrack { flex: 1; height: 38px; display: flex; align-items: center; cursor: pointer; touch-action: none; }
+        #vcBar { position: relative; width: 100%; height: 4px; border-radius: 2px; background: rgba(255,255,255,0.28); overflow: hidden; }
+        #vcFill { position: absolute; left: 0; top: 0; bottom: 0; width: 0; background: #ff9d3b; }
         #creditsPage {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: none; align-items: center; justify-content: center; text-align: center;
@@ -197,7 +216,12 @@
 
         <div id="canvasViewport">
             <img id="comicImage" alt="" data-pl-alt="plImgAlt">
-            <video id="pageVideo" controls playsinline preload="auto"></video>
+            <video id="pageVideo" playsinline webkit-playsinline preload="auto"></video>
+            <div id="videoCtl" class="hidden">
+                <button id="vcPlay" class="vc-btn" data-pl-title="plVidPlay"></button>
+                <div id="vcTrack" data-pl-title="plVidSeek"><div id="vcBar"><div id="vcFill"></div></div></div>
+                <button id="vcMute" class="vc-btn" data-pl-title="plVidMute"></button>
+            </div>
             <div id="vzLeft" class="video-zone"></div><div id="vzRight" class="video-zone"></div>
             <div id="introPage">
                 <div id="introLegend"></div>
@@ -570,7 +594,12 @@
             const bBar = document.getElementById("bottomBar");
             if (!bar || !bBar) return;
             let offset = bBar.classList.contains("visible") ? 54 : 0;
-            if (currentPageType() === "video") offset += 56;
+            // videó-oldalon: ha a videó (és így a saját vezérlősávja) lenyúlik a képernyő aljáig, a felirat fölé kerül
+            if (currentPageType() === "video") {
+                const vp = document.getElementById("canvasViewport");
+                const vh = parseFloat(document.getElementById("pageVideo").style.height) || 0;
+                if (vp && vh >= vp.clientHeight - 50) offset += 46;
+            }
             const vz = currentPageType() === "video" ? "block" : "none";
             const zl = document.getElementById("vzLeft"), zr = document.getElementById("vzRight");
             if (zl) zl.style.display = vz;
@@ -770,6 +799,10 @@
             if (h > maxH) { h = maxH; w = maxH * ar; }
             v.style.width = w + "px"; v.style.height = h + "px";
             v.style.left = ((maxW - w) / 2) + "px"; v.style.top = "0px";
+            // a saját vezérlősáv a videó alján, a videó szélességében
+            const ctl = document.getElementById("videoCtl");
+            ctl.style.left = ((maxW - w) / 2) + "px"; ctl.style.width = w + "px";
+            ctl.style.top = Math.max(0, h - 44) + "px";
         }
 
         function applyGuidedViewLogic(maxW, maxH) {
@@ -915,6 +948,7 @@
             showPageKind("intro");
             renderIntro();
             resizeLayout();
+            preloadAround();   // T8: a bemutatóoldal olvasása közben már töltődnek az első oldalak (videóval együtt)
         }
         function leaveIntro() {
             introActive = false;
@@ -930,7 +964,237 @@
             video.pause();
             video.removeAttribute("src");
             video.load();
+            const ctl = document.getElementById("videoCtl");
+            ctl.style.display = "none"; ctl.classList.add("hidden");
         }
+
+        // === T8: ELŐTÖLTÉS (videóval együtt) + TELJES HÁTTÉR-LETÖLTÉS ===
+        // Ablak: az aktuális oldal + 2 előre + 1 vissza. A videók fetch -> Blob -> helyi "blob:" URL-ként
+        // a memóriában vannak, így lapozáskor azonnal indulnak (nincs töltés, szürke/sötét felület).
+        // Az ablakon kívüli videók blobját felszabadítjuk (memória). A teljes kiadvány a háttérben,
+        // alacsony prioritással, sorban letöltődik (látható haladásjelző nélkül - döntés 2026-10-12):
+        // https-en a böngésző tartós gyorsítótárába (Cache API), máshol legalább a HTTP-gyorsítótárba.
+        // file://-ről megnyitva nincs fetch: ilyenkor a videó a régi módon, közvetlenül töltődik.
+        const MediaStore = (() => {
+            const httpOk = /^https?:$/.test(location.protocol);
+            const MAX_BLOB_BYTES = 80 * 1024 * 1024;   // ennél nagyobb videót nem tartunk memóriában (folyamatos letöltéssel szól)
+            const entries = new Map();   // url -> { objUrl: string|null, p: Promise }
+            let cacheP = null, quotaFull = false, windowBusy = 0, idleWaiters = [], winChain = Promise.resolve(), bgStarted = false;
+            const abs = (u) => new URL(u, location.href).href;
+            const extType = (u) => { const m = String(u).toLowerCase().match(/\.(mp4|m4v|webm|ogv|mov)(\?|$)/); return m ? ({ mp4: "video/mp4", m4v: "video/mp4", webm: "video/webm", ogv: "video/ogg", mov: "video/quicktime" })[m[1]] : ""; };
+            function cacheName() {
+                const id = activeMagazineData && activeMagazineData.meta && activeMagazineData.meta.exportId;
+                return id ? "zcfx|" + location.pathname.replace(/[^/]*$/, "") + "|" + id : null;
+            }
+            function openCache() {
+                if (cacheP) return cacheP;
+                const name = cacheName();
+                if (!httpOk || !name || !window.caches || !window.isSecureContext) return (cacheP = Promise.resolve(null));
+                cacheP = (async () => {
+                    try {
+                        // ugyanennek a kiadványnak a régebbi exportjai törlődnek (más kiadványé nem)
+                        const prefix = name.slice(0, name.lastIndexOf("|") + 1);
+                        for (const k of await caches.keys()) if (k.startsWith(prefix) && k !== name) caches.delete(k);
+                        return await caches.open(name);
+                    } catch (_) { return null; }
+                })();
+                return cacheP;
+            }
+            async function fetchStored(url) {
+                const c = await openCache();
+                if (c) { try { const hit = await c.match(abs(url)); if (hit) return hit; } catch (_) {} }
+                const r = await fetch(url);
+                if (!r.ok) throw new Error("HTTP " + r.status);
+                if (c && !quotaFull) { try { await c.put(abs(url), r.clone()); } catch (_) { quotaFull = true; } }
+                return r;
+            }
+            function notifyIdle() { if (!windowBusy) idleWaiters.splice(0).forEach(f => f()); }
+            // Videó előtöltése blobba (sorban: amit előbb kérünk - az aktuális oldal -, az töltődik előbb).
+            function want(url) {
+                if (!httpOk || !url) return Promise.resolve(null);
+                let e = entries.get(url);
+                if (e) return e.p;
+                e = { objUrl: null };
+                entries.set(url, e);
+                windowBusy++;
+                e.p = (winChain = winChain.then(async () => {
+                    if (entries.get(url) !== e) return null;   // közben kikerült az ablakból
+                    try {
+                        const r = await fetchStored(url);
+                        const len = parseInt(r.headers.get("content-length") || "0", 10);
+                        if (len > MAX_BLOB_BYTES) return null;
+                        let b = await r.blob();
+                        if (!b.type || !/^video\//.test(b.type)) { const t = extType(url); if (t) b = new Blob([b], { type: t }); }
+                        if (entries.get(url) !== e) return null;
+                        e.objUrl = URL.createObjectURL(b);
+                        return e.objUrl;
+                    } catch (_) { return null; }
+                }).finally(() => { windowBusy--; notifyIdle(); }));
+                return e.p;
+            }
+            function peek(url) { const e = entries.get(url); return (e && e.objUrl) || null; }
+            function releaseExcept(keep) {
+                for (const [url, e] of Array.from(entries)) {
+                    if (keep.has(url)) continue;
+                    entries.delete(url);
+                    if (e.objUrl) { try { URL.revokeObjectURL(e.objUrl); } catch (_) {} }
+                }
+            }
+            const waitIdle = () => windowBusy ? new Promise(r => idleWaiters.push(r)) : Promise.resolve();
+            const waitVisible = () => !document.hidden ? Promise.resolve() : new Promise(r => {
+                const f = () => { if (!document.hidden) { document.removeEventListener("visibilitychange", f); r(); } };
+                document.addEventListener("visibilitychange", f);
+            });
+            // A teljes kiadvány letöltése a háttérben, egyesével; az ablak (aktuális oldal) mindig elsőbbséget kap.
+            async function startBackground(urls) {
+                if (bgStarted || !httpOk || !cacheName()) return;   // élő előnézetnél (nincs exportId) nem kell
+                bgStarted = true;
+                const c = await openCache();
+                for (const u of urls) {
+                    await waitIdle(); await waitVisible();
+                    try {
+                        if (c && !quotaFull) {
+                            if (await c.match(abs(u))) continue;
+                            const r = await fetch(u);
+                            if (r.ok) { try { await c.put(abs(u), r); } catch (_) { quotaFull = true; } }
+                        } else {
+                            // nincs tartós tár: letöltjük és eldobjuk (a HTTP-gyorsítótár megtartja, ha tudja) - memóriát nem foglal
+                            const r = await fetch(u);
+                            if (r.ok && r.body && r.body.getReader) { const rd = r.body.getReader(); while (!(await rd.read()).done) {} }
+                        }
+                    } catch (_) {}
+                }
+            }
+            return { want, peek, releaseExcept, startBackground };
+        })();
+
+        // A háttérben letöltendő fájlok, olvasási sorrendben (oldalanként kép/poszter/hangok/videó, majd a zenék).
+        function allMediaUrls() {
+            const out = [], seen = new Set();
+            const add = (u) => { if (u && !seen.has(u)) { seen.add(u); out.push(u); } };
+            const pages = (activeMagazineData && activeMagazineData.pages) || [];
+            for (const pg of pages) {
+                add(pg.imagePath); add(pg.posterPath); add(pg.audioPath);
+                for (const el of pg.elements || []) add(el.audioPath);
+                add(pg.videoPath);
+            }
+            for (const t of activeMagazineData.backgroundTracks || []) add(t.audioPath);
+            if (activeMagazineData.meta) add(activeMagazineData.meta.backgroundAudio);
+            return out;
+        }
+
+        // === T2/T12/T13: SAJÁT VIDEÓVEZÉRLŐK ===
+        // Nincs középső nagy lejátszás-gomb és nincs natív vezérlősáv. A videó a lapozáskor magától indul;
+        // a képernyő közepére koppintva szünet/folytatás; alul vékony sáv (lejátszás, haladás, hang),
+        // ami lejátszás közben 2,5 mp múlva elhalványul, szünetnél kint marad.
+        const VC_ICONS = {
+            play: '<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><path d="M8 5.5v13l11-6.5z"/></svg>',
+            pause: '<svg viewBox="0 0 24 24" width="22" height="22" fill="currentColor" aria-hidden="true"><rect x="6.5" y="5" width="4" height="14" rx="1"/><rect x="13.5" y="5" width="4" height="14" rx="1"/></svg>',
+            sound: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="M15.5 8.5a5 5 0 0 1 0 7"/><path d="M18.5 5.5a9 9 0 0 1 0 13"/></svg>',
+            muted: '<svg viewBox="0 0 24 24" width="22" height="22" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M11 5 6 9H3v6h3l5 4z"/><path d="m22 9-6 6"/><path d="m16 9 6 6"/></svg>'
+        };
+        const pageVideoEl = document.getElementById("pageVideo");
+        let vidMuted = false;      // az olvasó választása (a munkamenetben megmarad videóról videóra)
+        let vcHideTimer = null;
+        function updateVcIcons() {
+            const v = pageVideoEl;
+            document.getElementById("vcPlay").innerHTML = (v.paused || v.ended) ? VC_ICONS.play : VC_ICONS.pause;
+            document.getElementById("vcMute").innerHTML = v.muted ? VC_ICONS.muted : VC_ICONS.sound;
+            const d = v.duration;
+            document.getElementById("vcFill").style.width = (d && isFinite(d)) ? Math.min(100, (v.currentTime / d) * 100) + "%" : "0%";
+        }
+        function showVideoCtl(stay) {
+            if (currentPageType() !== "video") return;
+            const ctl = document.getElementById("videoCtl");
+            ctl.style.display = "flex";
+            ctl.classList.remove("hidden");
+            clearTimeout(vcHideTimer);
+            if (!stay && !pageVideoEl.paused) vcHideTimer = setTimeout(() => ctl.classList.add("hidden"), 2500);
+        }
+        function playVideoNow() {
+            const v = pageVideoEl;
+            v.muted = vidMuted;
+            const p = v.play();
+            if (p && p.catch) p.catch((err) => {
+                // A böngésző hanggal nem engedi az automatikus indítást: némítva indul, a hang a sávon kapcsolható.
+                if (err && err.name === "NotAllowedError" && !v.muted) {
+                    v.muted = true;
+                    v.play().catch(() => {}).finally(() => { updateVcIcons(); showVideoCtl(true); });
+                }
+                updateVcIcons(); showVideoCtl(true);
+            });
+        }
+        function toggleVideoPlay() {
+            const v = pageVideoEl;
+            if (v.paused || v.ended) { const p = v.play(); if (p && p.catch) p.catch(() => {}); }
+            else v.pause();
+            showVideoCtl();
+        }
+        function setupVideoForPage(pd) {
+            const v = pageVideoEl;
+            v.poster = pd.posterPath || "";
+            v.classList.toggle("vid-wait", !pd.posterPath);
+            const ready = MediaStore.peek(pd.videoPath);
+            v.src = ready || pd.videoPath;   // ha az előtöltés még nem kész, közvetlenül tölt (a poszter addig látszik)
+            updateVcIcons();
+            playVideoNow();
+            showVideoCtl();
+        }
+        pageVideoEl.addEventListener("loadeddata", () => pageVideoEl.classList.remove("vid-wait"));
+        pageVideoEl.addEventListener("playing", () => { pageVideoEl.classList.remove("vid-wait"); updateVcIcons(); showVideoCtl(); });
+        pageVideoEl.addEventListener("pause", () => { updateVcIcons(); showVideoCtl(true); });
+        pageVideoEl.addEventListener("ended", () => { updateVcIcons(); showVideoCtl(true); });
+        pageVideoEl.addEventListener("volumechange", updateVcIcons);
+        pageVideoEl.addEventListener("timeupdate", updateVcIcons);
+        (function initVideoCtl() {
+            const ctl = document.getElementById("videoCtl");
+            // A sávon történő érintés ne lapozzon és ne nyisson mást (a lapozó-érintéskezelő a nézeten fut).
+            ["touchstart", "touchmove", "touchend", "click", "dblclick", "mousedown", "pointerdown"].forEach(ev =>
+                ctl.addEventListener(ev, (e) => { e.stopPropagation(); if (ev !== "pointerdown") showVideoCtl(); }, { passive: true }));
+            document.getElementById("vcPlay").addEventListener("click", toggleVideoPlay);
+            document.getElementById("vcMute").addEventListener("click", () => {
+                const v = pageVideoEl;
+                v.muted = !v.muted; vidMuted = v.muted;
+                if (!v.muted && v.paused && !v.ended) { const p = v.play(); if (p && p.catch) p.catch(() => {}); }
+                updateVcIcons();
+            });
+            const track = document.getElementById("vcTrack");
+            let seeking = false;
+            const seekTo = (clientX) => {
+                const v = pageVideoEl, r = track.getBoundingClientRect(), d = v.duration;
+                if (!d || !isFinite(d) || r.width <= 0) return;
+                v.currentTime = Math.max(0, Math.min(1, (clientX - r.left) / r.width)) * d;
+                updateVcIcons();
+            };
+            track.addEventListener("pointerdown", (e) => { seeking = true; try { track.setPointerCapture(e.pointerId); } catch (_) {} seekTo(e.clientX); });
+            track.addEventListener("pointermove", (e) => { if (seeking) seekTo(e.clientX); });
+            track.addEventListener("pointerup", () => { seeking = false; });
+            track.addEventListener("pointercancel", () => { seeking = false; });
+        })();
+
+        // T5: ha a böngésző háttérbe kerül vagy bezárul (pl. Messenger beépített böngészője), minden hang és a
+        // videó megáll; visszatéréskor az folytatódik, ami előtte szólt.
+        let pausedForHidden = null;
+        function pauseAllForHidden() {
+            if (pausedForHidden) return;
+            pausedForHidden = {
+                music: !bgMusicPlayer.paused,
+                audio: !audioPlayer.paused && !audioPlayer.ended,
+                video: currentPageType() === "video" && !pageVideoEl.paused && !pageVideoEl.ended
+            };
+            bgMusicPlayer.pause(); audioPlayer.pause(); pageVideoEl.pause();
+            if (window.speechSynthesis) window.speechSynthesis.cancel();
+        }
+        function resumeAfterHidden() {
+            const s = pausedForHidden; pausedForHidden = null;
+            if (!s) return;
+            if (s.music) bgTryPlay();
+            if (s.audio) audioPlayer.play().catch(() => {});
+            if (s.video && currentPageType() === "video") pageVideoEl.play().catch(() => {});
+        }
+        document.addEventListener("visibilitychange", () => { if (document.hidden) pauseAllForHidden(); else resumeAfterHidden(); });
+        window.addEventListener("pagehide", pauseAllForHidden);
+        window.addEventListener("pageshow", (e) => { if (e.persisted) resumeAfterHidden(); });
 
         function currentPageType() {
             if (introActive) return "intro";
@@ -942,17 +1206,23 @@
         const preloadCache = new Map();
         function preloadAround() {
             const pages = activeMagazineData.pages;
-            const keep = new Set();
-            for (let i = pageIdx - 1; i <= pageIdx + 2; i++) {
+            const keep = new Set(), keepVideo = new Set();
+            // sorrend = fontossági sorrend: az aktuális, a következő kettő, végül az előző
+            for (const i of [pageIdx, pageIdx + 1, pageIdx + 2, pageIdx - 1]) {
                 const pg = pages[i];
-                if (!pg || pg.type === "video" || pg.type === "credits" || !pg.imagePath) continue;
-                keep.add(pg.imagePath);
-                if (!preloadCache.has(pg.imagePath)) {
-                    const im = new Image(); im.decoding = "async"; im.src = pg.imagePath;
-                    preloadCache.set(pg.imagePath, im);
+                if (!pg || pg.type === "credits") continue;
+                const pic = pg.type === "video" ? pg.posterPath : pg.imagePath;   // T12: a videó posztere is kép
+                if (pic) {
+                    keep.add(pic);
+                    if (!preloadCache.has(pic)) {
+                        const im = new Image(); im.decoding = "async"; im.src = pic;
+                        preloadCache.set(pic, im);
+                    }
                 }
+                if (pg.type === "video" && pg.videoPath) { keepVideo.add(pg.videoPath); MediaStore.want(pg.videoPath); }   // T8: a videó is
             }
             for (const k of Array.from(preloadCache.keys())) if (!keep.has(k)) preloadCache.delete(k);
+            MediaStore.releaseExcept(keepVideo);
         }
 
         function loadCurrentPage() {
@@ -973,9 +1243,7 @@
             if (pageData.type === "video") {
                 img.removeAttribute("src");
                 showPageKind("video");
-                const video = document.getElementById("pageVideo");
-                video.src = pageData.videoPath;
-                video.play().catch(() => {}); // az autoplay-t a böngésző letilthatja - a vezérlőn indítható
+                setupVideoForPage(pageData);   // T8/T12: előtöltött blob + poszter + saját vezérlők
                 updateTextAndAudio(null);
             } else if (pageData.type === "credits") {
                 img.removeAttribute("src");
@@ -1119,6 +1387,8 @@
                     triggerPrev();
                     return;
                 } else {
+                    // T2: videó-oldalon a középső koppintás = szünet / folytatás (nincs nagy középső gomb)
+                    if (currentPageType() === "video") { toggleVideoPlay(); return; }
                     // KÖZÉPSŐ 50%: Itt él a dupla koppintásos szövegkezelés
                     if (now - lastTapTime < 300) {
                         handleDoubleTap();
@@ -1153,11 +1423,14 @@
         // F24/1: csak a TÉNYLEGES vezérlősáv (a videóelem alsó ~64 px-e) marad lapozásmentes,
         // nem a képernyő alsó negyede - így videólejátszás közben a képernyő bal és jobb
         // szélső 25%-a szinte teljes magasságában lapoz.
-        const VIDEO_CONTROLS_PX = 64;
+        // T2: a natív vezérlők helyett a saját sáv (#videoCtl) számít - az eseményeit amúgy is elnyeli,
+        // ez csak tartalék (pl. a sáv épp elhalványuló állapotában).
         function isOnVideoControls(clientY) {
             if (currentPageType() !== "video") return false;
-            const rect = viewportElement.getBoundingClientRect();
-            return clientY > rect.bottom - VIDEO_CONTROLS_PX;
+            const ctl = document.getElementById("videoCtl");
+            if (!ctl || ctl.style.display === "none" || ctl.classList.contains("hidden")) return false;
+            const rect = ctl.getBoundingClientRect();
+            return clientY >= rect.top && clientY <= rect.bottom;
         }
 
         // EGÉR (gépen): ugyanazok a zónák, mint érintésnél. Az érintés által generált
@@ -1169,11 +1442,13 @@
             const w = window.innerWidth;
             if (e.clientX > w * 0.75) triggerNext();
             else if (e.clientX < w * 0.25) triggerPrev();
+            else if (currentPageType() === "video") toggleVideoPlay();   // T2: középre kattintás = szünet / folytatás
         });
         viewportElement.addEventListener("dblclick", (e) => {
             if (Date.now() - lastTouchAt < 700) return;
             lastPointX = e.clientX; lastPointY = e.clientY;
             if (isOnVideoControls(e.clientY)) return;
+            if (currentPageType() === "video") return;
             const w = window.innerWidth;
             if (e.clientX >= w * 0.25 && e.clientX <= w * 0.75) handleDoubleTap();
         });
@@ -1243,10 +1518,17 @@
                 const v = document.getElementById("pageVideo");
                 const vr = v.getBoundingClientRect(), pr = vp.getBoundingClientRect();
                 const w = vr.width, h = vr.height, vw = vp.clientWidth, vh = vp.clientHeight;
-                const c = document.createElement("canvas");
-                c.width = v.videoWidth || 2; c.height = v.videoHeight || 2; c.style.cssText = "width:100%; height:100%; display:block; background:#000;";
-                try { c.getContext("2d").drawImage(v, 0, 0, c.width, c.height); } catch (_) {}
-                playTurn(c, { x: vr.left - pr.left, y: vr.top - pr.top, w, h }, swapToNextPage);
+                let snap;
+                const pd = activeMagazineData.pages[pageIdx];
+                if (v.readyState < 2 && pd && pd.posterPath) {   // még nincs képkocka: a poszter fordul át
+                    snap = document.createElement("img"); snap.src = pd.posterPath;
+                    snap.style.cssText = "width:100%; height:100%; display:block; object-fit:contain; background:#000;";
+                } else {
+                    snap = document.createElement("canvas");
+                    snap.width = v.videoWidth || 2; snap.height = v.videoHeight || 2; snap.style.cssText = "width:100%; height:100%; display:block; background:#000;";
+                    try { snap.getContext("2d").drawImage(v, 0, 0, snap.width, snap.height); } catch (_) {}
+                }
+                playTurn(snap, { x: vr.left - pr.left, y: vr.top - pr.top, w, h }, swapToNextPage);
                 return;
             }
             const needZoomOut = blockIdx >= 0 || viewScale > 1;
@@ -1405,6 +1687,8 @@
                 } else
                 loadCurrentPage(); // ⭐ ez már magában elindítja a pageIdx-nek megfelelő háttérzene-sávot is
                 checkVoiceAvailability(activeMagazineData.lang || baseLang());
+                // T8: a teljes kiadvány letöltése a háttérben (az ablak betöltése után, csendben)
+                setTimeout(() => MediaStore.startBackground(allMediaUrls()), 1500);
             } else {
                 document.getElementById("loadError").style.display = "block";
                 checkVoiceAvailability(baseLang());
