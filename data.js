@@ -31,10 +31,10 @@ window.MAGAZINE_DATA = {
       "music": true,
       "musicMode": "playlist",
       "sound": false,
-      "viewMode": "PV",
+      "viewMode": "GV",
       "subs": false
     },
-    "exportId": "mv6yb4gh"
+    "exportId": "mv6yecur"
   },
   "lang": "hu",
   "playerUi": {
