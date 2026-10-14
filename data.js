@@ -23,6 +23,7 @@ window.MAGAZINE_DATA = {
     "playerLangs": [
       "en",
       "De",
+      "es",
       "hu",
       "ru"
     ],
@@ -30,11 +31,16 @@ window.MAGAZINE_DATA = {
     "playerStart": {
       "music": true,
       "musicMode": "playlist",
-      "sound": false,
+      "blockSound": true,
       "viewMode": "GV",
-      "subs": false
+      "subsLang": "none",
+      "ttsLang": "off",
+      "subs": false,
+      "sound": false
     },
-    "exportId": "mv6yecur"
+    "exportId": "mv88930b",
+    "totalMB": 24.8,
+    "pageCount": 12
   },
   "lang": "hu",
   "playerUi": {
@@ -42,14 +48,14 @@ window.MAGAZINE_DATA = {
     "languages": {
       "en": {
         "plLangName": "English",
-        "plLangTitle": "Language",
-        "plPrev": "◄ Prev",
-        "plNext": "Next ►",
+        "plLangTitle": "Language, captions, read aloud",
+        "plPrev": "‹ Prev",
+        "plNext": "Next ›",
         "plSetTitle": "Settings",
         "plSetTxtSize": "Text size",
         "plSetSpeed": "Reading speed",
         "plSetVoice": "Voice type",
-        "plSetBar": "Fix the bottom bar",
+        "plSetBar": "Keep the menu bars visible",
         "plSmall": "Small",
         "plMedium": "Medium",
         "plLarge": "Large",
@@ -73,26 +79,63 @@ window.MAGAZINE_DATA = {
         "plContentLangTitle": "Text language",
         "plOriginal": "Original",
         "plSubsTitle": "Subtitles",
-        "plSoundTitle": "Read aloud / sound",
+        "plSoundTitle": "Sounds",
         "plLoadError": "The content cannot be loaded (data.js is missing or corrupted).",
         "plImgAlt": "Magazine page",
         "plMusicTitle": "Background music on/off",
         "plIntroBack": "Back",
         "plIntroFwd": "Forward",
-        "plIntroLang": "Language settings",
+        "plIntroLang": "Language, captions and read aloud",
         "plIntroSubs": "Subtitles on/off",
         "plIntroMusic": "Music on/off",
-        "plIntroSound": "Narration / read aloud on/off",
-        "plIntroMenu": "Settings",
+        "plIntroSound": "Sounds: background music, effects",
+        "plIntroMenu": "Settings, publication details",
         "plIntroInApp": "Tip: for the best experience, open this page in your browser (⋯ menu → Open in browser).",
-        "plTxtZoomTitle": "Text size",
+        "plTxtZoomTitle": "Caption size",
         "plViewTitle": "Guided View / Page View",
-        "plIntroView": "Guided view / free view",
-        "plLangPlayer": "Player language",
+        "plIntroView": "Guided view ↔ free page view",
+        "plLangPlayer": "Menu language",
         "plLangComic": "Comic language",
         "plVidPlay": "Play / pause",
         "plVidMute": "Video sound on/off",
-        "plVidSeek": "Video position"
+        "plVidSeek": "Video position",
+        "plSetTurnFx": "Page-turn effect",
+        "plLangSubs": "Captions",
+        "plLangTts": "Read aloud",
+        "plNoSubs": "No captions",
+        "plOriginalShort": "original",
+        "plTtsOff": "Off",
+        "plTtsNote": "Only the voices available on your device are listed.",
+        "plTtsNone": "This device has no voice for reading this comic aloud.",
+        "plSearchLang": "Search language…",
+        "plSndMusic": "Background music",
+        "plSndBlock": "Block sounds",
+        "plSndBlockSub": "effects, recorded voices",
+        "plSndAllOff": "All sound off",
+        "plSndAllOn": "All sound on",
+        "plSndTtsNote": "Read aloud can be set in the language menu.",
+        "plShowMenu": "Show the menu bar",
+        "plSetBars": "Keep the menu bars visible",
+        "plMetaOpen": "Publication details",
+        "plMetaHeading": "Publication details",
+        "plClose": "Close",
+        "plMetaVolume": "Volume",
+        "plMetaIssue": "Issue",
+        "plMetaGenre": "Genre",
+        "plMetaOrigLang": "Original language",
+        "plMetaTranslations": "Captions available in",
+        "plMetaPages": "Pages",
+        "plMetaSize": "Total size",
+        "plMetaIsbn": "ISBN",
+        "plMetaIssn": "ISSN",
+        "plIntroHowTo": "How to use",
+        "plIntroStart": "Start",
+        "plPagesN": "{n} pages",
+        "plTotalMB": "Total: {mb} MB",
+        "plIntroTxtZoom": "Caption size, in the bottom bar (3 sizes)",
+        "plIntroTurnTouch": "Turn pages: tap the right or left edge",
+        "plIntroTurnMouse": "Turn pages: click right or left, or use the arrow keys",
+        "plIntroHide": "The menu bar hides while reading – tap the middle or the tab to bring it back"
       },
       "De": {
         "plLangName": "Deutsch",
@@ -133,31 +176,159 @@ window.MAGAZINE_DATA = {
         "plMusicTitle": "Háttérzene be/ki",
         "plIntroBack": "Vissza",
         "plIntroFwd": "Előre",
-        "plIntroLang": "Nyelvek beállítása",
+        "plIntroLang": "Nyelv, felirat és felolvasás",
         "plIntroSubs": "Feliratozás ki/be",
         "plIntroMusic": "Zene ki/be",
-        "plIntroSound": "Hang / felolvasás ki/be",
-        "plIntroMenu": "Beállítások",
+        "plIntroSound": "Hangok: háttérzene, effektek",
+        "plIntroMenu": "Beállítások, a kiadvány adatai",
         "plIntroInApp": "Tipp: a legjobb élményért nyisd meg ezt az oldalt a böngészőben (⋯ menü → Megnyitás böngészőben).",
-        "plTxtZoomTitle": "Szövegméret",
+        "plTxtZoomTitle": "Felirat mérete",
         "plViewTitle": "Guided View / Page View",
-        "plIntroView": "Vezetett nézet / szabad nézet",
-        "plLangPlayer": "Player nyelve",
+        "plIntroView": "Vezetett nézet ↔ szabad oldalnézet",
+        "plLangPlayer": "Menü nyelve",
         "plLangComic": "Képregény nyelve",
         "plVidPlay": "Lejátszás / szünet",
         "plVidMute": "Videó hangja be/ki",
-        "plVidSeek": "Videó pozíciója"
+        "plVidSeek": "Videó pozíciója",
+        "plSetTurnFx": "Lapozás-effekt",
+        "plLangSubs": "Felirat",
+        "plLangTts": "Felolvasás",
+        "plNoSubs": "Nincs felirat",
+        "plOriginalShort": "eredeti",
+        "plTtsOff": "Ki",
+        "plTtsNote": "Csak a készülékeden elérhető hangok látszanak.",
+        "plTtsNone": "Ezen a készüléken nincs hang a képregény felolvasásához.",
+        "plSearchLang": "Nyelv keresése…",
+        "plSndMusic": "Háttérzene",
+        "plSndBlock": "Blokkhangok",
+        "plSndBlockSub": "effektek, felvett hangok",
+        "plSndAllOff": "Minden hang ki",
+        "plSndAllOn": "Minden hang be",
+        "plSndTtsNote": "A felolvasást a nyelvmenüben állíthatod.",
+        "plShowMenu": "Menüsor megjelenítése",
+        "plSetBars": "Menüsorok rögzítése",
+        "plMetaOpen": "Kiadvány adatai",
+        "plMetaHeading": "A kiadvány adatai",
+        "plClose": "Bezárás",
+        "plMetaVolume": "Kötet",
+        "plMetaIssue": "Szám",
+        "plMetaGenre": "Műfaj",
+        "plMetaOrigLang": "Eredeti nyelv",
+        "plMetaTranslations": "Felirat nyelvei",
+        "plMetaPages": "Oldalak",
+        "plMetaSize": "Teljes méret",
+        "plMetaIsbn": "ISBN",
+        "plMetaIssn": "ISSN",
+        "plIntroHowTo": "Így használd",
+        "plIntroStart": "Kezdés",
+        "plPagesN": "{n} oldal",
+        "plTotalMB": "Teljes anyag: {mb} MB",
+        "plIntroTxtZoom": "Felirat nagyítása, az alsó sávban (3 méret)",
+        "plIntroTurnTouch": "Lapozás: koppints jobbra vagy balra",
+        "plIntroTurnMouse": "Lapozás: kattints jobbra vagy balra, vagy a nyilakkal",
+        "plIntroHide": "Olvasás közben a menüsor elrejtőzik – középre vagy a fülre koppintva visszajön"
+      },
+      "es": {
+        "plLangName": "Español",
+        "plLangTitle": "Idioma, subtítulos, lectura en voz alta",
+        "plPrev": "‹ Ant.",
+        "plNext": "Sig. ›",
+        "plSetTitle": "Ajustes",
+        "plSetTxtSize": "Tamaño del texto",
+        "plSetSpeed": "Velocidad de lectura",
+        "plSetVoice": "Tipo de voz",
+        "plSetBar": "Mantener visibles las barras de menú",
+        "plSmall": "Pequeño",
+        "plMedium": "Mediano",
+        "plLarge": "Grande",
+        "plSlow": "Lenta",
+        "plNormal": "Normal",
+        "plFast": "Rápida",
+        "plFemale": "Femenina",
+        "plMale": "Masculina",
+        "plOn": "SÍ",
+        "plOff": "NO",
+        "plDone": "Listo",
+        "plNoVoice": "No disponible",
+        "plCreditsMade": "Hecho con ZoomComicFX",
+        "plCreditsTagline": "para los creadores del siglo XXI",
+        "plCredits1": "Optimizado para pantallas pequeñas - Guided View",
+        "plCredits2": "Vídeos y animaciones integrados sin cortes",
+        "plCredits3": "Sonidos para narración y efectos sonoros",
+        "plCredits4": "Música de fondo o narración continua",
+        "plCredits5": "Subtítulos en varios idiomas",
+        "plCredits6": "Lectura automática en voz alta en varios idiomas",
+        "plContentLangTitle": "Idioma del texto",
+        "plOriginal": "Original",
+        "plSubsTitle": "Subtítulos",
+        "plSoundTitle": "Sonidos",
+        "plLoadError": "No se pudo cargar el contenido (data.js falta o está dañado).",
+        "plImgAlt": "Página del cómic",
+        "plMusicTitle": "Música de fondo sí/no",
+        "plIntroBack": "Atrás",
+        "plIntroFwd": "Adelante",
+        "plIntroLang": "Idioma, subtítulos y lectura en voz alta",
+        "plIntroSubs": "Subtítulos sí/no",
+        "plIntroMusic": "Música sí/no",
+        "plIntroSound": "Sonidos: música de fondo, efectos",
+        "plIntroMenu": "Ajustes, información de la publicación",
+        "plIntroInApp": "Consejo: para una mejor experiencia, abre esta página en tu navegador (menú ⋯ → Abrir en el navegador).",
+        "plTxtZoomTitle": "Tamaño de los subtítulos",
+        "plViewTitle": "Guided View / Page View",
+        "plIntroView": "Vista guiada ↔ vista libre de la página",
+        "plLangPlayer": "Idioma del menú",
+        "plLangComic": "Idioma del cómic",
+        "plVidPlay": "Reproducir / pausa",
+        "plVidMute": "Sonido del vídeo sí/no",
+        "plVidSeek": "Posición en el vídeo",
+        "plSetTurnFx": "Efecto de pasar página",
+        "plLangSubs": "Subtítulos",
+        "plLangTts": "Lectura en voz alta",
+        "plNoSubs": "Sin subtítulos",
+        "plOriginalShort": "original",
+        "plTtsOff": "No",
+        "plTtsNote": "Solo aparecen las voces disponibles en tu dispositivo.",
+        "plTtsNone": "Este dispositivo no tiene voces para leer este cómic en voz alta.",
+        "plSearchLang": "Buscar idioma…",
+        "plSndMusic": "Música de fondo",
+        "plSndBlock": "Sonidos de bloque",
+        "plSndBlockSub": "efectos, voces grabadas",
+        "plSndAllOff": "Silenciar todo",
+        "plSndAllOn": "Activar todo",
+        "plSndTtsNote": "La lectura en voz alta se ajusta en el menú de idiomas.",
+        "plShowMenu": "Mostrar la barra de menú",
+        "plSetBars": "Mantener visibles las barras de menú",
+        "plMetaOpen": "Información de la publicación",
+        "plMetaHeading": "Información de la publicación",
+        "plClose": "Cerrar",
+        "plMetaVolume": "Tomo",
+        "plMetaIssue": "Número",
+        "plMetaGenre": "Género",
+        "plMetaOrigLang": "Idioma original",
+        "plMetaTranslations": "Subtítulos disponibles en",
+        "plMetaPages": "Páginas",
+        "plMetaSize": "Tamaño total",
+        "plMetaIsbn": "ISBN",
+        "plMetaIssn": "ISSN",
+        "plIntroHowTo": "Instrucciones",
+        "plIntroStart": "Empezar",
+        "plPagesN": "{n} páginas",
+        "plTotalMB": "Total: {mb} MB",
+        "plIntroTxtZoom": "Tamaño de los subtítulos, en la barra inferior (3 tamaños)",
+        "plIntroTurnTouch": "Pasar página: toca el borde derecho o izquierdo",
+        "plIntroTurnMouse": "Pasar página: haz clic a la derecha o a la izquierda, o usa las flechas",
+        "plIntroHide": "La barra de menú se oculta al leer – toca el centro o la pestaña para que vuelva"
       },
       "hu": {
         "plLangName": "Magyar",
-        "plLangTitle": "Nyelv",
-        "plPrev": "◄ Előző",
-        "plNext": "Következő ►",
+        "plLangTitle": "Nyelv, felirat, felolvasás",
+        "plPrev": "‹ Előző",
+        "plNext": "Következő ›",
         "plSetTitle": "Beállítások",
         "plSetTxtSize": "Szövegméret",
         "plSetSpeed": "Felolvasás sebessége",
         "plSetVoice": "Hang típusa",
-        "plSetBar": "Alsó menüsor rögzítése",
+        "plSetBar": "Menüsorok rögzítése",
         "plSmall": "Kicsi",
         "plMedium": "Közép",
         "plLarge": "Nagy",
@@ -181,26 +352,63 @@ window.MAGAZINE_DATA = {
         "plContentLangTitle": "Szöveg nyelve",
         "plOriginal": "Eredeti",
         "plSubsTitle": "Feliratok",
-        "plSoundTitle": "Felolvasás / hang",
+        "plSoundTitle": "Hangok",
         "plLoadError": "A tartalom nem tölthető be (data.js hiányzik vagy sérült).",
         "plImgAlt": "Magazin oldal",
         "plMusicTitle": "Háttérzene be/ki",
         "plIntroBack": "Vissza",
         "plIntroFwd": "Előre",
-        "plIntroLang": "Nyelvek beállítása",
+        "plIntroLang": "Nyelv, felirat és felolvasás",
         "plIntroSubs": "Feliratozás ki/be",
         "plIntroMusic": "Zene ki/be",
-        "plIntroSound": "Hang / felolvasás ki/be",
-        "plIntroMenu": "Beállítások",
+        "plIntroSound": "Hangok: háttérzene, effektek",
+        "plIntroMenu": "Beállítások, a kiadvány adatai",
         "plIntroInApp": "Tipp: a legjobb élményért nyisd meg ezt az oldalt a böngészőben (⋯ menü → Megnyitás böngészőben).",
-        "plTxtZoomTitle": "Szövegméret",
+        "plTxtZoomTitle": "Felirat mérete",
         "plViewTitle": "Guided View / Page View",
-        "plIntroView": "Vezetett nézet / szabad nézet",
-        "plLangPlayer": "Player nyelve",
+        "plIntroView": "Vezetett nézet ↔ szabad oldalnézet",
+        "plLangPlayer": "Menü nyelve",
         "plLangComic": "Képregény nyelve",
         "plVidPlay": "Lejátszás / szünet",
         "plVidMute": "Videó hangja be/ki",
-        "plVidSeek": "Videó pozíciója"
+        "plVidSeek": "Videó pozíciója",
+        "plSetTurnFx": "Lapozás-effekt",
+        "plLangSubs": "Felirat",
+        "plLangTts": "Felolvasás",
+        "plNoSubs": "Nincs felirat",
+        "plOriginalShort": "eredeti",
+        "plTtsOff": "Ki",
+        "plTtsNote": "Csak a készülékeden elérhető hangok látszanak.",
+        "plTtsNone": "Ezen a készüléken nincs hang a képregény felolvasásához.",
+        "plSearchLang": "Nyelv keresése…",
+        "plSndMusic": "Háttérzene",
+        "plSndBlock": "Blokkhangok",
+        "plSndBlockSub": "effektek, felvett hangok",
+        "plSndAllOff": "Minden hang ki",
+        "plSndAllOn": "Minden hang be",
+        "plSndTtsNote": "A felolvasást a nyelvmenüben állíthatod.",
+        "plShowMenu": "Menüsor megjelenítése",
+        "plSetBars": "Menüsorok rögzítése",
+        "plMetaOpen": "Kiadvány adatai",
+        "plMetaHeading": "A kiadvány adatai",
+        "plClose": "Bezárás",
+        "plMetaVolume": "Kötet",
+        "plMetaIssue": "Szám",
+        "plMetaGenre": "Műfaj",
+        "plMetaOrigLang": "Eredeti nyelv",
+        "plMetaTranslations": "Felirat nyelvei",
+        "plMetaPages": "Oldalak",
+        "plMetaSize": "Teljes méret",
+        "plMetaIsbn": "ISBN",
+        "plMetaIssn": "ISSN",
+        "plIntroHowTo": "Így használd",
+        "plIntroStart": "Kezdés",
+        "plPagesN": "{n} oldal",
+        "plTotalMB": "Teljes anyag: {mb} MB",
+        "plIntroTxtZoom": "Felirat nagyítása, az alsó sávban (3 méret)",
+        "plIntroTurnTouch": "Lapozás: koppints jobbra vagy balra",
+        "plIntroTurnMouse": "Lapozás: kattints jobbra vagy balra, vagy a nyilakkal",
+        "plIntroHide": "Olvasás közben a menüsor elrejtőzik – középre vagy a fülre koppintva visszajön"
       },
       "ru": {
         "plLangName": "Русский",
@@ -241,20 +449,57 @@ window.MAGAZINE_DATA = {
         "plMusicTitle": "Háttérzene be/ki",
         "plIntroBack": "Vissza",
         "plIntroFwd": "Előre",
-        "plIntroLang": "Nyelvek beállítása",
+        "plIntroLang": "Nyelv, felirat és felolvasás",
         "plIntroSubs": "Feliratozás ki/be",
         "plIntroMusic": "Zene ki/be",
-        "plIntroSound": "Hang / felolvasás ki/be",
-        "plIntroMenu": "Beállítások",
+        "plIntroSound": "Hangok: háttérzene, effektek",
+        "plIntroMenu": "Beállítások, a kiadvány adatai",
         "plIntroInApp": "Tipp: a legjobb élményért nyisd meg ezt az oldalt a böngészőben (⋯ menü → Megnyitás böngészőben).",
-        "plTxtZoomTitle": "Szövegméret",
+        "plTxtZoomTitle": "Felirat mérete",
         "plViewTitle": "Guided View / Page View",
-        "plIntroView": "Vezetett nézet / szabad nézet",
-        "plLangPlayer": "Player nyelve",
+        "plIntroView": "Vezetett nézet ↔ szabad oldalnézet",
+        "plLangPlayer": "Menü nyelve",
         "plLangComic": "Képregény nyelve",
         "plVidPlay": "Lejátszás / szünet",
         "plVidMute": "Videó hangja be/ki",
-        "plVidSeek": "Videó pozíciója"
+        "plVidSeek": "Videó pozíciója",
+        "plSetTurnFx": "Lapozás-effekt",
+        "plLangSubs": "Felirat",
+        "plLangTts": "Felolvasás",
+        "plNoSubs": "Nincs felirat",
+        "plOriginalShort": "eredeti",
+        "plTtsOff": "Ki",
+        "plTtsNote": "Csak a készülékeden elérhető hangok látszanak.",
+        "plTtsNone": "Ezen a készüléken nincs hang a képregény felolvasásához.",
+        "plSearchLang": "Nyelv keresése…",
+        "plSndMusic": "Háttérzene",
+        "plSndBlock": "Blokkhangok",
+        "plSndBlockSub": "effektek, felvett hangok",
+        "plSndAllOff": "Minden hang ki",
+        "plSndAllOn": "Minden hang be",
+        "plSndTtsNote": "A felolvasást a nyelvmenüben állíthatod.",
+        "plShowMenu": "Menüsor megjelenítése",
+        "plSetBars": "Menüsorok rögzítése",
+        "plMetaOpen": "Kiadvány adatai",
+        "plMetaHeading": "A kiadvány adatai",
+        "plClose": "Bezárás",
+        "plMetaVolume": "Kötet",
+        "plMetaIssue": "Szám",
+        "plMetaGenre": "Műfaj",
+        "plMetaOrigLang": "Eredeti nyelv",
+        "plMetaTranslations": "Felirat nyelvei",
+        "plMetaPages": "Oldalak",
+        "plMetaSize": "Teljes méret",
+        "plMetaIsbn": "ISBN",
+        "plMetaIssn": "ISSN",
+        "plIntroHowTo": "Így használd",
+        "plIntroStart": "Kezdés",
+        "plPagesN": "{n} oldal",
+        "plTotalMB": "Teljes anyag: {mb} MB",
+        "plIntroTxtZoom": "Felirat nagyítása, az alsó sávban (3 méret)",
+        "plIntroTurnTouch": "Lapozás: koppints jobbra vagy balra",
+        "plIntroTurnMouse": "Lapozás: kattints jobbra vagy balra, vagy a nyilakkal",
+        "plIntroHide": "Olvasás közben a menüsor elrejtőzik – középre vagy a fülre koppintva visszajön"
       }
     }
   },
@@ -265,6 +510,9 @@ window.MAGAZINE_DATA = {
       "text": "George Colt novellája alapján\nZÉORSZÁG\nA nagy magyar zombiinvázió története\nPolitikai sci-fi szatíra\n",
       "audioPath": "",
       "viewStart": "auto",
+      "musicVol": null,
+      "captionPos": "bottom",
+      "videoMuted": false,
       "guides": {
         "v": [],
         "h": []
@@ -278,6 +526,8 @@ window.MAGAZINE_DATA = {
           "x2": 455,
           "y2": 1469,
           "content": "A Zoomcomic FX demóképregénye. Készült George Colt az Elmúlt négy év című novellája alapján AI segítségével. A szórakoztatáson kívül a Zoomcomic FX képességeinek bemutatását szolgálja. A szereplők és események a képzelet szüleményei.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         }
       ],
@@ -289,6 +539,9 @@ window.MAGAZINE_DATA = {
       "text": "",
       "audioPath": "",
       "viewStart": "auto",
+      "musicVol": null,
+      "captionPos": "bottom",
+      "videoMuted": false,
       "guides": {
         "v": [],
         "h": []
@@ -302,6 +555,8 @@ window.MAGAZINE_DATA = {
           "x2": 1018,
           "y2": 653,
           "content": "Még soha egy miniszterelnök sem akart választást annyira elveszíteni, mint most én. De ez egy hosszú történet…",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -312,6 +567,8 @@ window.MAGAZINE_DATA = {
           "x2": 1018,
           "y2": 1519,
           "content": "Négy éve, a kampány alatt még minden szép volt, az arcommal volt tele az ország.\nSzavazz ránk, és jobb lesz!\nnektek",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         }
       ],
@@ -323,6 +580,9 @@ window.MAGAZINE_DATA = {
       "text": "",
       "audioPath": "",
       "viewStart": "auto",
+      "musicVol": null,
+      "captionPos": "bottom",
+      "videoMuted": false,
       "guides": {
         "v": [],
         "h": []
@@ -336,6 +596,8 @@ window.MAGAZINE_DATA = {
           "x2": 532,
           "y2": 473,
           "content": "Sokan elmentek szavazni…",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -346,6 +608,8 @@ window.MAGAZINE_DATA = {
           "x2": 1020,
           "y2": 470,
           "content": "…de hát lottót is sokan vesznek, mert alapvetően optimista választók laknak az országban, akik azt hiszik, ez változtat majd a sorsukon.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -356,6 +620,8 @@ window.MAGAZINE_DATA = {
           "x2": 526,
           "y2": 995,
           "content": "Nyertünk! Mosolyogva álltam a kamerák kereszttüzében a beiktatásomon, készen arra, hogy azok érdekeit figyelembe véve vezessem az országot...",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -366,6 +632,8 @@ window.MAGAZINE_DATA = {
           "x2": 1018,
           "y2": 992,
           "content": "... akik a kampányomra a pénzt adták.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -376,6 +644,8 @@ window.MAGAZINE_DATA = {
           "x2": 524,
           "y2": 1532,
           "content": "Természetesen a saját bankszámlám gyarapodását is szem előtt tartva.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -386,6 +656,8 @@ window.MAGAZINE_DATA = {
           "x2": 1022,
           "y2": 1530,
           "content": "És a választók? Hát, ők onnantól csak zavartak.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         }
       ],
@@ -397,6 +669,9 @@ window.MAGAZINE_DATA = {
       "text": "",
       "audioPath": "",
       "viewStart": "auto",
+      "musicVol": null,
+      "captionPos": "bottom",
+      "videoMuted": false,
       "guides": {
         "v": [],
         "h": []
@@ -410,6 +685,8 @@ window.MAGAZINE_DATA = {
           "x2": 513,
           "y2": 470,
           "content": "Egészen simán mentek a dolgok addig, amíg valaki Kínában ki nem próbált egy új receptet.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -420,6 +697,8 @@ window.MAGAZINE_DATA = {
           "x2": 1020,
           "y2": 468,
           "content": "Az elején még örültünk is, hogy végre nem a mi kis dolgainkról szólnak a hírek.\nZombik Amerikában!\n- Ezek mit szívtak?\n- Nekem is kell!",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -430,6 +709,8 @@ window.MAGAZINE_DATA = {
           "x2": 507,
           "y2": 977,
           "content": "De még azon a télen beütött a krach...",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -440,6 +721,8 @@ window.MAGAZINE_DATA = {
           "x2": 1015,
           "y2": 977,
           "content": "…és mire észbe kaptunk, már hatmillió magyar és hárommillió zombi miniszterelnöke voltam. Mit mondjak, nem hiányzott.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -450,6 +733,8 @@ window.MAGAZINE_DATA = {
           "x2": 496,
           "y2": 1527,
           "content": "Az ellátási láncok összeomlottak, a boltok polcai kiürültek.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -460,6 +745,8 @@ window.MAGAZINE_DATA = {
           "x2": 1018,
           "y2": 1521,
           "content": "Azt mesélték, annyira nem volt liszt, hogy a pártházban kokainból próbáltunk lángost sütni. Erre nem emlékszem. Meg az utána jövő két hétre sem.\n- Főnök, ez a tészta nem kel meg!",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         }
       ],
@@ -471,6 +758,9 @@ window.MAGAZINE_DATA = {
       "text": "Aztán egy kisebb csoda történt. Az egyik magyar kutatóintézetben felfedezték az ellenanyagot.",
       "audioPath": "",
       "viewStart": "auto",
+      "musicVol": null,
+      "captionPos": "bottom",
+      "videoMuted": false,
       "guides": {
         "v": [],
         "h": []
@@ -485,6 +775,9 @@ window.MAGAZINE_DATA = {
       "text": "",
       "audioPath": "",
       "viewStart": "auto",
+      "musicVol": null,
+      "captionPos": "bottom",
+      "videoMuted": false,
       "guides": {
         "v": [],
         "h": []
@@ -498,6 +791,8 @@ window.MAGAZINE_DATA = {
           "x2": 359,
           "y2": 436,
           "content": "Magyar kutatók felfedezték a zombikór ellenszerét!",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -508,6 +803,8 @@ window.MAGAZINE_DATA = {
           "x2": 702,
           "y2": 432,
           "content": "A levegőbe permetezve a Z anyagot megállítható a vírus terjedése.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -518,6 +815,8 @@ window.MAGAZINE_DATA = {
           "x2": 1018,
           "y2": 432,
           "content": "Átadják a licencjogokat a világ összes gyógyszergyárának.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -528,6 +827,8 @@ window.MAGAZINE_DATA = {
           "x2": 337,
           "y2": 982,
           "content": "",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -538,6 +839,8 @@ window.MAGAZINE_DATA = {
           "x2": 663,
           "y2": 980,
           "content": "",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -548,6 +851,8 @@ window.MAGAZINE_DATA = {
           "x2": 1018,
           "y2": 977,
           "content": "",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -558,6 +863,8 @@ window.MAGAZINE_DATA = {
           "x2": 481,
           "y2": 1527,
           "content": "Persze nem ingyen adtuk, ilyen jó fejek azért nem voltunk.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -568,6 +875,8 @@ window.MAGAZINE_DATA = {
           "x2": 1018,
           "y2": 1532,
           "content": "Egy biztos, még sohasem volt ilyen gazdag az ország, mindenkinek jutott a pénzből, annyi volt, hogy egyszerűen nem bírtuk mind ellopni.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         }
       ],
@@ -579,6 +888,9 @@ window.MAGAZINE_DATA = {
       "text": "",
       "audioPath": "",
       "viewStart": "auto",
+      "musicVol": null,
+      "captionPos": "bottom",
+      "videoMuted": false,
       "guides": {
         "v": [],
         "h": []
@@ -592,6 +904,8 @@ window.MAGAZINE_DATA = {
           "x2": 610,
           "y2": 410,
           "content": "De basszus, kormányozni kellett! Gyönyörűen eltűnt mindenki, amikor arról volt szó, hogy döntéseket kell hozni, felelősséget kell vállalni. Szépen magamra hagyott a pártom, vigyem el én a balhét. A pénzért bezzeg sorban álltak!\n- Hé, és dolgozni ki fog?",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -602,6 +916,8 @@ window.MAGAZINE_DATA = {
           "x2": 1020,
           "y2": 408,
           "content": "",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -612,6 +928,8 @@ window.MAGAZINE_DATA = {
           "x2": 554,
           "y2": 803,
           "content": "A zombik kognitív képességei növekedést mutatnak.\nA zombik 3-5 év alatt visszaváltozhatnak emberré.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -622,6 +940,8 @@ window.MAGAZINE_DATA = {
           "x2": 1020,
           "y2": 803,
           "content": "Tulajdonképpen azért nem irtottuk ki addig a Z-ket, mert elfogyott a lőszer. Az előző kormányok nem költöttek eleget a seregre, és ezt is én szívtam meg. De, visszatérve a helyzetre, értik, mi a probléma?",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -632,6 +952,8 @@ window.MAGAZINE_DATA = {
           "x2": 554,
           "y2": 1175,
           "content": "Azoknak a testvéreknek, férjeknek, anyósoknak, akik elpusztítandó szörnyekké változtak, megvolt az esélyük újra testvérekké, férjekké, anyósokká válni…",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -642,6 +964,8 @@ window.MAGAZINE_DATA = {
           "x2": 1018,
           "y2": 1173,
           "content": "…bármennyire nem hiányzott ez utóbbi senkinek.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -652,6 +976,8 @@ window.MAGAZINE_DATA = {
           "x2": 1011,
           "y2": 1530,
           "content": "És akkor az ellenzéknél elgurult a gyógyszer.\n- Joguk van újra emberré válni.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -662,6 +988,8 @@ window.MAGAZINE_DATA = {
           "x2": 502,
           "y2": 1523,
           "content": "A zombiölés betiltását követeli.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         }
       ],
@@ -673,6 +1001,9 @@ window.MAGAZINE_DATA = {
       "text": "",
       "audioPath": "",
       "viewStart": "auto",
+      "musicVol": null,
+      "captionPos": "bottom",
+      "videoMuted": false,
       "guides": {
         "v": [],
         "h": []
@@ -686,6 +1017,8 @@ window.MAGAZINE_DATA = {
           "x2": 502,
           "y2": 694,
           "content": "Na most, eddig, ha a rendőr látott egyet, ott helyben fejbe durrantotta, és kész. Innentől igazoltatnia kellett. Aztán hazavinni. Igazoltattak már zomboidot?\n- Neve? Lakcíme?\n- Hrrrr…",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -696,6 +1029,8 @@ window.MAGAZINE_DATA = {
           "x2": 1018,
           "y2": 690,
           "content": "Nagyon örültünk, hogy visszakaptuk a nagypapát. Kicsit sok nyers húst eszik, és le kell kötözni, de biztosak vagyunk benne, nemsokára meggyógyul.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -706,6 +1041,8 @@ window.MAGAZINE_DATA = {
           "x2": 502,
           "y2": 1527,
           "content": "Állami Menhely Z-korúaknak\nMajdnem minden háztartásba került Z, volt, ahová több is. Nem is beszélve szegény árva zombornyákokról, akiknek nem volt hova menni, őket össze kellett gyűjteni valahová. Én adtam át az első „árvaházat”, a többit a hülye államtitkárokra bíztam.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -716,6 +1053,8 @@ window.MAGAZINE_DATA = {
           "x2": 1013,
           "y2": 1530,
           "content": "További fejfájást okozott, hogy az ország népességének harmada kiesett a termelésből. Hosszú éjszakákon át dolgoztam az infrastruktúra megmentésén. Így egyáltalán nem maradt energiám a korrupcióra, komoly kritikákat is kaptunk mérvadó keleti posztkommunista országoktól…\nNálatok már csúszópénz nélkül is lehet tendert nyerni?!\n",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         }
       ],
@@ -727,6 +1066,9 @@ window.MAGAZINE_DATA = {
       "text": "",
       "audioPath": "",
       "viewStart": "auto",
+      "musicVol": null,
+      "captionPos": "bottom",
+      "videoMuted": false,
       "guides": {
         "v": [],
         "h": []
@@ -740,6 +1082,8 @@ window.MAGAZINE_DATA = {
           "x2": 648,
           "y2": 391,
           "content": "Majdnem sikerült stabilizálni a helyzetet, amikor az ellenzékben tetőzött a hülyeség, és előjöttek a zombijogokkal. Joguk van az életre, a táplálásra, ilyenek. Meg „Z állampolgár” legyen a megnevezésük, mert tulajdonképpen emberek. Lesznek. Talán. Szerencsére a Z-k egészséges párkapcsolatát nem nekem kellett biztosítani.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -750,6 +1094,8 @@ window.MAGAZINE_DATA = {
           "x2": 1013,
           "y2": 702,
           "content": "Z IS EMBER!\nJOGOT A TÁPLÁLÁSRA!\nÉLETET A Z-KNEK!\nZ ÁLLAMPOLGÁR = EMBER\nZ-Állampolgári jogokat",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -760,6 +1106,8 @@ window.MAGAZINE_DATA = {
           "x2": 601,
           "y2": 1093,
           "content": "Hát ebből elegem van! Itt mindenki hülye? \nA következő választást el kell bukni, ha tetszik a pártnak, ha nem!",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -770,6 +1118,8 @@ window.MAGAZINE_DATA = {
           "x2": 595,
           "y2": 1532,
           "content": "Ennek érdekében először is az ellenzék összes hülyeségét elfogadtuk. Persze ez nem járt következmények nélkül, az első ország lettünk, ahol törvénybe iktatták a zombijogokat…",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -780,6 +1130,8 @@ window.MAGAZINE_DATA = {
           "x2": 1015,
           "y2": 1532,
           "content": "…én meg az év embere lettem a magazinban. Gandhi, Gorbacsov, Hitler, én, szép egy társaság, égett is miattam a család.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         }
       ],
@@ -791,6 +1143,9 @@ window.MAGAZINE_DATA = {
       "text": "",
       "audioPath": "",
       "viewStart": "auto",
+      "musicVol": null,
+      "captionPos": "bottom",
+      "videoMuted": false,
       "guides": {
         "v": [],
         "h": []
@@ -804,6 +1159,8 @@ window.MAGAZINE_DATA = {
           "x2": 500,
           "y2": 509,
           "content": "Küldjük haza a külföldi Z-ket!\nEgyre több külföldi Z érkezik az országba. A kormány vizsgálja a hazaküldésük lehetőségét.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -814,6 +1171,8 @@ window.MAGAZINE_DATA = {
           "x2": 1018,
           "y2": 505,
           "content": "Bűncselekmény a Z állampolgárokkal való bármilyen szexuális tevékenységet…\nKórházi zárójelentés (részlet)\nOlyan aranyos volt, aztán elkezdtünk franciázni...",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -824,6 +1183,8 @@ window.MAGAZINE_DATA = {
           "x2": 500,
           "y2": 885,
           "content": "Kiegészült a zombimunka szabályaival a törvénykönyve.Új szabályok a munkaerőpiacon - a Z állampolgárok is dolgozhatnak\n",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -834,6 +1195,8 @@ window.MAGAZINE_DATA = {
           "x2": 1018,
           "y2": 879,
           "content": "Ki fizesse a Z állampolgárok Tb-jét?\nSzakértők szerint több százmilliárdos teher lehet az államnak a zombik egészségügyi ellátása.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -844,6 +1207,8 @@ window.MAGAZINE_DATA = {
           "x2": 650,
           "y2": 1530,
           "content": "Még zombipornó botrány is volt.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -854,6 +1219,8 @@ window.MAGAZINE_DATA = {
           "x2": 1013,
           "y2": 1532,
           "content": "...akkor esett a Dunába a laptopom. \nVéletlenül.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         }
       ],
@@ -865,6 +1232,9 @@ window.MAGAZINE_DATA = {
       "text": "Ráadásul a köztársasági elnök több törvényt tépett szét, mint írt alá, mert egyike volt az elsőknek, akik elkapták a kórt, és lekötözve tartottuk az irodájában. Az ellenzék szerencsére nem jött rá. Így derült ki az is, hogy senki sem nézi az újévi köszöntőt.",
       "audioPath": "",
       "viewStart": "auto",
+      "musicVol": null,
+      "captionPos": "bottom",
+      "videoMuted": false,
       "guides": {
         "v": [],
         "h": []
@@ -879,6 +1249,9 @@ window.MAGAZINE_DATA = {
       "text": "",
       "audioPath": "",
       "viewStart": "auto",
+      "musicVol": null,
+      "captionPos": "bottom",
+      "videoMuted": false,
       "guides": {
         "v": [],
         "h": []
@@ -892,6 +1265,8 @@ window.MAGAZINE_DATA = {
           "x2": 374,
           "y2": 352,
           "content": "A zombikból üzlet lett\nA legtisztább Z eledel 100% marhahúsból\nZ-nap a gyógyfürdőben\nÚj Z funkciók a legújabb telefonon",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -902,6 +1277,8 @@ window.MAGAZINE_DATA = {
           "x2": 681,
           "y2": 348,
           "content": "Zombisport\nKovács Z László megdöntötte a futórekordot a Z derbin.\nÚjabb Z debütált ketrecharcban.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -912,6 +1289,8 @@ window.MAGAZINE_DATA = {
           "x2": 1020,
           "y2": 346,
           "content": "Társadalmi kérdések\nA Z állampolgárokat újra oktatni kell.\nLegyen-e szavazójoga a Z állampolgároknak?\nKi képviselje a Z-ket az új testületben?",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -922,6 +1301,8 @@ window.MAGAZINE_DATA = {
           "x2": 369,
           "y2": 788,
           "content": "Akkor már nagyon mehetnékem volt a politikából, ennyi hülyeséget még senki sem kapott a nyakába négy év alatt.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -932,6 +1313,8 @@ window.MAGAZINE_DATA = {
           "x2": 659,
           "y2": 780,
           "content": "Nagyon készültem a bukásra, hatalmas taktikát találtam ki: egyszerűen elkéssük a választási törvény szerinti határidőt a jelölések leadásával, így ha akarnánk, sem tudnánk megnyerni a választást, mivel senki sem indul közülünk. Volt néhány szövetségesem a pártban, de így is saját kezemmel zártam rá az ajtót a srácokra, hogy ne tudjanak elindulni a papírokkal. Aztán csak várni kellett. A percek óráknak tűntek, az órák napoknak, végül eljött a határidő, és mi nem adtunk be semmit. Bekészítettem egy ünnepi csík kólát a tévé elé, úgy vártam, hogy az ellenzék vezére bejelenti a győzelmüket.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -942,6 +1325,8 @@ window.MAGAZINE_DATA = {
           "x2": 1018,
           "y2": 780,
           "content": "Választási iroda",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -952,6 +1337,8 @@ window.MAGAZINE_DATA = {
           "x2": 511,
           "y2": 1087,
           "content": "",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -962,6 +1349,8 @@ window.MAGAZINE_DATA = {
           "x2": 1018,
           "y2": 1100,
           "content": "Az ellenzék és a kormány is lekéste a leadási határidőt. \nA kormány még legalább fél évig ideiglenesen hatalmon marad.",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         },
         {
@@ -972,6 +1361,8 @@ window.MAGAZINE_DATA = {
           "x2": 1018,
           "y2": 1534,
           "content": "Anyád!",
+          "musicVol": null,
+          "captionPos": "bottom",
           "audioPath": ""
         }
       ],
@@ -1163,5 +1554,25 @@ window.MAGAZINE_DATA = {
       "endPage": 12,
       "audioPath": "audio/1791712130981-Good_Boy_on_the_Poster.mp3"
     }
+  ],
+  "playerTheme": {
+    "font": "noto-sans",
+    "bgPortrait": "",
+    "bgLandscape": "",
+    "hasFont": false
+  },
+  "fontStack": [],
+  "rtlLangs": [
+    "ar",
+    "he",
+    "fa",
+    "ur",
+    "ps",
+    "sd",
+    "ug",
+    "yi",
+    "dv",
+    "ckb",
+    "ks"
   ]
 };
