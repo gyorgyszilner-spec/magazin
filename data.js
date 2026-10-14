@@ -43,7 +43,7 @@ window.MAGAZINE_DATA = {
       "sound": false,
       "offline": true
     },
-    "exportId": "mv8fgxsy",
+    "exportId": "mv8flwx0",
     "totalMB": 25.8,
     "pageCount": 12
   },
@@ -2015,7 +2015,7 @@ window.MAGAZINE_DATA = {
     }
   ],
   "playerTheme": {
-    "font": "bangers",
+    "font": "patrick-hand",
     "bgPortrait": "theme/bg-portrait.jpg",
     "bgLandscape": "theme/bg-landscape.jpg",
     "bgPortraitAlign": "center",
@@ -2049,8 +2049,8 @@ window.MAGAZINE_DATA = {
     "fonts/noto-sans-latin-700-normal.woff2",
     "fonts/noto-sans-latin-ext-400-normal.woff2",
     "fonts/noto-sans-latin-ext-700-normal.woff2",
-    "fonts/theme-bangers-latin-400-normal.woff2",
-    "fonts/theme-bangers-latin-ext-400-normal.woff2",
+    "fonts/theme-patrick-hand-latin-400-normal.woff2",
+    "fonts/theme-patrick-hand-latin-ext-400-normal.woff2",
     "icon-180.png",
     "icon-192.png",
     "icon-512.png",

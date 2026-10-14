@@ -1,5 +1,5 @@
-// ZoomComicFX player – service worker (offline olvasás). Export: mv8fgxsy
-const EXPORT_ID = "mv8fgxsy";
+// ZoomComicFX player – service worker (offline olvasás). Export: mv8flwx0
+const EXPORT_ID = "mv8flwx0";
 const SCOPE = self.registration.scope;
 const SHELL = "zcfx-shell|" + SCOPE + "|" + EXPORT_ID;
 const SHELL_FILES = ["./", "./index.html", "./data.js", "./fonts/fonts.css", "./manifest.webmanifest", "./icon-192.png", "./icon-512.png", "./icon-180.png"];

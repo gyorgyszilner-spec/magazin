@@ -95,7 +95,7 @@ OTHER DEALINGS IN THE FONT SOFTWARE.
 
 ----
 
-Copyright 2010 The Bangers Project Authors (https://github.com/googlefonts/bangers)
+Copyright (c) 2010-2012 Patrick Wagesreiter (mail@patrickwagesreiter.at)
 
 This Font Software is licensed under the SIL Open Font License, Version 1.1.
 This license is copied below, and is also available with a FAQ at:
