@@ -12,6 +12,8 @@
     
     <link rel="stylesheet" href="fonts/fonts.css">
     <link rel="manifest" href="manifest.webmanifest">
+    <link rel="icon" type="image/png" href="icon-192.png">
+    <link rel="apple-touch-icon" href="icon-180.png">
     <meta name="theme-color" content="#1c1c1f">
     <style>
         /* ZoomComicFX player – 2.5.0 felület (T14/T15/T19/T24/T26, sárga kiemelés a jóváhagyott mockup szerint) */
@@ -37,10 +39,10 @@
             background-color: var(--pl-bg); background-repeat: no-repeat; background-position: center center;
         }
         /* T21: háttérkép – állón a szélességhez, fekvőn a magassághoz igazítva (a kilógó rész levágódik) */
-        #appBg.has-bg-portrait { background-image: var(--bg-portrait); background-size: 100% auto; }
+        #appBg.has-bg-portrait { background-image: var(--bg-portrait); background-size: 100% auto; background-position: var(--bg-portrait-pos, center center); }
         @media (orientation: landscape) {
             #appBg.has-bg-portrait { background-image: none; }
-            #appBg.has-bg-landscape { background-image: var(--bg-landscape); background-size: auto 100%; }
+            #appBg.has-bg-landscape { background-image: var(--bg-landscape); background-size: auto 100%; background-position: var(--bg-landscape-pos, center center); }
         }
         @media (orientation: portrait) { #appBg.has-bg-landscape:not(.has-bg-portrait) { background-image: none; } }
 
@@ -72,6 +74,17 @@
             display: none; align-items: center; justify-content: center; cursor: pointer; padding: 0;
         }
         body.chrome-hidden #chromeTab { display: flex; }
+        /* 6. kör: az alsó sávnak is van füle (a saját, mindig foglalt sávjában – nem lóg a képbe) */
+        #chromeTabBottom {
+            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 64px; height: 22px; z-index: 99;
+            border: 0; border-radius: 11px 11px 0 0; background: var(--pl-bar); color: var(--pl-dim);
+            display: none; align-items: center; justify-content: center; cursor: pointer; padding: 0;
+        }
+        body.chrome-hidden #chromeTabBottom { display: flex; }
+        /* a két sáv helye elrejtéskor is látható, halvány határvonallal */
+        #bandTop, #bandBottom { position: fixed; left: 0; right: 0; pointer-events: none; z-index: 1; }
+        #bandTop { top: 0; height: 46px; border-bottom: 1px solid var(--pl-line); }
+        #bandBottom { bottom: 0; height: 48px; border-top: 1px solid var(--pl-line); }
 
         /* ---- lenyíló menük (nyelv, hang) ---- */
         .menu-panel {
@@ -122,7 +135,7 @@
             position: relative; overflow-x: hidden !important; overflow-y: scroll !important;
             -webkit-overflow-scrolling: touch; display: flex; align-items: flex-start; justify-content: flex-start;
             box-sizing: border-box; width: 100%; flex-grow: 1; background-color: transparent;
-            margin-top: 46px; margin-bottom: 0px; transition: margin-bottom 0.3s ease;
+            margin-top: 54px; margin-bottom: 48px;   /* 6. kör: a felső (46 px + 8 px térköz) és az alsó sáv (48 px) helye MINDIG foglalt */
         }
         #appBg:not(.has-bg-portrait):not(.has-bg-landscape) #canvasViewport { background-color: #000; }
         #comicImage {
@@ -145,6 +158,10 @@
         #subtitleBar.txt-size-small { font-size: 15px; }
         #subtitleBar.txt-size-medium { font-size: 19px; }
         #subtitleBar.txt-size-large { font-size: 23px; }
+        #subtitleBar.txt-size-xl { font-size: 30px; }    /* 6. kör: 5 fokozat (nagy képernyő, TV) */
+        #subtitleBar.txt-size-xxl { font-size: 38px; }
+        .sz-grid button { padding: 8px 0; line-height: 1; }
+        .sz-grid button span { display: inline-block; font-weight: 700; }
         #subtitleBar.cap-under { border-top: 0; border-radius: 0 0 8px 8px; }
         .video-zone { position: absolute; top: 0; width: 25%; height: calc(100% - 64px); z-index: 20; display: none; }
         #vzLeft { left: 0; } #vzRight { right: 0; }
@@ -236,30 +253,36 @@
         .ip-main { position: absolute; top: 0; bottom: 0; left: 30px; right: 30px; overflow-y: auto; display: flex; justify-content: center; }
         #metaPage .ip-main { left: 0; right: 0; position: relative; min-height: 100%; }
         .ip-wrap { width: 100%; max-width: 980px; box-sizing: border-box; padding: 18px 16px 20px; display: flex; flex-direction: column; gap: 14px; }
-        .ip-head { display: flex; gap: 14px; align-items: flex-end; }
-        .ip-cover { flex: none; width: 104px; max-height: 160px; object-fit: contain; background: #2a2a2f; box-shadow: 0 8px 22px rgba(0,0,0,0.5); }
-        .ip-titles { min-width: 0; display: flex; flex-direction: column; gap: 5px; }
-        .ip-title { margin: 0; font-family: var(--pl-theme-font); font-size: 22px; line-height: 1.2; font-weight: 700; overflow-wrap: anywhere; }
-        .ip-author { margin: 0; font-size: 13px; color: var(--pl-dim); }
-        .ip-small { margin: 4px 0 0; font-size: 12px; color: var(--pl-dim); }
+        /* 6. kör: telefonon a cím a borító FÖLÖTT (mellette nem fért ki); a borító mellett csak az oldalszám/MB */
+        .ip-head { display: grid; grid-template-columns: auto minmax(0, 1fr); grid-template-areas: "t t" "a a" "c s"; gap: 4px 14px; align-items: end; }
+        .ip-titles { display: contents; }
+        .ip-title { grid-area: t; }
+        .ip-author { grid-area: a; }
+        .ip-small { grid-area: s; align-self: end; }
+        .ip-cover { grid-area: c; margin-top: 8px; flex: none; width: 92px; max-height: 140px; object-fit: contain; background: #2a2a2f; box-shadow: 0 8px 22px rgba(0,0,0,0.5); }
+        .ip-title { margin: 0; font-family: var(--pl-theme-font); font-size: 19px; line-height: 1.2; font-weight: 700; overflow-wrap: anywhere; }
+        .ip-author { margin: 0; font-size: 12.5px; color: var(--pl-dim); }
+        .ip-small { margin: 0; font-size: 12px; color: var(--pl-dim); }
         .ip-h2 { margin: 2px 0 0; font-size: 11px; font-weight: 700; letter-spacing: .08em; text-transform: uppercase; color: var(--pl-dim); }
         .ip-list { display: flex; flex-direction: column; }
-        .ip-li { display: flex; align-items: center; gap: 12px; margin: 0; padding: 7px 0; font-size: 14px; line-height: 1.35; color: #e4e4e8; border-bottom: 1px solid #222226; }
+        .ip-li { display: flex; align-items: center; gap: 12px; margin: 0; padding: 6px 0; font-size: 13px; line-height: 1.35; color: #e4e4e8; border-bottom: 1px solid #222226; }
         .ip-li:last-child { border-bottom: 0; }
         .ip-k { flex: none; min-width: 46px; height: 32px; padding: 0 6px; border-radius: 8px; background: var(--pl-bar); border: 1px solid #33333a; display: flex; align-items: center; justify-content: center; color: var(--pl-text); font-size: 12px; font-weight: 600; box-sizing: border-box; }
-        .ip-start { height: 52px; border: 0; border-radius: 12px; background: var(--pl-accent); color: var(--pl-on-accent); font-size: 17px; font-weight: 700; cursor: pointer; padding: 0 36px; }
+        .ip-start { height: 48px; border: 0; border-radius: 12px; background: var(--pl-accent); color: var(--pl-on-accent); font-size: 16px; font-weight: 700; cursor: pointer; padding: 0 36px; }
         .ip-note { font-size: 12px; color: var(--pl-dim); text-align: center; }
-        .ip-dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; margin: 0; font-size: 14px; }
+        .ip-dl { display: grid; grid-template-columns: max-content 1fr; gap: 6px 14px; margin: 0; font-size: 13px; }
         .ip-dl dt { color: var(--pl-dim); }
         .ip-dl dd { margin: 0; color: var(--pl-text); overflow-wrap: anywhere; }
         @media (min-width: 760px) and (min-aspect-ratio: 1/1) {
             .ip-wrap { display: grid; grid-template-columns: minmax(200px, 360px) minmax(0, 1fr); gap: 20px 56px; align-content: center; padding: 24px 32px; min-height: 100%; }
             .ip-head { display: contents; }
-            .ip-cover { grid-row: 1 / span 6; width: 100%; max-height: 72vh; align-self: center; }
-            .ip-titles { gap: 8px; }
-            .ip-title { font-size: 34px; }
-            .ip-author, .ip-small { font-size: 15px; }
-            .ip-li { font-size: 15px; padding: 9px 0; }
+            .ip-cover { grid-area: auto; grid-column: 1; grid-row: 1 / span 6; width: 100%; max-height: 72vh; align-self: center; }
+            .ip-titles { display: flex; flex-direction: column; gap: 8px; }
+            .ip-cover { margin-top: 0; }
+            .ip-title { font-size: 30px; }
+            .ip-author, .ip-small { font-size: 14px; }
+            .ip-small { align-self: auto; }
+            .ip-li { font-size: 14px; padding: 8px 0; }
             .ip-start { justify-self: start; }
             .ip-edge { width: 46px; font-size: 12px; }
             .ip-main { left: 46px; right: 46px; }
@@ -295,6 +318,11 @@
         <button id="chromeTab" data-pl-title="plShowMenu">
             <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 9 6 6 6-6"/></svg>
         </button>
+
+        <button id="chromeTabBottom" data-pl-title="plShowMenu">
+            <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="m6 15 6-6 6 6"/></svg>
+        </button>
+        <div id="bandTop"></div><div id="bandBottom"></div>
 
         <div id="canvasViewport">
             <img id="comicImage" alt="" data-pl-alt="plImgAlt">
@@ -348,7 +376,7 @@
 
         <div id="bottomBar">
             <button id="btnPrev" class="retro-btn"><span data-pl="plPrev">‹ Prev</span></button>
-            <button id="btnTxtZoom" class="retro-btn" data-pl-title="plTxtZoomTitle">A+<span class="dots"><i></i><i></i><i></i></span></button>
+            <button id="btnTxtZoom" class="retro-btn" data-pl-title="plTxtZoomTitle">A+<span class="dots"><i></i><i></i><i></i><i></i><i></i></span></button>
             <button id="btnNext" class="retro-btn"><span data-pl="plNext">Next ›</span></button>
         </div>
     </div>
@@ -398,13 +426,18 @@
             <div class="popup-row">
                 <button id="btnMetaOpen" class="popup-close popup-primary" data-pl="plMetaOpen">Publication details</button>
             </div>
+            <div class="popup-row" id="rowOffline" style="display:none;">
+                <button id="btnOffline" class="popup-close" data-pl="plOffline">Offline reading</button>
+            </div>
 
             <div class="popup-row">
                 <div class="popup-label" id="lblSetTxtSize" data-pl="plSetTxtSize">Text size</div>
-                <div class="btn-grid">
-                    <button id="btnSizeS" class="active" data-pl="plSmall">Small</button>
-                    <button id="btnSizeM" data-pl="plMedium">Medium</button>
-                    <button id="btnSizeL" data-pl="plLarge">Large</button>
+                <div class="btn-grid sz-grid" id="szGrid">
+                    <button data-sz="small" class="active"><span style="font-size:12px">A</span></button>
+                    <button data-sz="medium"><span style="font-size:15px">A</span></button>
+                    <button data-sz="large"><span style="font-size:18px">A</span></button>
+                    <button data-sz="xl"><span style="font-size:21px">A</span></button>
+                    <button data-sz="xxl"><span style="font-size:24px">A</span></button>
                 </div>
             </div>
 
@@ -433,6 +466,21 @@
             </div>
 
             <button class="popup-close popup-primary" id="btnCloseSettings" data-pl="plDone">Done</button>
+        </div>
+    </div>
+
+    <!-- 6. kör: offline olvasás / telepítés a kezdőképernyőre -->
+    <div id="popOffline" class="popup-overlay">
+        <div class="popup-window">
+            <div class="popup-title" data-pl="plOffline">Offline reading</div>
+            <p class="mp-note" style="margin:0 0 12px; font-size:13px;" data-pl="plOfflineDesc"></p>
+            <div id="offProgWrap" style="margin-bottom:12px;">
+                <div style="height:6px; border-radius:3px; background:#33333a; overflow:hidden;"><div id="offBar" style="height:100%; width:0; background:var(--pl-accent); transition:width .3s;"></div></div>
+                <div id="offStatus" style="font-size:13px; color:var(--pl-dim); margin-top:6px;"></div>
+            </div>
+            <button id="btnInstall" class="popup-close popup-primary" style="display:none;" data-pl="plInstall">Add to home screen</button>
+            <p id="offInstallHint" class="mp-note" style="margin:8px 0 0; font-size:12.5px; display:none;"></p>
+            <button id="btnOfflineClose" class="popup-close" data-pl="plClose" style="margin-top:12px;">Close</button>
         </div>
     </div>
 
@@ -804,7 +852,7 @@
         //      megmarad. A fül (vagy alulról felfelé húzás) visszahozza őket egy időre. A bemutatóoldalon
         //      mindig látszanak. A "Menüsorok rögzítése" beállítás kikapcsolja az elrejtést. ----
         let chromeTimer = null;
-        function chromeShouldStay() { return configBarFixed || introActive || menuOpen() || document.getElementById("popSettings").style.display === "flex" || document.getElementById("metaPage").style.display === "block"; }
+        function chromeShouldStay() { return configBarFixed || introActive || menuOpen() || document.getElementById("popSettings").style.display === "flex" || document.getElementById("metaPage").style.display === "block" || document.getElementById("popOffline").style.display === "flex"; }
         function showChrome(stay) {
             document.body.classList.remove("chrome-hidden");
             document.getElementById("bottomBar").classList.add("visible");
@@ -828,7 +876,7 @@
             const b = document.getElementById("btnTxtZoom");
             if (!b) return;
             b.style.visibility = subsActive() ? "visible" : "hidden";
-            const n = { small: 1, medium: 2, large: 3 }[configTxtSize] || 1;
+            const n = TXT_SIZES.indexOf(configTxtSize) + 1 || 1;
             b.querySelectorAll(".dots i").forEach((d, i) => d.classList.toggle("on", i < n));
             b.setAttribute("aria-label", pt("plTxtZoomTitle") + " " + n + "/3");
         }
@@ -870,14 +918,14 @@
             subWindowIdx = 0;
         }
 
+        const TOP_BAND = 54, BOTTOM_BAND = 48;   // felső sáv 46 px + 8 px térköz; alsó sáv 48 px
         function resizeLayout() {
             const screenW = window.innerWidth;
             const screenH = window.innerHeight;
             const viewport = document.getElementById("canvasViewport");
-            const barHeightBottom = configBarFixed ? 48 : 0;
-            const viewHeight = screenH - 46 - barHeightBottom;
+            // 6. kör (user, 2026-10-14): a felső és az alsó sáv helye mindig foglalt, a kép sosem csúszik alájuk
+            const viewHeight = Math.max(120, screenH - TOP_BAND - BOTTOM_BAND);
             if (viewport) viewport.style.height = viewHeight + "px";
-            if (viewport) viewport.style.marginBottom = configBarFixed ? "48px" : "0px";
             applyChromeFixed();
             applyGuidedViewLogic((viewport && viewport.clientWidth) || screenW, (viewport && viewport.clientHeight) || viewHeight);
             positionSubtitleBar();
@@ -910,7 +958,7 @@
             if (zr) zr.style.display = vz;
             if (bar.style.display === "none") return;
             const topLimit = 46;   // a felső sor helye mindig foglalt (T19)
-            let bottomLimit = window.innerHeight - (bBar.classList.contains("visible") ? 48 : 0);
+            let bottomLimit = window.innerHeight - BOTTOM_BAND;   // az alsó sáv helye mindig foglalt
             // a média alsó széle a képernyőn
             let mediaBottom = null;
             if (currentPageType() === "video") {
@@ -1005,12 +1053,12 @@
             resizeLayout();
         }
 
+        const TXT_SIZES = ["small", "medium", "large", "xl", "xxl"];   // 6. kör: 5 fokozat
         function setTxtSize(sz) {
+            if (!TXT_SIZES.includes(sz)) sz = "small";
             configTxtSize = sz;
             try { localStorage.setItem("zcfx.txtSize", sz); } catch (_) {}
-            document.getElementById("btnSizeS").classList.toggle("active", sz === "small");
-            document.getElementById("btnSizeM").classList.toggle("active", sz === "medium");
-            document.getElementById("btnSizeL").classList.toggle("active", sz === "large");
+            document.querySelectorAll("#szGrid button").forEach(b => b.classList.toggle("active", b.dataset.sz === sz));
             updateTxtZoomButton();
             resizeLayout();
         }
@@ -1473,7 +1521,24 @@
                     } catch (_) {}
                 }
             }
-            return { want, peek, releaseExcept, startBackground };
+            // 6. kör: „Offline olvasás” – minden fájl a tartós tárba, haladásjelzéssel (a már tárolt fájlokat kihagyja)
+            async function downloadAll(urls, onProgress) {
+                const c = await openCache();
+                if (!c) return { ok: false, reason: "nocache" };
+                let done = 0, failed = 0;
+                onProgress(done, urls.length);
+                for (const u of urls) {
+                    try {
+                        if (!(await c.match(abs(u)))) {
+                            const r = await fetch(u, { cache: "reload" });
+                            if (r.ok) await c.put(abs(u), r); else failed++;
+                        }
+                    } catch (e) { failed++; if (e && e.name === "QuotaExceededError") { quotaFull = true; return { ok: false, reason: "quota" }; } }
+                    onProgress(++done, urls.length);
+                }
+                return { ok: failed === 0, failed };
+            }
+            return { want, peek, releaseExcept, startBackground, downloadAll };
         })();
 
         // A háttérben letöltendő fájlok, olvasási sorrendben (oldalanként kép/poszter/hangok/videó, majd a zenék).
@@ -1489,6 +1554,52 @@
             for (const t of activeMagazineData.backgroundTracks || []) add(t.audioPath);
             if (activeMagazineData.meta) add(activeMagazineData.meta.backgroundAudio);
             return out;
+        }
+
+        // === 6. kör: OFFLINE OLVASÁS + TELEPÍTÉS ===
+        // A szerző engedélyezi az exportnál (allowOffline). https-en (vagy localhoston) a service worker
+        // regisztrálódik, így a letöltött kiadvány internet nélkül is megnyílik; a „Hozzáadás a kezdőképernyőhöz”
+        // Androidon/gépen a böngésző telepítőablakát nyitja, iPhone-on útmutatót mutat.
+        let installPrompt = null, offlineRunning = false;
+        const offlineAllowed = () => !!(activeMagazineData && activeMagazineData.allowOffline && activeMagazineData.meta && activeMagazineData.meta.exportId);
+        const isStandalone = () => (window.matchMedia && window.matchMedia("(display-mode: standalone)").matches) || window.navigator.standalone === true;
+        const isIos = () => /iPad|iPhone|iPod/.test(navigator.userAgent) || (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1);
+        window.addEventListener("beforeinstallprompt", (e) => { e.preventDefault(); installPrompt = e; updateInstallUi(); });
+        window.addEventListener("appinstalled", () => { installPrompt = null; updateInstallUi(); });
+        function registerSw() {
+            if (!offlineAllowed() || !("serviceWorker" in navigator) || !window.isSecureContext) return;
+            navigator.serviceWorker.register("sw.js").catch(() => {});
+        }
+        function updateInstallUi() {
+            const btn = document.getElementById("btnInstall"), hint = document.getElementById("offInstallHint");
+            if (!btn) return;
+            btn.style.display = (installPrompt && !isStandalone()) ? "" : "none";
+            let h = "";
+            if (isStandalone()) h = pt("plInstalled");
+            else if (!installPrompt) h = isIos() ? pt("plInstallIos") : pt("plInstallOther");
+            hint.textContent = h; hint.style.display = h ? "" : "none";
+        }
+        function offlineFileList() {
+            const list = (activeMagazineData.offlineFiles && activeMagazineData.offlineFiles.length) ? activeMagazineData.offlineFiles.slice() : allMediaUrls();
+            return list.filter(u => u && !/^(https?:|blob:|data:)/.test(u) && u !== "sw.js");
+        }
+        async function openOffline() {
+            closeMenus();
+            document.getElementById("popSettings").style.display = "none";
+            document.getElementById("popOffline").style.display = "flex";
+            showChrome(true);
+            updateInstallUi();
+            const st = document.getElementById("offStatus"), bar = document.getElementById("offBar");
+            if (!/^https?:$/.test(location.protocol) || !window.isSecureContext || !window.caches) { st.textContent = pt("plOfflineNoHttps"); bar.style.width = "0"; return; }
+            if (offlineRunning) return;
+            offlineRunning = true;
+            const res = await MediaStore.downloadAll(offlineFileList(), (d, t) => {
+                bar.style.width = (t ? Math.round(d / t * 100) : 100) + "%";
+                st.textContent = pt("plOfflineProgress").replace("{done}", d).replace("{total}", t);
+            });
+            offlineRunning = false;
+            if (res.ok) { st.textContent = pt("plOfflineDone"); try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist(); } catch (_) {} }
+            else st.textContent = pt("plOfflineFail");
         }
 
         // === T2/T12/T13: SAJÁT VIDEÓVEZÉRLŐK ===
@@ -1868,8 +1979,8 @@
 
         // BILLENTYŰZET (gépen): nyilak / PageUp-Down / szóköz = lapozás, T = szöveg, S = hang.
         document.addEventListener("keydown", (e) => {
-            const popupOpen = ["popSettings"].some(id => document.getElementById(id).style.display === "flex") || menuOpen() || document.getElementById("metaPage").style.display === "block";
-            if (popupOpen && e.key === "Escape") { closeMenus(); closeMetaPage(); document.getElementById("popSettings").style.display = "none"; return; }
+            const popupOpen = ["popSettings", "popOffline"].some(id => document.getElementById(id).style.display === "flex") || menuOpen() || document.getElementById("metaPage").style.display === "block";
+            if (popupOpen && e.key === "Escape") { closeMenus(); closeMetaPage(); document.getElementById("popSettings").style.display = "none"; document.getElementById("popOffline").style.display = "none"; return; }
             if (popupOpen) return;
             switch (e.key) {
                 case "ArrowRight": case "PageDown": case " ":
@@ -2105,6 +2216,9 @@
                 const cssUrl = (u) => `url("${String(u).replace(/"/g, "%22")}")`;
                 if (th.bgPortrait) { bg.style.setProperty("--bg-portrait", cssUrl(th.bgPortrait)); bg.classList.add("has-bg-portrait"); }
                 if (th.bgLandscape) { bg.style.setProperty("--bg-landscape", cssUrl(th.bgLandscape)); bg.classList.add("has-bg-landscape"); }
+                // 6. kör: a szerző igazítása (pl. a kép tetejére tett logó mindig látsszon)
+                bg.style.setProperty("--bg-portrait-pos", { top: "center top", bottom: "center bottom" }[th.bgPortraitAlign] || "center center");
+                bg.style.setProperty("--bg-landscape-pos", { left: "left center", right: "right center" }[th.bgLandscapeAlign] || "center center");
                 document.documentElement.style.setProperty("--pl-text-font", fontStackFor("", false));
                 document.documentElement.style.setProperty("--pl-theme-font", fontStackFor("", true));
             })();
@@ -2113,7 +2227,7 @@
             const primaryIsTouch = window.matchMedia ? window.matchMedia("(pointer: coarse)").matches : ("ontouchstart" in window);
             if (!primaryIsTouch) configBarFixed = true;
             try { const fx = localStorage.getItem("zcfx.barsFixed"); if (fx === "1") configBarFixed = true; else if (fx === "0") configBarFixed = false; } catch (_) {}
-            try { const ts = localStorage.getItem("zcfx.txtSize"); if (ts === "small" || ts === "medium" || ts === "large") configTxtSize = ts; } catch (_) {}
+            try { const ts = localStorage.getItem("zcfx.txtSize"); if (TXT_SIZES.includes(ts)) configTxtSize = ts; } catch (_) {}
             setTxtSize(configTxtSize);
 
             // Player-nyelv: megjegyzett > böngésző nyelve > a szerző alapértelmezése
@@ -2190,10 +2304,20 @@
             document.getElementById("sndBlock").onclick = () => setBlockSoundOn(!blockSoundOn);
             document.getElementById("btnMenu").onclick = () => { closeMenus(); document.getElementById("popSettings").style.display = "flex"; showChrome(true); };
             document.getElementById("btnMetaOpen").onclick = openMetaPage;
+            document.getElementById("rowOffline").style.display = offlineAllowed() ? "" : "none";
+            document.getElementById("btnOffline").onclick = openOffline;
+            document.getElementById("btnOfflineClose").onclick = () => { document.getElementById("popOffline").style.display = "none"; scheduleChromeHide(3000); };
+            document.getElementById("btnInstall").onclick = async () => {
+                if (!installPrompt) return;
+                try { installPrompt.prompt(); await installPrompt.userChoice; } catch (_) {}
+                installPrompt = null; updateInstallUi();
+            };
+            registerSw();
             document.getElementById("metaClose").onclick = closeMetaPage;
             document.getElementById("chromeTab").onclick = (e) => { e.stopPropagation(); showChrome(); };
+            document.getElementById("chromeTabBottom").onclick = (e) => { e.stopPropagation(); showChrome(); };
             document.getElementById("introStart").onclick = (e) => { e.stopPropagation(); triggerNext(); };
-            document.getElementById("btnTxtZoom").onclick = (e) => { e.stopPropagation(); setTxtSize({ small: "medium", medium: "large", large: "small" }[configTxtSize] || "small"); showChrome(); };
+            document.getElementById("btnTxtZoom").onclick = (e) => { e.stopPropagation(); setTxtSize(TXT_SIZES[(TXT_SIZES.indexOf(configTxtSize) + 1) % TXT_SIZES.length]); showChrome(); };
             // a menüsorokon végzett művelet közben ne rejtőzzenek el
             ["topBar", "bottomBar"].forEach(id => document.getElementById(id).addEventListener("pointerdown", () => { if (!chromeShouldStay()) scheduleChromeHide(4000); }));
 
@@ -2202,9 +2326,7 @@
             window.addEventListener("resize", () => { if (document.getElementById("langPanel").classList.contains("open")) buildLangPanel(); });
 
             // Beállítások (☰) ablak
-            document.getElementById("btnSizeS").onclick = () => setTxtSize("small");
-            document.getElementById("btnSizeM").onclick = () => setTxtSize("medium");
-            document.getElementById("btnSizeL").onclick = () => setTxtSize("large");
+            document.querySelectorAll("#szGrid button").forEach(b => { b.onclick = () => setTxtSize(b.dataset.sz); b.title = b.dataset.sz; });
             const setSpeed = (v, id) => { configSpeed = v; ["btnSpeedS", "btnSpeedN", "btnSpeedF"].forEach(x => document.getElementById(x).classList.toggle("active", x === id)); };
             document.getElementById("btnSpeedS").onclick = () => setSpeed(0.8, "btnSpeedS");
             document.getElementById("btnSpeedN").onclick = () => setSpeed(1.0, "btnSpeedN");
