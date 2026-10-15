@@ -76,7 +76,7 @@
         body.chrome-hidden #chromeTab { display: flex; }
         /* 6. kör: az alsó sávnak is van füle (a saját, mindig foglalt sávjában – nem lóg a képbe) */
         #chromeTabBottom {
-            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 64px; height: 22px; z-index: 99;
+            position: fixed; bottom: 0; left: 50%; transform: translateX(-50%); width: 64px; height: 22px; z-index: 150;   /* a felirat hátterén ül */
             border: 0; border-radius: 11px 11px 0 0; background: var(--pl-bar); color: var(--pl-dim);
             display: none; align-items: center; justify-content: center; cursor: pointer; padding: 0;
         }
@@ -93,6 +93,10 @@
             box-shadow: 0 12px 32px rgba(0,0,0,0.5); z-index: 300; overflow-y: auto; overscroll-behavior: contain;
         }
         .menu-panel.open { display: block; }
+        /* 7. kör: a panelek alján fogó – rákoppintva vagy felfelé húzva bezárul */
+        .mp-grip { position: sticky; bottom: -10px; display: flex; align-items: center; justify-content: center; width: 100%; height: 26px; margin: 4px 0 -10px;
+            border: 0; padding: 0; background: var(--pl-panel); cursor: pointer; }
+        .mp-grip::before { content: ""; width: 40px; height: 4px; border-radius: 2px; background: #6d6d75; }
         #langPanel { left: 8px; }
         #soundPanel { right: 8px; }
         .menu-dim { display: none; position: fixed; inset: 46px 0 0 0; background: rgba(0,0,0,0.55); z-index: 290; }
@@ -150,11 +154,17 @@
         /* ---- feliratsáv (F13/F19/F20/T23) ---- */
         #subtitleBar {
             position: fixed; bottom: 0; left: 0; width: 100%; box-sizing: border-box;
-            padding: 10px 18px; background: rgba(15,15,16,0.92); color: var(--pl-text);
+            padding: 0 18px 10px; background: rgba(15,15,16,0.94); color: var(--pl-text);
             font-family: var(--pl-theme-font); line-height: 1.4; text-align: center; z-index: 140;
-            border-top: 1px solid var(--pl-line2); display: none; max-height: 40%; overflow-y: auto;
-            white-space: pre-line; overflow-wrap: anywhere;   /* T23: a szerző sortörései (Enter) megmaradnak */
+            border-top: 1px solid var(--pl-line2); display: none;
+            touch-action: pan-y;
         }
+        /* 7. kör: fogó a lehúzáshoz (elengedésre visszaugrik); a szöveg saját görgethető dobozban */
+        #subGrip { height: 14px; display: flex; align-items: center; justify-content: center; cursor: grab; touch-action: none; }
+        #subGrip::before { content: ""; width: 36px; height: 4px; border-radius: 2px; background: #55555c; }
+        #subText { max-height: calc(40vh - 24px); overflow-y: auto; overscroll-behavior: contain;
+            white-space: pre-line; overflow-wrap: anywhere; }   /* T23: a szerző sortörései (Enter) megmaradnak */
+        #subtitleBar.sub-return { transition: transform 0.32s cubic-bezier(0.2, 0.9, 0.3, 1.15); }
         #subtitleBar.txt-size-small { font-size: 15px; }
         #subtitleBar.txt-size-medium { font-size: 19px; }
         #subtitleBar.txt-size-large { font-size: 23px; }
@@ -204,7 +214,7 @@
         /* ---- videó (T2/T12/T13) ---- */
         #pageVideo {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
-            object-fit: contain; background: #000; display: none;
+            object-fit: contain; background: transparent; display: none;   /* 7. kör: ne villanjon fekete a videó betöltésekor */
         }
         #pageVideo::-webkit-media-controls,
         #pageVideo::-webkit-media-controls-overlay-play-button,
@@ -287,10 +297,26 @@
             .ip-edge { width: 46px; font-size: 12px; }
             .ip-main { left: 46px; right: 46px; }
         }
+        #splash { position: fixed; inset: 0; z-index: 2000; background: #000; display: none; overflow: hidden; cursor: pointer; touch-action: manipulation; }
+        #splash.on { display: block; }
+        #splash.fade { transition: opacity 0.35s ease; opacity: 0; }
+        #splashLogo { position: absolute; left: 50%; top: 50%; width: min(86vw, 74vh); height: min(86vw, 74vh); transform: translate(-50%, -50%);
+            background-size: contain; background-repeat: no-repeat; background-position: center; }
+        #splashLogo.pulse { animation: splashPulse 1.6s ease-in-out infinite; }
+        @keyframes splashPulse { 0%, 100% { transform: translate(-50%, -50%) scale(1); } 50% { transform: translate(-50%, -50%) scale(1.035); } }
+        #splashLogo.intro { animation: splashIn 0.9s cubic-bezier(0.2, 0.9, 0.3, 1.2) both; }
+        @keyframes splashIn { from { transform: translate(-50%, -50%) scale(0.6); opacity: 0; } to { transform: translate(-50%, -50%) scale(1); opacity: 1; } }
+        .splash-piece { position: absolute; background-repeat: no-repeat; will-change: transform, opacity; }
+        #splashImg { position: absolute; left: 50%; top: 50%; max-width: 94vw; max-height: 86vh; transform: translate(-50%, -50%) scale(0.12); opacity: 0;
+            box-shadow: 0 20px 60px rgba(0,0,0,0.7); display: none; }
+        #splashHint { position: absolute; left: 0; right: 0; bottom: 4vh; text-align: center; color: rgba(255,255,255,0.75); font-size: 14px; opacity: 0; transition: opacity 0.6s ease; pointer-events: none; }
+        #splashHint.show { opacity: 1; }
         #turnLayer { position: absolute; inset: 0; display: none; z-index: 15; perspective: 1400px; pointer-events: none; overflow: hidden; }
         .turn-page { position: absolute; transform-origin: left center; transform-style: preserve-3d; }
         .turn-page > .tp-face { position: absolute; inset: 0; backface-visibility: hidden; -webkit-backface-visibility: hidden; box-shadow: 0 0 30px rgba(0,0,0,0.6); overflow: hidden; }
-        .turn-page > .tp-back { transform: rotateY(180deg); background: linear-gradient(90deg, #cfc9bc, #ece7dc 60%, #d9d3c6); }
+        .turn-page > .tp-back { transform: rotateY(180deg); background: #111; }
+        .turn-page > .tp-back > * { transform: scaleX(-1); filter: brightness(0.35); }   /* 7. kör: hátoldal = tükrözött, sötétített kép */
+        .turn-page > .tp-shade { position: absolute; inset: 0; background: #000; opacity: 0; pointer-events: none; }
         .turn-page.tp-slide { transform-style: flat; box-shadow: 0 0 30px rgba(0,0,0,0.6); }
         #loadError { color: var(--pl-text); padding: 30px; font-size: 16px; display: none; }
         [dir="rtl"] .ip-li, [dir="rtl"] .mp-opt, [dir="rtl"] .mp-head, [dir="rtl"] .snd-row { text-align: right; }
@@ -372,7 +398,7 @@
         </div>
 
         <!-- Feliratsáv (F20: a kép alatt, ha elfér; különben a blokkban beállított helyen) -->
-        <div id="subtitleBar" dir="auto"></div>
+        <div id="subtitleBar" dir="auto"><div id="subGrip"></div><div id="subText"></div></div>
 
         <div id="bottomBar">
             <button id="btnPrev" class="retro-btn"><span data-pl="plPrev">‹ Prev</span></button>
@@ -382,6 +408,12 @@
     </div>
 
     <!-- T14/T26: nyelvmenü (Menü nyelve | Felirat | Felolvasás) és hangmenü -->
+    <!-- 7. kör: logós indítás (ZoomComicFX logó → szétszakad → bezoomol a címlap / nyitókép) -->
+    <div id="splash" aria-hidden="true">
+        <div id="splashLogo"></div>
+        <img id="splashImg" alt="">
+        <div id="splashHint"></div>
+    </div>
     <div id="menuDim" class="menu-dim"></div>
     <div id="langPanel" class="menu-panel" role="dialog"></div>
     <div id="soundPanel" class="menu-panel" role="dialog">
@@ -399,6 +431,7 @@
             <span><span data-pl="plSndBlock">Block sounds</span><small data-pl="plSndBlockSub">effects, recorded voices</small></span><span class="snd-sw"></span>
         </button>
         <p class="mp-note" id="sndNote"></p>
+        <button class="mp-grip" type="button" data-pl-title="plClose"></button>
     </div>
 
     <!-- T24: a kiadvány adatai (a ☰ menüből) -->
@@ -619,14 +652,19 @@
                 // === JAVASCRIPT 2. RÉSZ: NYELVI SZÓTÁR ÉS INTERFÉSZ FRISSÍTÉS ===
         // 2.3.0: a player szövegei a data.js "playerUi" mezőjéből jönnek (a szerkesztő nyelvi csomagjainak
         // "pl..." kulcsai) - az exportnál a szerző megadja, mely nyelveken legyen elérhető a player.
+        // 2.5.3: az olvasó kiadványhoz kötött választásai (felirat, felolvasás, menüsorok) kiadványonként tárolódnak,
+        // hogy ne szivárogjanak át egyik kiadványból a másikba (a böngésző tára webcímenként közös).
+        // A kulcs a kiadvány mappája (export) – a menü nyelve, a szövegméret és a lapozás-effekt eszközszintű, közös marad.
+        function pubKey(name) { return "zcfx." + location.pathname.replace(/[^/]*$/, "") + "." + name; }
+        (function dropLegacyKeys() { try { ["zcfx.subsLang", "zcfx.ttsLang", "zcfx.barsFixed", "zcfx.viewMode"].forEach(k => localStorage.removeItem(k)); } catch (_) {} })();
         function pt(key) {
             const ui = (activeMagazineData && activeMagazineData.playerUi) || {};
             const L = ui.languages || {};
             const pick = (c) => (L[c] && L[c][key] !== undefined && L[c][key] !== "") ? L[c][key] : undefined;
             const v = pick(currentLang);
             if (v !== undefined) return v;
+            const e = pick("en"); if (e !== undefined) return e;   // 7. kör: hiányzó szövegnél előbb az angol, ne keveredjen a szerző nyelve
             const d = pick(ui.default); if (d !== undefined) return d;
-            const e = pick("en"); if (e !== undefined) return e;
             return key;
         }
         // A felolvasás/szövegtartalom alapnyelve: a kiadvány eredeti nyelve (NEM a player felületének nyelve).
@@ -772,13 +810,10 @@
                 pick: setTtsLang, fixedTop: 1, note: tts.length ? pt("plTtsNote") : pt("plTtsNone") });
             return secs;
         }
-        // sok nyelvnél: a választott és a böngésző nyelve legfelül, a többi ábécérendben (endonim szerint)
+        // 7. kör: FIX sorrend – a választott nyelv nem ugrik előre; a „Nincs felirat” / „Eredeti” / „Ki” fent, a többi ábécérendben (saját nevük szerint)
         function orderItems(sec) {
             const top = sec.items.slice(0, sec.fixedTop || 0), rest = sec.items.slice(sec.fixedTop || 0);
-            if (rest.length <= 6) return [...top, ...rest];
-            const nav = (navigator.languages || [navigator.language || ""]).map(l => String(l).toLowerCase().split("-")[0]);
-            const pri = (it) => it.v === sec.cur ? 0 : (nav.includes(String(it.v).toLowerCase().split("-")[0]) ? 1 : 2);
-            rest.sort((a, b) => (pri(a) - pri(b)) || a.label.localeCompare(b.label));
+            rest.sort((a, b) => a.label.localeCompare(b.label));
             return [...top, ...rest];
         }
         function buildLangPanel() {
@@ -823,9 +858,10 @@
                     panel.appendChild(g);
                 });
             };
-            render("all");
+            const addGrip = () => { const g = document.createElement("button"); g.className = "mp-grip"; g.type = "button"; g.title = pt("plClose"); g.onclick = (e) => { e.stopPropagation(); closeMenus(); }; panel.appendChild(g); };
+            render("all"); addGrip();
             const avail = window.innerHeight - 50 - 12;
-            if (panel.scrollHeight > avail) render("accordion");
+            if (panel.scrollHeight > avail) { render("accordion"); addGrip(); }
             panel.style.maxHeight = avail + "px";
         }
         function setPlayerLang(code) {
@@ -836,14 +872,14 @@
         function setSubsLang(v) {
             subsLang = v;
             if (v !== "none") lastSubsLang = v;
-            try { localStorage.setItem("zcfx.subsLang", v); } catch (_) {}
+            try { localStorage.setItem(pubKey("subsLang"), v); } catch (_) {}
             updateTxtZoomButton();
             resizeLayout();
         }
         function setTtsLang(v) {
             ttsLang = v;
             if (window.speechSynthesis) window.speechSynthesis.cancel();
-            try { localStorage.setItem("zcfx.ttsLang", v); } catch (_) {}
+            try { localStorage.setItem(pubKey("ttsLang"), v); } catch (_) {}
             if (v !== "off") checkVoiceAvailability(v === "ORIG" ? baseLang() : v);
             resizeLayout();
         }
@@ -958,19 +994,18 @@
             if (zr) zr.style.display = vz;
             if (bar.style.display === "none") return;
             const topLimit = 46;   // a felső sor helye mindig foglalt (T19)
-            let bottomLimit = window.innerHeight - BOTTOM_BAND;   // az alsó sáv helye mindig foglalt
-            // a média alsó széle a képernyőn
+            // 7. kör: a felirat SZÖVEGÉNEK alja = az alsó mező legfelső vonala: látható sávnál a sáv teteje,
+            // elrejtett sávnál az alsó fül teteje. Elrejtett sávnál a felirat háttere leér a képernyő aljáig.
+            const barShown = bBar.classList.contains("visible");
+            const TAB_H = 22;
+            const bottomLimit = window.innerHeight - (barShown ? BOTTOM_BAND : TAB_H);
+            // a kép alsó széle (csak teljes oldalnézetben; videónál a felirat a normál helyén van – takarhatja a csúszkát)
             let mediaBottom = null;
-            if (currentPageType() === "video") {
-                const v = document.getElementById("pageVideo");
-                const r = v.getBoundingClientRect();
-                mediaBottom = r.bottom;
-                if (r.bottom > bottomLimit - 50) bottomLimit = Math.min(bottomLimit, r.bottom - 44);   // a videó saját sávja fölé
-            } else if (currentPageType() === "image" && (blockIdx === -1 || !gvMode)) {
+            if (currentPageType() === "image" && (blockIdx === -1 || !gvMode)) {
                 const vr = vp.getBoundingClientRect();
                 mediaBottom = vr.top + lastFullRect.y + lastFullRect.h;
             }
-            bar.style.top = "auto"; bar.style.bottom = "auto";
+            bar.style.top = "auto"; bar.style.bottom = "auto"; bar.style.paddingBottom = "";
             bar.classList.remove("cap-under");
             const h = bar.offsetHeight;
             if (mediaBottom !== null && mediaBottom + h <= bottomLimit && mediaBottom >= topLimit) {
@@ -980,11 +1015,61 @@
             }
             if (captionPos === "top") bar.style.top = topLimit + "px";
             else if (captionPos === "middle") bar.style.top = Math.max(topLimit, Math.round((topLimit + bottomLimit - h) / 2)) + "px";
-            else bar.style.bottom = (window.innerHeight - bottomLimit) + "px";
+            else if (barShown) bar.style.bottom = BOTTOM_BAND + "px";
+            else { bar.style.bottom = "0px"; bar.style.paddingBottom = (TAB_H + 10) + "px"; }
         }
         (function watchBottomBar() {
             const bBar = document.getElementById("bottomBar");
-            if (bBar && window.MutationObserver) new MutationObserver(() => setTimeout(positionSubtitleBar, 420)).observe(bBar, { attributes: true, attributeFilter: ["class"] });
+            if (bBar && window.MutationObserver) new MutationObserver(() => {
+                // megjelenéskor azonnal fölé lép, eltűnéskor a sáv animációja után ereszkedik le
+                if (bBar.classList.contains("visible")) positionSubtitleBar(); else setTimeout(positionSubtitleBar, 420);
+            }).observe(bBar, { attributes: true, attributeFilter: ["class"] });
+        })();
+
+        // 7. kör: a feliratmezőn is lehet lapozni (szélekre koppintás, vízszintes suhintás), középre koppintva a
+        // menüsorok jönnek/mennek; a mező lefelé húzható (a fogónál, vagy a szövegnél, ha az a görgetés tetején áll),
+        // elengedésre visszaugrik. A függőleges mozdulat egyébként a hosszú felirat görgetése.
+        (function captionGestures() {
+            const bar = document.getElementById("subtitleBar"), txt = document.getElementById("subText"), grip = document.getElementById("subGrip");
+            let st = null;
+            const springBack = () => {
+                bar.classList.add("sub-return"); bar.style.transform = "";
+                setTimeout(() => bar.classList.remove("sub-return"), 360);
+            };
+            const tapAt = (x) => {
+                const w = window.innerWidth;
+                if (x > w * 0.75) triggerNext();
+                else if (x < w * 0.25) triggerPrev();
+                else toggleChrome();
+            };
+            const start = (x, y, fromGrip) => { st = { x, y, fromGrip, mode: null, top0: txt.scrollTop <= 0 }; bar.classList.remove("sub-return"); };
+            const move = (x, y, ev) => {
+                if (!st) return;
+                const dx = x - st.x, dy = y - st.y;
+                if (!st.mode) {
+                    if (Math.abs(dx) < 8 && Math.abs(dy) < 8) return;
+                    if (Math.abs(dx) > Math.abs(dy) * 1.2) st.mode = "h";
+                    else if (dy > 0 && (st.fromGrip || st.top0)) st.mode = "drag";
+                    else st.mode = "scroll";
+                }
+                if (st.mode === "drag") { if (ev && ev.cancelable) ev.preventDefault(); bar.style.transform = `translateY(${Math.max(0, dy)}px)`; }
+                else if (st.mode === "h" && ev && ev.cancelable) ev.preventDefault();
+            };
+            const end = (x, y) => {
+                if (!st) return;
+                const dx = x - st.x, mode = st.mode; st = null;
+                if (mode === "drag") { springBack(); return; }
+                if (mode === "h") { if (Math.abs(dx) > 50) { if (dx < 0) triggerNext(); else triggerPrev(); } return; }
+                if (!mode) tapAt(x);
+            };
+            bar.addEventListener("touchstart", (e) => { const t = e.touches[0]; start(t.clientX, t.clientY, grip.contains(e.target)); lastTouchAt = Date.now(); }, { passive: true });
+            bar.addEventListener("touchmove", (e) => { const t = e.touches[0]; move(t.clientX, t.clientY, e); }, { passive: false });
+            bar.addEventListener("touchend", (e) => { const t = e.changedTouches[0]; end(t.clientX, t.clientY); lastTouchAt = Date.now(); });
+            bar.addEventListener("touchcancel", () => { if (st && st.mode === "drag") springBack(); st = null; });
+            // egér (gépen)
+            bar.addEventListener("mousedown", (e) => { if (Date.now() - (lastTouchAt || 0) < 800) return; start(e.clientX, e.clientY, grip.contains(e.target)); });
+            window.addEventListener("mousemove", (e) => { if (st) move(e.clientX, e.clientY, null); });
+            window.addEventListener("mouseup", (e) => { if (st) end(e.clientX, e.clientY); });
         })();
 
         // F28: GV = Guided View (blokkvezetés + hang + felirat + zene), PV = Page View (szabad oldalnézet, "pure" olvasás).
@@ -1031,7 +1116,7 @@
 
         function setViewMode(mode, remember) {
             gvMode = (mode !== "PV");
-            if (remember) { try { localStorage.setItem("zcfx.viewMode", gvMode ? "GV" : "PV"); } catch (_) {} }
+            // 2.5.3: a nézetet (GV/PV) NEM jegyezzük meg – minden megnyitás a szerző beállításával indul
             viewScale = 1; viewTx = 0; viewTy = 0;
             blockIdx = gvMode ? minBlockIdx() : -1;
             document.getElementById("btnView").textContent = gvMode ? "GV" : "PV";
@@ -1068,7 +1153,8 @@
             if (!bar) return;
             bar.className = "txt-size-" + configTxtSize;
             if (gvMode && subsActive() && text) {
-                bar.textContent = text;
+                document.getElementById("subText").textContent = text;
+                document.getElementById("subText").scrollTop = 0;
                 bar.lang = realSubsLang();
                 bar.dir = isRtl(realSubsLang()) ? "rtl" : "auto";
                 bar.style.fontFamily = fontStackFor(realSubsLang(), true);
@@ -1556,6 +1642,99 @@
             return out;
         }
 
+        // === 7. kör: LOGÓS INDÍTÁS ===
+        // Módok (a szerző választja az exportnál, kikapcsolni nem lehet):
+        //  "full"   – a logó 3 mp-ig látszik, közben háromszor pittyen (ahol a böngésző engedi a hangot), majd szétszakad és bezoomol a kép
+        //  "click"  – nincs pittyegés; a logóra koppintva indul a szétszakadás + bezoomolás
+        //  "simple" – nincs effekt; a logóra koppintva egyszerűen megjelenik a kép
+        // A képre (címlap vagy a szerző nyitóképe) koppintva tovább a bemutatóoldalra. Csak exportban (élő előnézetben nem).
+        const SPLASH_MS = 3000, SPLASH_BEEPS = 3;   // user, 10-15 08:03: 3 mp (másodpercenként egy pittyenés)
+        function runSplash() {
+            const sp = activeMagazineData && activeMagazineData.splash;
+            if (!sp || !sp.logo || !(activeMagazineData.meta && activeMagazineData.meta.exportId)) return;
+            const root = document.getElementById("splash"), logo = document.getElementById("splashLogo"), img = document.getElementById("splashImg"), hint = document.getElementById("splashHint");
+            const mode = sp.mode || "full";
+            let stage = "logo", timers = [];
+            root.classList.add("on");
+            logo.style.backgroundImage = `url("${sp.logo}")`;
+            logo.classList.add("intro");
+            if (sp.image) img.src = sp.image;
+            const showHint = (key) => { hint.textContent = pt(key); hint.classList.add("show"); };
+            const finish = () => {
+                if (stage === "done") return;
+                stage = "done"; timers.forEach(clearTimeout);
+                root.classList.add("fade");
+                setTimeout(() => { root.classList.remove("on", "fade"); root.innerHTML = ""; }, 380);
+            };
+            const showImage = (animated) => {
+                if (!sp.image) { finish(); return; }
+                stage = "image";
+                img.style.display = "block";
+                if (animated) {
+                    img.style.transition = "none"; img.style.transform = "translate(-50%, -50%) scale(0.12) rotate(-6deg)"; img.style.opacity = "0";
+                    void img.offsetWidth;
+                    img.style.transition = "transform 1.1s cubic-bezier(0.16, 0.9, 0.3, 1.05), opacity 0.5s ease";
+                    img.style.transform = "translate(-50%, -50%) scale(1) rotate(0deg)"; img.style.opacity = "1";
+                } else {
+                    img.style.transition = "opacity 0.45s ease"; img.style.transform = "translate(-50%, -50%) scale(1)"; img.style.opacity = "1";
+                }
+                timers.push(setTimeout(() => showHint("plTapToContinue"), animated ? 1300 : 600));
+            };
+            const shatter = () => {
+                if (stage !== "logo") return;
+                stage = "shatter"; timers.forEach(clearTimeout); timers = [];
+                hint.classList.remove("show");
+                const r = logo.getBoundingClientRect();
+                const N = 7, pw = r.width / N, ph = r.height / N, cx = r.left + r.width / 2, cy = r.top + r.height / 2;
+                const frag = document.createDocumentFragment(), pieces = [];
+                for (let y = 0; y < N; y++) for (let x = 0; x < N; x++) {
+                    const p = document.createElement("div"); p.className = "splash-piece";
+                    p.style.cssText += `left:${r.left + x * pw}px; top:${r.top + y * ph}px; width:${pw + 1}px; height:${ph + 1}px;` +
+                        `background-image:url("${sp.logo}"); background-size:${r.width}px ${r.height}px; background-position:${-x * pw}px ${-y * ph}px;`;
+                    frag.appendChild(p); pieces.push([p, r.left + x * pw + pw / 2 - cx, r.top + y * ph + ph / 2 - cy]);
+                }
+                root.appendChild(frag);
+                logo.style.visibility = "hidden";
+                requestAnimationFrame(() => requestAnimationFrame(() => {
+                    for (const [p, dx, dy] of pieces) {
+                        const d = Math.hypot(dx, dy) || 1, f = 2.2 + Math.random() * 1.6;
+                        const tx = dx / d * Math.max(window.innerWidth, window.innerHeight) * 0.35 * f + (Math.random() - 0.5) * 80;
+                        const ty = dy / d * Math.max(window.innerWidth, window.innerHeight) * 0.35 * f + (Math.random() - 0.5) * 80 + 60;
+                        const rot = (Math.random() - 0.5) * 540;
+                        p.style.transition = `transform ${0.8 + Math.random() * 0.5}s cubic-bezier(0.2, 0.6, 0.4, 1), opacity 0.9s ease ${0.25 + Math.random() * 0.3}s`;
+                        p.style.transform = `translate(${tx}px, ${ty}px) rotate(${rot}deg) scale(${0.6 + Math.random() * 0.5})`;
+                        p.style.opacity = "0";
+                    }
+                }));
+                timers.push(setTimeout(() => showImage(true), 180));
+                timers.push(setTimeout(() => pieces.forEach(([p]) => p.remove()), 1600));
+            };
+            const beeps = () => {
+                try {
+                    const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
+                    const ac = new AC(); if (ac.resume) ac.resume().catch(() => {});
+                    for (let i = 0; i < SPLASH_BEEPS; i++) {
+                        const t0 = ac.currentTime + 0.15 + i, o = ac.createOscillator(), g = ac.createGain();
+                        o.type = "sine"; o.frequency.value = i === SPLASH_BEEPS - 1 ? 1320 : 880;
+                        g.gain.setValueAtTime(0.0001, t0); g.gain.exponentialRampToValueAtTime(0.25, t0 + 0.015); g.gain.exponentialRampToValueAtTime(0.0001, t0 + 0.16);
+                        o.connect(g); g.connect(ac.destination); o.start(t0); o.stop(t0 + 0.2);
+                    }
+                    setTimeout(() => { try { ac.close(); } catch (_) {} }, 6500);
+                } catch (_) {}
+            };
+            if (mode === "full") { beeps(); timers.push(setTimeout(shatter, SPLASH_MS)); }
+            else { timers.push(setTimeout(() => { logo.classList.remove("intro"); logo.classList.add("pulse"); showHint("plTapLogo"); }, 950)); }
+            const advance = () => {
+                if (stage === "logo") { if (mode === "simple") { stage = "x"; logo.style.transition = "opacity 0.3s"; logo.style.opacity = "0"; hint.classList.remove("show"); timers.push(setTimeout(() => showImage(false), 250)); } else shatter(); }   // az 1. módban koppintásra is indul (átugorja a várakozást)
+                else if (stage === "image") finish();
+            };
+            root.addEventListener("click", advance);
+            document.addEventListener("keydown", function k(e) {
+                if (stage === "done") { document.removeEventListener("keydown", k, true); return; }
+                if (["Enter", " ", "ArrowRight", "Escape"].includes(e.key)) { e.preventDefault(); e.stopPropagation(); if (e.key === "Escape") finish(); else advance(); }
+            }, true);
+        }
+
         // === 6. kör: OFFLINE OLVASÁS + TELEPÍTÉS ===
         // A szerző engedélyezi az exportnál (allowOffline). https-en (vagy localhoston) a service worker
         // regisztrálódik, így a letöltött kiadvány internet nélkül is megnyílik; a „Hozzáadás a kezdőképernyőhöz”
@@ -2005,7 +2184,7 @@
         // Képnél előbb kizoomol a teljes oldalra; videónál a pillanatnyi képkocka, a bemutatóoldalnál maga az oldal fordul át.
         // T4: a lapozás áttűnés nélkül, VÉGIG megy (a lap 180°-ban átfordul, a hátoldala is látszik).
         // T7/T11: gyenge eszközön egyszerű síkbeli csúsztatás; a ☰ menüben ki/be kapcsolható (megjegyzi).
-        const TURN_MS = 480, SLIDE_MS = 300;
+        const TURN_MS = 300, SLIDE_MS = 300;   // 7. kör (user, 10-15 07:59): az eredeti fordulás, de a felénél (élére állva) vége – nincs fehér hátoldal
         function isWeakDevice() {
             try { if (localStorage.getItem("zcfx.weakDevice") === "1") return true; } catch (_) {}
             const mem = navigator.deviceMemory, cpu = navigator.hardwareConcurrency;
@@ -2039,10 +2218,12 @@
             if (mode === "slide") pg.appendChild(snapNode);
             else {
                 const front = document.createElement("div"); front.className = "tp-face"; front.appendChild(snapNode);
-                const back = document.createElement("div"); back.className = "tp-face tp-back";
+                const back = document.createElement("div"); back.className = "tp-face tp-back"; back.appendChild(snapNode.cloneNode(true));
+                const shade = document.createElement("div"); shade.className = "tp-shade"; front.appendChild(shade);
                 pg.appendChild(front); pg.appendChild(back);
             }
             layer.appendChild(pg);
+            const vpEl = document.getElementById("canvasViewport");
             swap();
             const dur = mode === "slide" ? SLIDE_MS : TURN_MS;
             requestAnimationFrame(() => requestAnimationFrame(() => {
@@ -2050,8 +2231,11 @@
                     pg.style.transition = `transform ${dur}ms ease-in`;
                     pg.style.transform = `translateX(${-(r.x + r.w + 20)}px)`;
                 } else {
-                    pg.style.transition = `transform ${dur}ms cubic-bezier(0.45, 0.05, 0.55, 0.95)`;
-                    pg.style.transform = "rotateY(-180deg)";
+                    // a régi oldal a bal széle (gerince) körül fordul, alatta már az új oldal van; élére állva (90°) eltűnik
+                    pg.style.transition = `transform ${dur}ms cubic-bezier(0.45, 0.05, 0.75, 0.6)`;
+                    pg.style.transform = "rotateY(-90deg)";
+                    const sh = pg.querySelector(".tp-shade");
+                    if (sh) { sh.style.transition = `opacity ${dur}ms ease-in`; sh.style.opacity = "0.4"; }
                     if (!turnMeasured) { turnMeasured = true; measureTurnFrames(dur); }
                 }
             }));
@@ -2065,7 +2249,7 @@
                     setTimeout(() => { img.style.transition = ""; }, 350);
                 }
                 if (after) after();
-            }, dur + 50);
+            }, dur + 20);
         }
         function swapToNextPage() {
             const img = document.getElementById("comicImage");
@@ -2226,7 +2410,9 @@
             // Gépen (nincs érintőképernyő) alapból látszanak a menüsorok, hogy legyen mivel lapozni.
             const primaryIsTouch = window.matchMedia ? window.matchMedia("(pointer: coarse)").matches : ("ontouchstart" in window);
             if (!primaryIsTouch) configBarFixed = true;
-            try { const fx = localStorage.getItem("zcfx.barsFixed"); if (fx === "1") configBarFixed = true; else if (fx === "0") configBarFixed = false; } catch (_) {}
+            // 7. kör: a szerző exportbeállítása – alapból a menüsorok láthatók maradnak (az olvasó választása erősebb)
+            { const ps = (activeMagazineData && activeMagazineData.meta && activeMagazineData.meta.playerStart) || {}; if (ps.barsFixed !== false) configBarFixed = true; }
+            try { const fx = localStorage.getItem(pubKey("barsFixed")); if (fx === "1") configBarFixed = true; else if (fx === "0") configBarFixed = false; } catch (_) {}
             try { const ts = localStorage.getItem("zcfx.txtSize"); if (TXT_SIZES.includes(ts)) configTxtSize = ts; } catch (_) {}
             setTxtSize(configTxtSize);
 
@@ -2255,8 +2441,8 @@
                 subsLang = valid(ps.subsLang, "none") ? ps.subsLang : (ps.subs === true ? "ORIG" : "none");
                 ttsLang = valid(ps.ttsLang, "off") ? ps.ttsLang : (ps.sound === true ? "ORIG" : "off");
                 // az olvasó korábbi nyelvi választása (felirat, felolvasás) erősebb
-                try { const sv = localStorage.getItem("zcfx.subsLang"); if (sv && valid(sv, "none")) subsLang = sv; } catch (_) {}
-                try { const sv = localStorage.getItem("zcfx.ttsLang"); if (sv && valid(sv, "off")) ttsLang = sv; } catch (_) {}
+                try { const sv = localStorage.getItem(pubKey("subsLang")); if (sv && valid(sv, "none")) subsLang = sv; } catch (_) {}
+                try { const sv = localStorage.getItem(pubKey("ttsLang")); if (sv && valid(sv, "off")) ttsLang = sv; } catch (_) {}
                 if (subsLang !== "none") lastSubsLang = subsLang;
                 musicOn = ps.music !== false;
                 blockSoundOn = ps.blockSound !== undefined ? ps.blockSound !== false : true;
@@ -2267,7 +2453,7 @@
                 const btn = document.getElementById("btnView");
                 if (!hasBlocks) { btn.style.display = "none"; gvMode = true; return; }
                 let m = playerStart().viewMode === "PV" ? "PV" : "GV";
-                try { const sv = localStorage.getItem("zcfx.viewMode"); if (sv === "GV" || sv === "PV") m = sv; } catch (_) {}
+                try { localStorage.removeItem("zcfx.viewMode"); } catch (_) {}   // a régi (2.5.2-ig) megjegyzett nézet törlése
                 gvMode = (m !== "PV");
                 btn.textContent = gvMode ? "GV" : "PV";
                 document.getElementById("btnSound").classList.toggle("pv-off", !gvMode);
@@ -2282,6 +2468,7 @@
                 if (previewJumpPage === 0 && !new URLSearchParams(window.location.search).has("page")) {
                     updateBackgroundMusicForPage(1);   // a zene előkészítése: a bemutatóoldalról továbblépés indítja
                     showIntro();
+                    runSplash();   // 7. kör: logós indítás a bemutatóoldal előtt
                 } else {
                     loadCurrentPage();
                     if (!configBarFixed) scheduleChromeHide(3000);
@@ -2299,6 +2486,28 @@
             document.getElementById("btnLang").onclick = (e) => { e.stopPropagation(); buildLangPanel(); openMenu("langPanel", "btnLang"); if (document.getElementById("langPanel").classList.contains("open")) buildLangPanel(); };
             document.getElementById("btnSound").onclick = (e) => { e.stopPropagation(); updateSoundButton(); openMenu("soundPanel", "btnSound"); };
             document.getElementById("menuDim").onclick = () => { closeMenus(); if (!introActive && !configBarFixed) scheduleChromeHide(2500); };
+            // 7. kör: menük/ablakok bezárása – mellé koppintás (az ablakon kívül) és alulról felfelé suhintás
+            document.querySelectorAll("#soundPanel .mp-grip").forEach(g => g.onclick = (e) => { e.stopPropagation(); closeMenus(); });
+            ["popSettings", "popOffline"].forEach(id => {
+                const ov = document.getElementById(id);
+                ov.addEventListener("click", (e) => { if (e.target === ov) { ov.style.display = "none"; if (!introActive && !configBarFixed) scheduleChromeHide(2500); } });
+            });
+            (function swipeUpToClose() {
+                let sy = null, sx = 0, onGrip = false;
+                const anyOpen = () => menuOpen() || ["popSettings", "popOffline"].some(id => document.getElementById(id).style.display === "flex") || document.getElementById("metaPage").style.display === "block";
+                document.addEventListener("touchstart", (e) => { if (!anyOpen()) { sy = null; return; } const t = e.touches[0]; sy = t.clientY; sx = t.clientX; onGrip = !!(e.target.closest && e.target.closest(".mp-grip")); }, { passive: true, capture: true });
+                document.addEventListener("touchend", (e) => {
+                    if (sy === null) return;
+                    const t = e.changedTouches[0], dy = t.clientY - sy, dx = t.clientX - sx;
+                    const fromLow = onGrip || sy > window.innerHeight - 90;   // a képernyő legaljáról (a görgetés ne zárja be)
+                    sy = null;
+                    if (dy < -60 && Math.abs(dx) < Math.abs(dy) * 0.8 && fromLow) {
+                        closeMenus(); closeMetaPage();
+                        ["popSettings", "popOffline"].forEach(id => { document.getElementById(id).style.display = "none"; });
+                        if (!introActive && !configBarFixed) scheduleChromeHide(2500);
+                    }
+                }, { passive: true, capture: true });
+            })();
             document.getElementById("sndAll").onclick = () => { toggleAllSound(); };
             document.getElementById("sndMusic").onclick = () => setMusicOn(!musicOn);
             document.getElementById("sndBlock").onclick = () => setBlockSoundOn(!blockSoundOn);
@@ -2339,7 +2548,7 @@
             document.getElementById("btnTurnFx").onclick = () => setTurnFx(!turnFxEnabled());
             document.getElementById("btnBarToggle").onclick = function() {
                 configBarFixed = !configBarFixed;
-                try { localStorage.setItem("zcfx.barsFixed", configBarFixed ? "1" : "0"); } catch (_) {}
+                try { localStorage.setItem(pubKey("barsFixed"), configBarFixed ? "1" : "0"); } catch (_) {}
                 updateUiLanguage();
                 resizeLayout();
             };
