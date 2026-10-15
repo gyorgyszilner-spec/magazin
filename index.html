@@ -655,8 +655,14 @@
         // 2.5.3: az olvasó kiadványhoz kötött választásai (felirat, felolvasás, menüsorok) kiadványonként tárolódnak,
         // hogy ne szivárogjanak át egyik kiadványból a másikba (a böngésző tára webcímenként közös).
         // A kulcs a kiadvány mappája (export) – a menü nyelve, a szövegméret és a lapozás-effekt eszközszintű, közös marad.
-        function pubKey(name) { return "zcfx." + location.pathname.replace(/[^/]*$/, "") + "." + name; }
-        (function dropLegacyKeys() { try { ["zcfx.subsLang", "zcfx.ttsLang", "zcfx.barsFixed", "zcfx.viewMode"].forEach(k => localStorage.removeItem(k)); } catch (_) {} })();
+        // 2.5.3 (user, 10-15 16:59): a player SEMMIT nem jegyez meg a megnyitások között – minden megnyitás pontosan
+        // a szerző exportbeállításaival indul. Az olvasó választásai csak az adott olvasás alatt élnek (memóriában).
+        // Kivétel: a „gyenge eszköz” felismerése (zcfx.weakDevice) – ez az eszközről szól, nem beállítás.
+        const sessionPrefs = {};
+        function pubKey(name) { return name; }
+        function prefGet(k) { return Object.prototype.hasOwnProperty.call(sessionPrefs, k) ? sessionPrefs[k] : null; }
+        function prefSet(k, v) { sessionPrefs[k] = String(v); }
+        (function dropStoredPrefs() { try { Object.keys(localStorage).filter(k => k.startsWith("zcfx") && k !== "zcfx.weakDevice").forEach(k => localStorage.removeItem(k)); } catch (_) {} })();
         function pt(key) {
             const ui = (activeMagazineData && activeMagazineData.playerUi) || {};
             const L = ui.languages || {};
@@ -866,20 +872,20 @@
         }
         function setPlayerLang(code) {
             currentLang = code;
-            try { localStorage.setItem("zcfx.playerLang", code); } catch (_) {}
+            try { prefSet("zcfx.playerLang", code); } catch (_) {}
             updateUiLanguage();
         }
         function setSubsLang(v) {
             subsLang = v;
             if (v !== "none") lastSubsLang = v;
-            try { localStorage.setItem(pubKey("subsLang"), v); } catch (_) {}
+            try { prefSet(pubKey("subsLang"), v); } catch (_) {}
             updateTxtZoomButton();
             resizeLayout();
         }
         function setTtsLang(v) {
             ttsLang = v;
             if (window.speechSynthesis) window.speechSynthesis.cancel();
-            try { localStorage.setItem(pubKey("ttsLang"), v); } catch (_) {}
+            try { prefSet(pubKey("ttsLang"), v); } catch (_) {}
             if (v !== "off") checkVoiceAvailability(v === "ORIG" ? baseLang() : v);
             resizeLayout();
         }
@@ -1142,7 +1148,7 @@
         function setTxtSize(sz) {
             if (!TXT_SIZES.includes(sz)) sz = "small";
             configTxtSize = sz;
-            try { localStorage.setItem("zcfx.txtSize", sz); } catch (_) {}
+            try { prefSet("zcfx.txtSize", sz); } catch (_) {}
             document.querySelectorAll("#szGrid button").forEach(b => b.classList.toggle("active", b.dataset.sz === sz));
             updateTxtZoomButton();
             resizeLayout();
@@ -1956,8 +1962,14 @@
                 showPageKind("image");
                 img.onload = () => {
                     if (pendingForward) { pendingForward = false; if (gvMode && blockIdx === -1 && !startsFull(pageIdx)) blockIdx = 0; }
+                    // 2.5.4: az új kép azonnal a végleges helyén/méretén jelenjen meg – átmenet nélkül, különben egy
+                    // pillanatra eredeti (nagy) méretben villan a bal felső sarokban, és onnan zsugorodik
+                    const prevTr = img.style.transition;
+                    img.style.transition = "none";
                     resizeLayout();
+                    void img.offsetWidth;
                     img.style.visibility = "";
+                    requestAnimationFrame(() => { img.style.transition = prevTr; });
                 };
                 img.src = pageData.imagePath;
             }
@@ -2195,9 +2207,9 @@
         }
         function turnFxEnabled() {
             if (window.matchMedia && window.matchMedia("(prefers-reduced-motion: reduce)").matches) return false;
-            try { return localStorage.getItem("zcfx.turnFx") !== "off"; } catch (_) { return true; }
+            try { return prefGet("zcfx.turnFx") !== "off"; } catch (_) { return true; }
         }
-        function setTurnFx(on) { try { localStorage.setItem("zcfx.turnFx", on ? "on" : "off"); } catch (_) {} updateUiLanguage(); }
+        function setTurnFx(on) { try { prefSet("zcfx.turnFx", on ? "on" : "off"); } catch (_) {} updateUiLanguage(); }
         function turnMode() { return !turnFxEnabled() ? "off" : (isWeakDevice() ? "slide" : "3d"); }
         // Az első 3D-s lapozás képkocka-idejét mérjük: ha akadozik (átlag > 45 ms), az eszközt gyengének jelöljük.
         function measureTurnFrames(ms) {
@@ -2412,8 +2424,8 @@
             if (!primaryIsTouch) configBarFixed = true;
             // 7. kör: a szerző exportbeállítása – alapból a menüsorok láthatók maradnak (az olvasó választása erősebb)
             { const ps = (activeMagazineData && activeMagazineData.meta && activeMagazineData.meta.playerStart) || {}; if (ps.barsFixed !== false) configBarFixed = true; }
-            try { const fx = localStorage.getItem(pubKey("barsFixed")); if (fx === "1") configBarFixed = true; else if (fx === "0") configBarFixed = false; } catch (_) {}
-            try { const ts = localStorage.getItem("zcfx.txtSize"); if (TXT_SIZES.includes(ts)) configTxtSize = ts; } catch (_) {}
+            try { const fx = prefGet(pubKey("barsFixed")); if (fx === "1") configBarFixed = true; else if (fx === "0") configBarFixed = false; } catch (_) {}
+            try { const ts = prefGet("zcfx.txtSize"); if (TXT_SIZES.includes(ts)) configTxtSize = ts; } catch (_) {}
             setTxtSize(configTxtSize);
 
             // Player-nyelv: megjegyzett > böngésző nyelve > a szerző alapértelmezése
@@ -2423,7 +2435,7 @@
                 if (codes.length === 1) currentLang = codes[0];
                 if (codes.length > 1) {
                     let pick = null;
-                    try { const sv = localStorage.getItem("zcfx.playerLang"); if (sv && codes.includes(sv)) pick = sv; } catch (_) {}
+                    try { const sv = prefGet("zcfx.playerLang"); if (sv && codes.includes(sv)) pick = sv; } catch (_) {}
                     if (!pick) {
                         const nav = (navigator.languages && navigator.languages.length ? navigator.languages : [navigator.language || ""]);
                         for (const l of nav) { const c = String(l).toLowerCase(); const hit = codes.find(x => x.toLowerCase() === c) || codes.find(x => x.toLowerCase().split("-")[0] === c.split("-")[0]); if (hit) { pick = hit; break; } }
@@ -2441,8 +2453,8 @@
                 subsLang = valid(ps.subsLang, "none") ? ps.subsLang : (ps.subs === true ? "ORIG" : "none");
                 ttsLang = valid(ps.ttsLang, "off") ? ps.ttsLang : (ps.sound === true ? "ORIG" : "off");
                 // az olvasó korábbi nyelvi választása (felirat, felolvasás) erősebb
-                try { const sv = localStorage.getItem(pubKey("subsLang")); if (sv && valid(sv, "none")) subsLang = sv; } catch (_) {}
-                try { const sv = localStorage.getItem(pubKey("ttsLang")); if (sv && valid(sv, "off")) ttsLang = sv; } catch (_) {}
+                try { const sv = prefGet(pubKey("subsLang")); if (sv && valid(sv, "none")) subsLang = sv; } catch (_) {}
+                try { const sv = prefGet(pubKey("ttsLang")); if (sv && valid(sv, "off")) ttsLang = sv; } catch (_) {}
                 if (subsLang !== "none") lastSubsLang = subsLang;
                 musicOn = ps.music !== false;
                 blockSoundOn = ps.blockSound !== undefined ? ps.blockSound !== false : true;
@@ -2453,7 +2465,6 @@
                 const btn = document.getElementById("btnView");
                 if (!hasBlocks) { btn.style.display = "none"; gvMode = true; return; }
                 let m = playerStart().viewMode === "PV" ? "PV" : "GV";
-                try { localStorage.removeItem("zcfx.viewMode"); } catch (_) {}   // a régi (2.5.2-ig) megjegyzett nézet törlése
                 gvMode = (m !== "PV");
                 btn.textContent = gvMode ? "GV" : "PV";
                 document.getElementById("btnSound").classList.toggle("pv-off", !gvMode);
@@ -2548,7 +2559,7 @@
             document.getElementById("btnTurnFx").onclick = () => setTurnFx(!turnFxEnabled());
             document.getElementById("btnBarToggle").onclick = function() {
                 configBarFixed = !configBarFixed;
-                try { localStorage.setItem(pubKey("barsFixed"), configBarFixed ? "1" : "0"); } catch (_) {}
+                try { prefSet(pubKey("barsFixed"), configBarFixed ? "1" : "0"); } catch (_) {}
                 updateUiLanguage();
                 resizeLayout();
             };

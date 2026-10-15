@@ -45,7 +45,7 @@ window.MAGAZINE_DATA = {
       "barsFixed": true,
       "splashMode": "full"
     },
-    "exportId": "mv9nvidh",
+    "exportId": "mv9t23ol",
     "totalMB": 26.5,
     "pageCount": 12
   },
