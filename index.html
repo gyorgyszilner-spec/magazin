@@ -238,11 +238,13 @@
         #creditsPage {
             position: absolute; top: 0; left: 0; width: 100%; height: 100%;
             display: none; align-items: center; justify-content: center; text-align: center; overflow-y: auto;
-            background: rgba(15,15,16,0.94); color: var(--pl-text); padding: 30px; box-sizing: border-box;
+            background: #0f0f10;   /* 8. kör: átlátszatlan – a régi kép nem dereng át lapozáskor */ color: var(--pl-text); padding: 30px; box-sizing: border-box;
         }
         #creditsPage .credits-title { font-family: var(--pl-theme-font); font-size: 26px; font-weight: bold; color: var(--pl-accent); margin-bottom: 8px; }
         #creditsPage .credits-author { font-size: 16px; color: var(--pl-dim); margin-bottom: 34px; }
         #creditsPage .credits-text { font-size: 15px; font-style: italic; color: #d8d8dc; }
+        #creditsPage .credits-custom { font-family: var(--pl-theme-font); font-size: 17px; line-height: 1.5; color: var(--pl-text); white-space: pre-line; margin-bottom: 24px; }
+        #creditsPage .credits-custom:empty { display: none; }
         #creditsPage > div { margin: auto; max-width: 560px; }
         #creditsPage .credits-brand { margin-top: 30px; padding-top: 22px; border-top: 1px solid var(--pl-line2); }
         #creditsPage .credits-brand-name { font-size: 22px; font-weight: bold; color: var(--pl-accent); }
@@ -309,6 +311,7 @@
         .splash-piece { position: absolute; background-repeat: no-repeat; will-change: transform, opacity; }
         #splashImg { position: absolute; left: 50%; top: 50%; max-width: 94vw; max-height: 86vh; transform: translate(-50%, -50%) scale(0.12); opacity: 0;
             box-shadow: 0 20px 60px rgba(0,0,0,0.7); display: none; }
+        #splashVideo { position: absolute; left: 50%; top: 50%; max-width: 94vw; max-height: 86vh; transform: translate(-50%, -50%); display: none; background: #000; }
         #splashHint { position: absolute; left: 0; right: 0; bottom: 4vh; text-align: center; color: rgba(255,255,255,0.75); font-size: 14px; opacity: 0; transition: opacity 0.6s ease; pointer-events: none; }
         #splashHint.show { opacity: 1; }
         #turnLayer { position: absolute; inset: 0; display: none; z-index: 15; perspective: 1400px; pointer-events: none; overflow: hidden; }
@@ -384,8 +387,9 @@
                 <div>
                     <div class="credits-title" id="creditsTitle" dir="auto"></div>
                     <div class="credits-author" id="creditsAuthor" dir="auto"></div>
+                    <div class="credits-custom" id="creditsCustom" dir="auto"></div>
                     <div class="credits-text" id="creditsText"></div>
-                    <div class="credits-brand">
+                    <div class="credits-brand" id="creditsBrand">
                         <div class="credits-brand-name">ZoomComicFX</div>
                         <div class="credits-tagline" id="creditsTagline"></div>
                         <ul class="credits-features" id="creditsFeatures"></ul>
@@ -412,6 +416,7 @@
     <div id="splash" aria-hidden="true">
         <div id="splashLogo"></div>
         <img id="splashImg" alt="">
+        <video id="splashVideo" playsinline webkit-playsinline preload="auto"></video>
         <div id="splashHint"></div>
     </div>
     <div id="menuDim" class="menu-dim"></div>
@@ -678,6 +683,12 @@
 
         // F30: a záróoldal szövegei a player nyelvén.
         function renderCredits() {
+            // 8. kör: a szerző saját záró szövege (fordítható, a felirat nyelvén) + kikapcsolható ZoomComicFX-rész
+            const meta = (activeMagazineData && activeMagazineData.meta) || {};
+            const cc = document.getElementById("creditsCustom");
+            if (cc) { const lang = subsActive() ? realSubsLang() : "ORIG"; cc.textContent = translatedText("_credits", null, meta.creditsText || "", lang); }
+            const brandOn = meta.creditsBrand !== false;
+            ["creditsText", "creditsBrand"].forEach(id => { const e = document.getElementById(id); if (e) e.style.display = brandOn ? "" : "none"; });
             const made = document.getElementById("creditsText");
             if (made) made.textContent = pt("plCreditsMade");
             const tag = document.getElementById("creditsTagline");
@@ -1166,6 +1177,7 @@
                 bar.style.fontFamily = fontStackFor(realSubsLang(), true);
                 bar.style.display = "block";
             } else {
+                document.getElementById("subText").textContent = "";
                 bar.style.display = "none";
             }
             positionSubtitleBar();
@@ -1189,6 +1201,23 @@
             return (recordedPlaying || ttsPlaying) ? 0.4 : 1;
         }
 
+        // 8. kör: időzített videófelirat – a videó idejéhez igazodva (a felirat nyelvén); két sor között nincs felirat
+        let lastCueText = "", cueRaf = 0;
+        function cueTextAt(t) {
+            const pg = activeMagazineData.pages[pageIdx];
+            const c = (pg && pg.cues || []).find(x => t >= x.start && t < x.end);
+            return c ? translatedText(pg.id, "c" + c.id, c.text, subsLang).replace(/\r\n?/g, "\n") : "";
+        }
+        function cueTick() {
+            cueRaf = 0;
+            const pg = activeMagazineData && activeMagazineData.pages[pageIdx];
+            const v = document.getElementById("pageVideo");
+            if (!pg || pg.type !== "video" || !(pg.cues || []).length) return;
+            const txt = cueTextAt(v.currentTime || 0);
+            if (txt !== lastCueText) { lastCueText = txt; renderSubtitleBar(txt); }
+            if (!v.paused && !v.ended) cueRaf = requestAnimationFrame(cueTick);
+        }
+        ["play", "playing", "seeked", "timeupdate"].forEach(ev => document.getElementById("pageVideo").addEventListener(ev, () => { if (!cueRaf) cueRaf = requestAnimationFrame(cueTick); }));
         function updateTextAndAudio(currentElement) {
             // ⭐ "Page" (oldal-szintű tartalom): ha a blokknak nincs saját szövege (vagy nincs is blokk -
             // pl. videó-oldalnál), az oldal SAJÁT (page.text) szövege jelenik meg helyette.
@@ -1200,7 +1229,9 @@
             const pageTextOriginal = (currentPage && currentPage.text && currentPage.text.trim()) || "";
             const blockText = blockTextOriginal ? translatedText(pageId, blockIdForKey, blockTextOriginal, subsLang) : "";
             const pageText = pageTextOriginal ? translatedText(pageId, null, pageTextOriginal, subsLang) : "";
-            const wantedText = (blockText || pageText).replace(/\r\n?/g, "\n");   // T23: Windows-sortörés egységesítése
+            let wantedText = (blockText || pageText).replace(/\r\n?/g, "\n");   // T23: Windows-sortörés egységesítése
+            if (currentPage && currentPage.type === "video" && (currentPage.cues || []).length) wantedText = cueTextAt(document.getElementById("pageVideo").currentTime || 0);   // 8. kör
+            lastCueText = wantedText;
             renderSubtitleBar(wantedText);
 
             // 1) felvett hang (blokk vagy oldal) – a 🔊 menü "Blokkhangok" kapcsolója vezérli
@@ -1658,6 +1689,7 @@
         function runSplash() {
             const sp = activeMagazineData && activeMagazineData.splash;
             if (!sp || !sp.logo || !(activeMagazineData.meta && activeMagazineData.meta.exportId)) return;
+            if (playerStart().showSplash === false) return;   // 8. kör: „csendes” kiadás – a szerző kikapcsolta
             const root = document.getElementById("splash"), logo = document.getElementById("splashLogo"), img = document.getElementById("splashImg"), hint = document.getElementById("splashHint");
             const mode = sp.mode || "full";
             let stage = "logo", timers = [];
@@ -1670,6 +1702,7 @@
                 if (stage === "done") return;
                 stage = "done"; timers.forEach(clearTimeout);
                 root.classList.add("fade");
+                try { const sv = document.getElementById("splashVideo"); if (sv) sv.pause(); } catch (_) {}
                 setTimeout(() => { root.classList.remove("on", "fade"); root.innerHTML = ""; }, 380);
             };
             const showImage = (animated) => {
@@ -1684,7 +1717,8 @@
                 } else {
                     img.style.transition = "opacity 0.45s ease"; img.style.transform = "translate(-50%, -50%) scale(1)"; img.style.opacity = "1";
                 }
-                timers.push(setTimeout(() => showHint("plTapToContinue"), animated ? 1300 : 600));
+                timers.push(setTimeout(() => showHint(sp.video ? "plTapToPlay" : "plTapToContinue"), animated ? 1300 : 600));
+                if (sp.video) { const sv = document.getElementById("splashVideo"); sv.src = sp.video; sv.load(); }   // előtöltés
             };
             const shatter = () => {
                 if (stage !== "logo") return;
@@ -1715,6 +1749,15 @@
                 timers.push(setTimeout(() => showImage(true), 180));
                 timers.push(setTimeout(() => pieces.forEach(([p]) => p.remove()), 1600));
             };
+            const playVideo = () => {
+                const sv = document.getElementById("splashVideo");
+                stage = "video"; hint.classList.remove("show");
+                sv.muted = false;
+                sv.onplaying = () => { sv.style.display = "block"; img.style.display = "none"; };
+                sv.onended = () => { stage = "videoEnd"; showHint("plTapToContinue"); };   // a videó az utolsó kockán megáll
+                const p = sv.play();
+                if (p && p.catch) p.catch(() => { sv.muted = true; sv.play().catch(() => finish()); });
+            };
             const beeps = () => {
                 try {
                     const AC = window.AudioContext || window.webkitAudioContext; if (!AC) return;
@@ -1732,7 +1775,8 @@
             else { timers.push(setTimeout(() => { logo.classList.remove("intro"); logo.classList.add("pulse"); showHint("plTapLogo"); }, 950)); }
             const advance = () => {
                 if (stage === "logo") { if (mode === "simple") { stage = "x"; logo.style.transition = "opacity 0.3s"; logo.style.opacity = "0"; hint.classList.remove("show"); timers.push(setTimeout(() => showImage(false), 250)); } else shatter(); }   // az 1. módban koppintásra is indul (átugorja a várakozást)
-                else if (stage === "image") finish();
+                else if (stage === "image" && sp.video) playVideo();   // 8. kör: a koppintás indítja a nyitóvideót, hanggal
+                else if (stage === "image" || stage === "videoEnd" || stage === "video") finish();
             };
             root.addEventListener("click", advance);
             document.addEventListener("keydown", function k(e) {
@@ -2270,7 +2314,39 @@
             loadCurrentPage();
             img.style.visibility = "hidden";   // amíg az új kép be nem töltődött és el nem helyeződött
         }
+        // 8. kör: a lap csak KÉSZ oldalra fordul – a következő oldal képe (videónál a posztere) előbb kibontva
+        // (decode) legyen, különben a fordulás alatt üres hely / a régi kép villan ki alóla. Legfeljebb 700 ms-ot vár.
+        function readyNextPage() {
+            const pg = activeMagazineData.pages[pageIdx + 1];
+            if (!pg) return Promise.resolve();
+            const decodeUrl = (u) => {
+                if (!u) return Promise.resolve();
+                let im = preloadCache.get(u);
+                if (!im) { im = new Image(); im.src = u; preloadCache.set(u, im); }
+                return (im.decode ? im.decode() : Promise.resolve()).catch(() => {});
+            };
+            let p;
+            if (pg.type === "video") { p = Promise.all([decodeUrl(pg.posterPath), pg.videoPath ? MediaStore.want(pg.videoPath) : null]); }
+            else if (pg.type === "credits") p = Promise.resolve();
+            else p = decodeUrl(pg.imagePath);
+            return Promise.race([p, new Promise(r => setTimeout(r, 700))]);
+        }
+        // a megjelenített (már kibontott) képből azonnali pillanatkép – nem kell újra betölteni/kibontani
+        function snapshotOf(el, w, h) {
+            const c = document.createElement("canvas");
+            const dpr = Math.min(2, window.devicePixelRatio || 1);
+            c.width = Math.max(2, Math.round(w * dpr)); c.height = Math.max(2, Math.round(h * dpr));
+            c.style.cssText = "width:100%; height:100%; display:block;";
+            try { c.getContext("2d").drawImage(el, 0, 0, c.width, c.height); } catch (_) {}
+            return c;
+        }
+        let turnPending = false;
         function turnToNextPage() {
+            if (turnPending || turning) return;
+            turnPending = true;
+            readyNextPage().then(() => { turnPending = false; turnToNextPageNow(); });
+        }
+        function turnToNextPageNow() {
             const img = document.getElementById("comicImage");
             const vp = document.getElementById("canvasViewport");
             const type = currentPageType();
@@ -2299,17 +2375,29 @@
             }
             setTimeout(() => {
                 img.style.transition = "";
-                const im = document.createElement("img");
-                im.src = img.src; im.style.cssText = "width:100%; height:100%; display:block;";
+                const im = snapshotOf(img, lastFullRect.w, lastFullRect.h);   // 8. kör: a kibontott képből, azonnal
                 playTurn(im, lastFullRect, swapToNextPage);
             }, needZoomOut ? 280 : 0);
         }
         function turnFromIntro() {
+            if (turnPending || turning) return;
+            turnPending = true;
             const vp = document.getElementById("canvasViewport");
-            const clone = document.getElementById("introPage").cloneNode(true);
+            const src = document.getElementById("introPage");
+            const clone = src.cloneNode(true);
             clone.removeAttribute("id");
             clone.style.cssText += "display:block; position:absolute; top:0; left:0; width:100%; height:100%; background:#0f0f10;";
-            playTurn(clone, { x: 0, y: 0, w: vp.clientWidth, h: vp.clientHeight }, () => {
+            // 8. kör: a klónban a képek (borító) helyett azonnali vászon-pillanatkép – a klónozott <img> újra kibontana, és egy pillanatra eltűnne (villanás)
+            const origImgs = src.querySelectorAll("img"), cloneImgs = clone.querySelectorAll("img");
+            cloneImgs.forEach((ci, k) => {
+                const oi = origImgs[k]; if (!oi || !oi.complete || !oi.naturalWidth) return;
+                const r = oi.getBoundingClientRect();
+                const c = snapshotOf(oi, r.width, r.height);
+                c.className = ci.className; c.style.cssText = `width:${r.width}px; height:${r.height}px; display:block;`;
+                ci.replaceWith(c);
+            });
+            const sm = src.querySelector(".ip-main"), cm = clone.querySelector(".ip-main");
+            const doTurn = () => playTurn(clone, { x: 0, y: 0, w: vp.clientWidth, h: vp.clientHeight }, () => {
                 introActive = false; pendingForward = false;
                 restoreAfterIntro();
                 unlockAudioFromGesture();
@@ -2317,6 +2405,15 @@
                 document.getElementById("comicImage").style.visibility = "hidden";
                 afterIntroChrome();
             });
+            // a címlap legyen kibontva, mielőtt a bemutatóoldal lefordul róla
+            const p0 = activeMagazineData.pages[pageIdx];
+            let pr = Promise.resolve();
+            if (p0 && (p0.imagePath || p0.posterPath)) {
+                const u = p0.type === "video" ? p0.posterPath : p0.imagePath;
+                let im = preloadCache.get(u); if (!im) { im = new Image(); im.src = u; preloadCache.set(u, im); }
+                pr = (im.decode ? im.decode() : Promise.resolve()).catch(() => {});
+            }
+            Promise.race([pr, new Promise(r => setTimeout(r, 700))]).then(() => { turnPending = false; doTurn(); if (sm && cm) cm.scrollTop = sm.scrollTop; });
         }
 
         function triggerNext() {
@@ -2365,6 +2462,7 @@
                 blockIdx--; 
                 resizeLayout(); 
             } else if (pageIdx === 0) {
+                if (playerStart().showIntroPage === false) return;   // 8. kör: nincs bemutatóoldal
                 showIntro();           // a címlapról a "hátra" a bemutatóoldalra visz
             } else if (pageIdx > 0) { 
                 pageIdx--; 
@@ -2478,7 +2576,10 @@
                 pendingForward = true;
                 if (previewJumpPage === 0 && !new URLSearchParams(window.location.search).has("page")) {
                     updateBackgroundMusicForPage(1);   // a zene előkészítése: a bemutatóoldalról továbblépés indítja
-                    showIntro();
+                    if (playerStart().showIntroPage === false) {   // 8. kör: bemutatóoldal nélkül egyenesen a címlapra
+                        loadCurrentPage();
+                        afterIntroChrome();
+                    } else showIntro();
                     runSplash();   // 7. kör: logós indítás a bemutatóoldal előtt
                 } else {
                     loadCurrentPage();

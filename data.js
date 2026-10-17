@@ -22,7 +22,7 @@ window.MAGAZINE_DATA = {
     "originalLang": "hu",
     "playerLangs": [
       "en",
-      "De",
+      "de",
       "es",
       "fr",
       "hu",
@@ -43,10 +43,12 @@ window.MAGAZINE_DATA = {
       "sound": false,
       "offline": true,
       "barsFixed": true,
-      "splashMode": "full"
+      "splashMode": "simple",
+      "showSplash": false,
+      "showIntroPage": true
     },
-    "exportId": "mv9t23ol",
-    "totalMB": 26.5,
+    "exportId": "mvbxprau",
+    "totalMB": 27,
     "pageCount": 12
   },
   "lang": "hu",
@@ -154,18 +156,19 @@ window.MAGAZINE_DATA = {
         "plInstallOther": "No button? In the browser menu (⋮) choose “Add to home screen” or “Install app”.",
         "plInstalled": "Already installed – open it from your home screen.",
         "plTapToContinue": "Tap to continue",
-        "plTapLogo": "Tap the logo"
+        "plTapLogo": "Tap the logo",
+        "plTapToPlay": "Tap to play"
       },
-      "De": {
+      "de": {
         "plLangName": "Deutsch",
-        "plLangTitle": "Sprache",
-        "plPrev": "◄ Zurück",
-        "plNext": "Weiter ►",
+        "plLangTitle": "Sprache, Untertitel, Vorlesen",
+        "plPrev": "‹ Zurück",
+        "plNext": "Weiter ›",
         "plSetTitle": "Einstellungen",
         "plSetTxtSize": "Textgröße",
-        "plSetSpeed": "Lesegeschwindigkeit",
-        "plSetVoice": "Stimmentyp",
-        "plSetBar": "Untere Leiste fixieren",
+        "plSetSpeed": "Vorlesegeschwindigkeit",
+        "plSetVoice": "Stimme",
+        "plSetBar": "Menüleisten fixieren",
         "plSmall": "Klein",
         "plMedium": "Mittel",
         "plLarge": "Groß",
@@ -179,85 +182,86 @@ window.MAGAZINE_DATA = {
         "plDone": "Fertig",
         "plNoVoice": "Nicht verfügbar",
         "plCreditsMade": "Erstellt mit ZoomComicFX",
-        "plCreditsTagline": "für die Ersteller des 21. Jahrhunderts",
+        "plCreditsTagline": "für die Kreativen des 21. Jahrhunderts",
         "plCredits1": "Optimierung für kleine Bildschirme - Guided View",
         "plCredits2": "Nahtlose Integration von Videos und Animationen",
-        "plCredits3": "Audiodateien für Erzählung und Soundeffekte anhängen",
-        "plCredits4": "Hintergrundmusik oder kontinuierliche Erzählung",
+        "plCredits3": "Audiodateien für Erzählung und Soundeffekte",
+        "plCredits4": "Hintergrundmusik oder fortlaufende Erzählung",
         "plCredits5": "Mehrsprachige Untertitel",
         "plCredits6": "Maschinelles Vorlesen in mehreren Sprachen",
         "plContentLangTitle": "Textsprache",
         "plOriginal": "Original",
         "plSubsTitle": "Untertitel",
-        "plSoundTitle": "Vorlesen / Ton",
+        "plSoundTitle": "Töne",
         "plLoadError": "Der Inhalt kann nicht geladen werden (data.js fehlt oder ist beschädigt).",
         "plImgAlt": "Magazinseite",
-        "plMusicTitle": "Background music on/off",
-        "plIntroBack": "Back",
-        "plIntroFwd": "Forward",
-        "plIntroLang": "Language, captions and read aloud",
-        "plIntroSubs": "Subtitles on/off",
-        "plIntroMusic": "Music on/off",
-        "plIntroSound": "Sounds: background music, effects",
-        "plIntroMenu": "Settings, publication details",
-        "plIntroInApp": "Tip: for the best experience, open this page in your browser (⋯ menu → Open in browser).",
-        "plTxtZoomTitle": "Caption size",
+        "plMusicTitle": "Hintergrundmusik an/aus",
+        "plIntroBack": "Zurück",
+        "plIntroFwd": "Weiter",
+        "plIntroLang": "Sprache, Untertitel und Vorlesen",
+        "plIntroSubs": "Untertitel an/aus",
+        "plIntroMusic": "Musik an/aus",
+        "plIntroSound": "Töne: Hintergrundmusik, Effekte",
+        "plIntroMenu": "Einstellungen, Angaben zur Ausgabe",
+        "plIntroInApp": "Tipp: Für das beste Erlebnis öffne diese Seite im Browser (⋯ Menü → Im Browser öffnen).",
+        "plTxtZoomTitle": "Untertitelgröße",
         "plViewTitle": "Guided View / Page View",
-        "plIntroView": "Guided view ↔ free page view",
-        "plLangPlayer": "Menu language",
-        "plLangComic": "Comic language",
-        "plVidPlay": "Play / pause",
-        "plVidMute": "Video sound on/off",
-        "plVidSeek": "Video position",
-        "plSetTurnFx": "Page-turn effect",
-        "plLangSubs": "Captions",
-        "plLangTts": "Read aloud",
-        "plNoSubs": "No captions",
-        "plOriginalShort": "original",
-        "plTtsOff": "Off",
-        "plTtsNote": "Only the voices available on your device are listed.",
-        "plTtsNone": "This device has no voice for reading this comic aloud.",
-        "plSearchLang": "Search language…",
-        "plSndMusic": "Background music",
-        "plSndBlock": "Block sounds",
-        "plSndBlockSub": "effects, recorded voices",
-        "plSndAllOff": "All sound off",
-        "plSndAllOn": "All sound on",
-        "plSndTtsNote": "Read aloud can be set in the language menu.",
-        "plShowMenu": "Show the menu bar",
-        "plSetBars": "Keep the menu bars visible",
-        "plMetaOpen": "Publication details",
-        "plMetaHeading": "Publication details",
-        "plClose": "Close",
-        "plMetaVolume": "Volume",
-        "plMetaIssue": "Issue",
+        "plIntroView": "Geführte Ansicht ↔ freie Seitenansicht",
+        "plLangPlayer": "Menüsprache",
+        "plLangComic": "Sprache des Comics",
+        "plVidPlay": "Abspielen / Pause",
+        "plVidMute": "Videoton an/aus",
+        "plVidSeek": "Videoposition",
+        "plSetTurnFx": "Umblätter-Effekt",
+        "plLangSubs": "Untertitel",
+        "plLangTts": "Vorlesen",
+        "plNoSubs": "Keine Untertitel",
+        "plOriginalShort": "Original",
+        "plTtsOff": "Aus",
+        "plTtsNote": "Es werden nur die auf deinem Gerät verfügbaren Stimmen angezeigt.",
+        "plTtsNone": "Dieses Gerät hat keine Stimme zum Vorlesen dieses Comics.",
+        "plSearchLang": "Sprache suchen…",
+        "plSndMusic": "Hintergrundmusik",
+        "plSndBlock": "Block-Töne",
+        "plSndBlockSub": "Effekte, aufgenommene Stimmen",
+        "plSndAllOff": "Alle Töne aus",
+        "plSndAllOn": "Alle Töne an",
+        "plSndTtsNote": "Das Vorlesen stellst du im Sprachmenü ein.",
+        "plShowMenu": "Menüleiste anzeigen",
+        "plSetBars": "Menüleisten fixieren",
+        "plMetaOpen": "Angaben zur Ausgabe",
+        "plMetaHeading": "Angaben zur Ausgabe",
+        "plClose": "Schließen",
+        "plMetaVolume": "Band",
+        "plMetaIssue": "Ausgabe",
         "plMetaGenre": "Genre",
-        "plMetaOrigLang": "Original language",
-        "plMetaTranslations": "Captions available in",
-        "plMetaPages": "Pages",
-        "plMetaSize": "Total size",
+        "plMetaOrigLang": "Originalsprache",
+        "plMetaTranslations": "Untertitel verfügbar in",
+        "plMetaPages": "Seiten",
+        "plMetaSize": "Gesamtgröße",
         "plMetaIsbn": "ISBN",
         "plMetaIssn": "ISSN",
-        "plIntroHowTo": "How to use",
+        "plIntroHowTo": "So funktioniert's",
         "plIntroStart": "Start",
-        "plPagesN": "{n} pages",
-        "plTotalMB": "Total: {mb} MB",
-        "plIntroTxtZoom": "Caption size, in the bottom bar (5 sizes)",
-        "plIntroTurnTouch": "Turn pages: tap the right or left edge",
-        "plIntroTurnMouse": "Turn pages: click right or left, or use the arrow keys",
-        "plIntroHide": "The menu bar hides while reading – tap the middle or the tab to bring it back",
-        "plOffline": "Offline reading",
-        "plOfflineDesc": "Downloads the whole comic to this device, so you can read it without internet and put it on your home screen with an icon.",
-        "plOfflineProgress": "Downloading: {done} / {total} files",
-        "plOfflineDone": "Done – this comic can now be read without internet on this device.",
-        "plOfflineFail": "Some files could not be saved (the browser may not allow offline storage, or storage is full).",
-        "plOfflineNoHttps": "Offline reading only works when the comic is opened from a website (https).",
-        "plInstall": "Add to home screen",
-        "plInstallIos": "iPhone/iPad: tap the Share button (square with an arrow), then “Add to Home Screen”.",
-        "plInstallOther": "No button? In the browser menu (⋮) choose “Add to home screen” or “Install app”.",
-        "plInstalled": "Already installed – open it from your home screen.",
-        "plTapToContinue": "Tap to continue",
-        "plTapLogo": "Tap the logo"
+        "plPagesN": "{n} Seiten",
+        "plTotalMB": "Gesamt: {mb} MB",
+        "plIntroTxtZoom": "Untertitelgröße, in der unteren Leiste (5 Größen)",
+        "plIntroTurnTouch": "Umblättern: rechts oder links tippen",
+        "plIntroTurnMouse": "Umblättern: rechts oder links klicken oder Pfeiltasten",
+        "plIntroHide": "Beim Lesen verschwindet die Menüleiste – tippe in die Mitte oder auf die Lasche",
+        "plOffline": "Offline lesen",
+        "plOfflineDesc": "Lädt den ganzen Comic auf dieses Gerät, damit du ihn ohne Internet lesen und mit Symbol auf den Startbildschirm legen kannst.",
+        "plOfflineProgress": "Download: {done} / {total} Dateien",
+        "plOfflineDone": "Fertig – dieser Comic ist auf diesem Gerät jetzt auch ohne Internet lesbar.",
+        "plOfflineFail": "Einige Dateien konnten nicht gespeichert werden (der Browser erlaubt keinen Offline-Speicher oder der Speicher ist voll).",
+        "plOfflineNoHttps": "Offline lesen funktioniert nur, wenn der Comic von einer Website (https) geöffnet wird.",
+        "plInstall": "Zum Startbildschirm hinzufügen",
+        "plInstallIos": "iPhone/iPad: Tippe auf Teilen (Quadrat mit Pfeil) und dann auf „Zum Home-Bildschirm“.",
+        "plInstallOther": "Kein Knopf? Wähle im Browsermenü (⋮) „Zum Startbildschirm hinzufügen“ oder „App installieren“.",
+        "plInstalled": "Bereits installiert – starte es vom Startbildschirm.",
+        "plTapToContinue": "Tippen zum Fortfahren",
+        "plTapLogo": "Tippe auf das Logo",
+        "plTapToPlay": "Tippen zum Abspielen"
       },
       "es": {
         "plLangName": "Español",
@@ -360,7 +364,8 @@ window.MAGAZINE_DATA = {
         "plInstallOther": "¿No hay botón? En el menú del navegador (⋮) elige «Añadir a pantalla de inicio» o «Instalar aplicación».",
         "plInstalled": "Ya instalado: ábrelo desde la pantalla de inicio.",
         "plTapToContinue": "Toca para continuar",
-        "plTapLogo": "Toca el logo"
+        "plTapLogo": "Toca el logo",
+        "plTapToPlay": "Toca para reproducir"
       },
       "fr": {
         "plLangName": "Français",
@@ -463,7 +468,8 @@ window.MAGAZINE_DATA = {
         "plInstallOther": "Pas de bouton ? Dans le menu du navigateur (⋮), choisissez « Ajouter à l'écran d'accueil » ou « Installer l'application ».",
         "plInstalled": "Déjà installée – ouvrez-la depuis l'écran d'accueil.",
         "plTapToContinue": "Touchez pour continuer",
-        "plTapLogo": "Touchez le logo"
+        "plTapLogo": "Touchez le logo",
+        "plTapToPlay": "Touchez pour lire"
       },
       "hu": {
         "plLangName": "Magyar",
@@ -566,7 +572,8 @@ window.MAGAZINE_DATA = {
         "plInstallOther": "Nincs gomb? A böngésző menüjében (⋮) válaszd a „Hozzáadás a kezdőképernyőhöz” vagy „Alkalmazás telepítése” pontot.",
         "plInstalled": "Már telepítve – a kezdőképernyőről indíthatod.",
         "plTapToContinue": "Koppints a folytatáshoz",
-        "plTapLogo": "Koppints a logóra"
+        "plTapLogo": "Koppints a logóra",
+        "plTapToPlay": "Koppints a lejátszáshoz"
       },
       "it": {
         "plLangName": "Italiano",
@@ -669,7 +676,8 @@ window.MAGAZINE_DATA = {
         "plInstallOther": "Nessun pulsante? Nel menu del browser (⋮) scegli «Aggiungi a schermata Home» o «Installa app».",
         "plInstalled": "Già installato – aprilo dalla schermata Home.",
         "plTapToContinue": "Tocca per continuare",
-        "plTapLogo": "Tocca il logo"
+        "plTapLogo": "Tocca il logo",
+        "plTapToPlay": "Tocca per riprodurre"
       },
       "pl": {
         "plLangName": "Polski",
@@ -772,7 +780,8 @@ window.MAGAZINE_DATA = {
         "plInstallOther": "Brak przycisku? W menu przeglądarki (⋮) wybierz „Dodaj do ekranu głównego” lub „Zainstaluj aplikację”.",
         "plInstalled": "Już zainstalowane – otwórz z ekranu głównego.",
         "plTapToContinue": "Dotknij, aby kontynuować",
-        "plTapLogo": "Dotknij logo"
+        "plTapLogo": "Dotknij logo",
+        "plTapToPlay": "Dotknij, aby odtworzyć"
       },
       "pt-BR": {
         "plLangName": "Português (Brasil)",
@@ -875,7 +884,8 @@ window.MAGAZINE_DATA = {
         "plInstallOther": "Sem botão? No menu do navegador (⋮), escolha “Adicionar à tela inicial” ou “Instalar app”.",
         "plInstalled": "Já instalado – abra pela tela inicial.",
         "plTapToContinue": "Toque para continuar",
-        "plTapLogo": "Toque no logo"
+        "plTapLogo": "Toque no logo",
+        "plTapToPlay": "Toque para reproduzir"
       },
       "ru": {
         "plLangName": "Русский",
@@ -978,7 +988,8 @@ window.MAGAZINE_DATA = {
         "plInstallOther": "No button? In the browser menu (⋮) choose “Add to home screen” or “Install app”.",
         "plInstalled": "Already installed – open it from your home screen.",
         "plTapToContinue": "Tap to continue",
-        "plTapLogo": "Tap the logo"
+        "plTapLogo": "Tap the logo",
+        "plTapToPlay": "Tap to play"
       }
     }
   },
@@ -992,6 +1003,7 @@ window.MAGAZINE_DATA = {
       "musicVol": null,
       "captionPos": "bottom",
       "videoMuted": false,
+      "cues": [],
       "guides": {
         "v": [],
         "h": []
@@ -1021,6 +1033,7 @@ window.MAGAZINE_DATA = {
       "musicVol": null,
       "captionPos": "bottom",
       "videoMuted": false,
+      "cues": [],
       "guides": {
         "v": [],
         "h": []
@@ -1062,6 +1075,7 @@ window.MAGAZINE_DATA = {
       "musicVol": null,
       "captionPos": "bottom",
       "videoMuted": false,
+      "cues": [],
       "guides": {
         "v": [],
         "h": []
@@ -1151,6 +1165,7 @@ window.MAGAZINE_DATA = {
       "musicVol": null,
       "captionPos": "bottom",
       "videoMuted": false,
+      "cues": [],
       "guides": {
         "v": [],
         "h": []
@@ -1234,12 +1249,13 @@ window.MAGAZINE_DATA = {
     {
       "id": "1791649247786-05 - Videofile3 jo.mp4",
       "type": "video",
-      "text": "Aztán egy kisebb csoda történt. Az egyik magyar kutatóintézetben felfedezték az ellenanyagot.",
+      "text": "<3>Aztán egy kisebb csoda történt. Az egyik magyar kutatóintézetben felfedezték az ellenanyagot.",
       "audioPath": "",
       "viewStart": "auto",
       "musicVol": null,
       "captionPos": "bottom",
       "videoMuted": false,
+      "cues": [],
       "guides": {
         "v": [],
         "h": []
@@ -1257,6 +1273,7 @@ window.MAGAZINE_DATA = {
       "musicVol": null,
       "captionPos": "bottom",
       "videoMuted": false,
+      "cues": [],
       "guides": {
         "v": [],
         "h": []
@@ -1370,6 +1387,7 @@ window.MAGAZINE_DATA = {
       "musicVol": null,
       "captionPos": "bottom",
       "videoMuted": false,
+      "cues": [],
       "guides": {
         "v": [],
         "h": []
@@ -1483,6 +1501,7 @@ window.MAGAZINE_DATA = {
       "musicVol": null,
       "captionPos": "bottom",
       "videoMuted": false,
+      "cues": [],
       "guides": {
         "v": [],
         "h": []
@@ -1548,6 +1567,7 @@ window.MAGAZINE_DATA = {
       "musicVol": null,
       "captionPos": "bottom",
       "videoMuted": false,
+      "cues": [],
       "guides": {
         "v": [],
         "h": []
@@ -1625,6 +1645,7 @@ window.MAGAZINE_DATA = {
       "musicVol": null,
       "captionPos": "bottom",
       "videoMuted": false,
+      "cues": [],
       "guides": {
         "v": [],
         "h": []
@@ -1714,6 +1735,7 @@ window.MAGAZINE_DATA = {
       "musicVol": null,
       "captionPos": "bottom",
       "videoMuted": false,
+      "cues": [],
       "guides": {
         "v": [],
         "h": []
@@ -1731,6 +1753,7 @@ window.MAGAZINE_DATA = {
       "musicVol": null,
       "captionPos": "bottom",
       "videoMuted": false,
+      "cues": [],
       "guides": {
         "v": [],
         "h": []
@@ -2058,9 +2081,10 @@ window.MAGAZINE_DATA = {
   ],
   "allowOffline": true,
   "splash": {
-    "mode": "full",
+    "mode": "simple",
     "logo": "logo.jpg",
-    "image": "images/1791562815421-01_-_Zeorszag__A_zombiinvazio_tortenete.jpg"
+    "image": "theme/splash.jpg",
+    "video": ""
   },
   "offlineFiles": [
     "audio/1791712130981-Good_Boy_on_the_Poster.mp3",
@@ -2095,6 +2119,7 @@ window.MAGAZINE_DATA = {
     "manifest.webmanifest",
     "theme/bg-landscape.jpg",
     "theme/bg-portrait.jpg",
+    "theme/splash.jpg",
     "video/1791649220633-11_-_videofile_jo.mp4",
     "video/1791649220633-11_-_videofile_jo.mp4.poster.jpg",
     "video/1791649247786-05_-_Videofile3_jo.mp4",
